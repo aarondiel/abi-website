@@ -1,12 +1,12 @@
 <template>
-  <div class="dashbord-item-wrapper">
-      <h1>{{ title }}</h1>
+  <div class="dashboard-item-wrapper">
+    <h1>{{ title }}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DashbordItem',
+  name: 'DashboardItem',
   props: {
     title: String
   }
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style scoped>
-.dashbord-item-wrapper {
+.dashboard-item-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +22,7 @@ export default {
   border-radius: 0.4rem;
 }
 
-.dashbord-item-wrapper > h1 {
+.dashboard-item-wrapper > h1 {
   font-size: 2em;
   font-weight: 500;
   font-family: 'Roboto Mono';
