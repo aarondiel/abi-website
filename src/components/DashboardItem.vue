@@ -1,12 +1,18 @@
 <template>
   <div class="dashboard-item-wrapper">
     <h1>{{ title }}</h1>
+    <Statistic />
   </div>
 </template>
 
 <script>
+import Statistic from './Statistic'
+
 export default {
   name: 'DashboardItem',
+  components: {
+    Statistic
+  },
   props: {
     title: String
   }
