@@ -1,5 +1,12 @@
 <template>
-  <DashboardItem motto="stats.motto[0]"/>
+  <DashboardItem
+    v-for="statistic in stats"
+    v-bind:key="statistic.id"
+    motto="statistic"
+    percent="{{"
+    calcWidth(statistic.votes)
+    }}
+  />
 </template>
 
 <script>
@@ -11,10 +18,14 @@ export default {
     DashboardItem
   },
   props: {
-    stats: Object
+    stats: Array
+  },
+  methods: {
+    calcWidth = function(votes) {
+      return votes / this.stats.total-votes
+    }
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

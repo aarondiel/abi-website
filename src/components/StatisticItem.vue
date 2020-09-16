@@ -12,12 +12,12 @@ export default {
   name: 'StatisticItem',
   props: {
     motto: Object,
-    total: Number
+    percent: Number
   },
   computed: {
     cssProps() {
       return {
-        '--bar-width': this.motto.votes / this.total + '%'
+        '--bar-width': this.percent
       };
     }
   }
