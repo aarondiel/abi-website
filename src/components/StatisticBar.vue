@@ -2,7 +2,7 @@
   <div class="statistic-bar-wrapper">
     <h1 class="statistic-bar-title">{{ title }}</h1>
     <h2 class="statistic-bar-description">{{ description }}</h2>
-    <span class="statistic-bar-percent">{{ Math.ceil(percent) }}%</span>
+    <span class="statistic-bar-percent">{{ Math.ceil(percent*100) }}%</span>
     <div :style="cssProps" class="statistic-bar"></div>
   </div>
 </template>
@@ -49,6 +49,7 @@ span.statistic-bar-percent {
 
 div.statistic-bar {
   background-color: #00feff;
+  min-width: 0.5%;
   width: var(--bar-width);
   height: 2em;
 }
