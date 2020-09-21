@@ -1,5 +1,5 @@
 <template>
-  <div class="poll-wrapper">
+  <div class="app-wrapper">
     <poll title="mottos" v-bind:data="mottos" display-count=10 />
     <poll title="zitate" data="zitate" display-count=10 />
   </div>
@@ -31,7 +31,7 @@ html {
   color: #ffffff;
 }
 
-.poll-wrapper {
+div.app-wrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 8em;
