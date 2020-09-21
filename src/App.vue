@@ -1,14 +1,23 @@
 <template>
-  <Dashboard />
+  <div class="poll-wrapper">
+    <poll title="mottos" v-bind:data="mottos" display-count=10 />
+    <poll title="zitate" data="zitate" display-count=10 />
+  </div>
 </template>
 
 <script>
-import Dashboard from './components/Dashboard.vue';
+import Poll from './components/Poll.vue';
+import infos from './assets/data.json'
 
 export default {
   name: 'App',
   components: {
-    Dashboard
+    Poll
+  },
+  data: function() {
+    return {
+      mottos: infos.mottos
+    }
   }
 };
 </script>
@@ -20,5 +29,11 @@ export default {
 html {
   background-color: #0c0c0d;
   color: #ffffff;
+}
+
+.poll-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 8em;
 }
 </style>
