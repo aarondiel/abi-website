@@ -1,7 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <poll title="mottos" v-bind:data="mottos" display-count=10 />
-    <poll title="zitate" data="zitate" display-count=10 />
+    <poll title="mottos" :data="mottos" :count=10 />
   </div>
 </template>
 

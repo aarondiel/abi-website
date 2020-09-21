@@ -2,7 +2,7 @@
   <div class="poll-wrapper">
     <h1 class="poll-title">{{ title }}</h1>
     <StatisticBar
-      v-for="item in data.options"
+      v-for="item in top_options"
       v-bind:key="item.key"
       v-bind:title="item.title"
       v-bind:description="item.description"
@@ -21,11 +21,19 @@ export default {
   },
   props: {
     title: String,
-    data: Object
+    data: Object,
+    count: Number
   },
   methods: {
     ratio: function(votes) {
       return votes / this.data.votes;
+    }
+  },
+  computed: {
+    top_options: function() {
+      return [...this.data.options].sort((a, b) => {
+        return b.votes - a.votes;
+      }).slice(0, this.count);
     }
   }
 };
@@ -42,7 +50,7 @@ div.poll-wrapper {
 h1.poll-title {
   margin: 0;
   text-align: center;
-  font-family: "Roboto Mono";
+  font-family: 'Roboto Mono';
   font-size: 5em;
 }
 </style>
