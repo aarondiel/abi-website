@@ -48,7 +48,7 @@ div.poll-wrapper {
 }
 
 h1.poll-title {
-  margin: 0;
+  margin: 0 0 0.5em 0;
   text-align: center;
   font-family: 'Roboto Mono';
   font-size: 5em;
