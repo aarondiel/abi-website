@@ -2,29 +2,28 @@
   <div class="statistic-bar-wrapper">
     <h1 class="statistic-bar-title">{{ title }}</h1>
     <h2 class="statistic-bar-description">{{ description }}</h2>
-    <Checkbox @toggled="validate" />
+    <input
+      class="statistic-bar-checkbox"
+      type="radio"
+      :name="group"
+      :value="key"
+      @change="$emit('input', key)"
+    />
     <span class="statistic-bar-percent">{{ Math.ceil(percent * 100) }}%</span>
     <div :style="cssProps" class="statistic-bar"></div>
   </div>
 </template>
 
 <script>
-import Checkbox from './Checkbox.vue';
-
 export default {
   name: 'StatisticBar',
-  components: {
-    Checkbox
-  },
   props: {
+    group: String,
+    key: Number,
     title: String,
     description: String,
-    percent: Number
-  },
-  methods: {
-    validate: function(target) {
-      target.checked = !target.checked;
-    }
+    percent: Number,
+    value: Number
   },
   computed: {
     cssProps() {
@@ -47,7 +46,7 @@ div.statistic-bar-wrapper {
   box-shadow: inset 0 0 0.5em #2a2a2e;
 }
 
-div.checkbox-wrapper {
+input.statistic-bar-checkbox {
   grid-row: 1 / span 2;
   justify-self: center;
   align-self: center;

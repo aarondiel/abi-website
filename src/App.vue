@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <poll title="mottos" :data="mottos" :count=35 />
+    <poll title="mottos" :data="mottos" :count=-1 />
   </div>
 </template>
 

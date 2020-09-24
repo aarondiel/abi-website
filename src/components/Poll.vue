@@ -1,23 +1,35 @@
 <template>
   <div class="poll-wrapper">
-    <h1 class="poll-title">{{ title }}</h1>
-    <StatisticBar
-      v-for="item in top_options"
-      v-bind:key="item.key"
-      v-bind:title="item.title"
-      v-bind:description="item.description"
-      v-bind:percent="ratio(item.votes)"
-    />
+    <div class="poll-content">
+      <h1 class="poll-title">{{ title }}</h1>
+      <StatisticBar
+        v-for="item in top_options"
+        :key="item.key"
+        :group="title"
+        :title="item.title"
+        :description="item.description"
+        :percent="ratio(item.votes)"
+        v-model="selection"
+      />
+    </div>
+    <SubmitMenu :selection="selection" />
   </div>
 </template>
 
 <script>
 import StatisticBar from './StatisticBar.vue';
+import SubmitMenu from './SubmitMenu.vue';
 
 export default {
   name: 'Poll',
   components: {
-    StatisticBar
+    StatisticBar,
+    SubmitMenu
+  },
+  data() {
+    return {
+      selection: -1
+    };
   },
   props: {
     title: String,
@@ -31,9 +43,15 @@ export default {
   },
   computed: {
     top_options: function() {
-      return [...this.data.options].sort((a, b) => {
-        return b.votes - a.votes;
-      }).slice(0, this.count);
+      return [...this.data.options]
+        .sort((a, b) => {
+          return b.votes - a.votes;
+        })
+        .slice(0, this.count);
+    },
+
+    selected: function() {
+      return this.selection != -1;
     }
   }
 };
@@ -45,6 +63,12 @@ div.poll-wrapper {
   padding: 2em;
   border-radius: 2em;
   background-color: #2a2a2e;
+}
+
+div.poll-content {
+  height: 70vh;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 h1.poll-title {
