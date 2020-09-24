@@ -5,9 +5,9 @@
     <input
       class="statistic-bar-checkbox"
       type="radio"
-      :value="id"
-			:checked="id == selection"
-      @change="$emit('update:selection', Number($event.target.value))"
+      :name="group"
+      :value="key"
+      @change="$emit('update', $event.target.value)"
     />
     <span class="statistic-bar-percent">{{ Math.ceil(percent * 100) }}%</span>
     <div :style="cssProps" class="statistic-bar"></div>
@@ -18,14 +18,15 @@
 export default {
   name: 'StatisticBar',
   props: {
-    id: Number,
+    group: String,
+    key: Number,
     title: String,
     description: String,
     percent: Number,
-    selection: Number
+    value: Number
   },
 	emits: [
-		'update:selection'
+		'update'
 	],
   computed: {
     cssProps() {

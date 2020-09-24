@@ -5,14 +5,15 @@
       <StatisticBar
         v-for="item in top_options"
         :key="item.key"
-        :group="title"
+				:id="item.key"
         :title="item.title"
         :description="item.description"
         :percent="ratio(item.votes)"
-        v-model="selection"
+        v-model:selection="selection"
       />
     </div>
     <SubmitMenu :selection="selection" />
+		<span>{{ selection }}</span>
   </div>
 </template>
 
@@ -28,7 +29,7 @@ export default {
   },
   data() {
     return {
-      selection: -1
+      selection: null
     };
   },
   props: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="submit-menu-wrapper">this is a test</div>
+  <div class="submit-menu-wrapper">{{ selection }}</div>
 </template>
 
 <script>
@@ -8,16 +8,15 @@ export default {
   props: {
     selection: Number
   },
-	watch: {
-		selection: function(oldval, newval) {
-			console.log(oldval, newval, this);
-		}
-	}
+  watch: {
+    selection: function(oldval, newval) {
+      console.log(oldval, newval, this);
+    }
+  }
 };
 </script>
 
 <style scoped>
 div.submit-menu-wrapper {
-	display: none;
 }
 </style>
