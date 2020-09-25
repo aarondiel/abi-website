@@ -14,12 +14,14 @@
     </div>
     <SubmitMenu :selection="selection" />
 		<span>{{ selection }}</span>
+    <input id="sendVoteButton" type="submit" @click="doTheVoteThing()" value="Do the vote!" />
   </div>
 </template>
 
 <script>
 import StatisticBar from './StatisticBar.vue';
 import SubmitMenu from './SubmitMenu.vue';
+import axios from 'axios';
 
 export default {
   name: 'Poll',
@@ -40,6 +42,19 @@ export default {
   methods: {
     ratio: function(votes) {
       return votes / this.data.votes;
+    },
+    doTheVoteThing: function() {
+      console.log("choiceID:", this.selection)
+      axios.post("https://schoolvote.vincentscode.de/api/vote", {
+        "userName": "asdf Name",
+        "choice": this.selection,
+      }).then(response => {
+        console.log("then")
+        console.log(response.data)
+      }).catch(function (error) {
+        console.log("error")
+        console.log(error.response.data)
+      });
     }
   },
   computed: {
