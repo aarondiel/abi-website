@@ -44,21 +44,24 @@ export default {
       return votes / this.data.votes;
     },
     doTheVoteThing: function() {
-      console.log("choiceID:", this.selection)
+      console.log("choiceID:", this.selection);
       axios.post("https://schoolvote.vincentscode.de/api/vote", {
         "userName": "asdf Name",
         "choice": this.selection,
       }).then(response => {
-        console.log("then")
-        console.log(response.data)
+        console.log("then");
+        console.log(response.data);
+        location.reload();
       }).catch(function (error) {
-        console.log("error")
-        console.log(error.response.data)
+        console.log("error");
+        console.log(error.response.data);
+        alert(error.response.data);
       });
     }
   },
   computed: {
     top_options: function() {
+      if (!this.data) return null;
       return [...this.data.options]
         .sort((a, b) => {
           return b.votes - a.votes;
