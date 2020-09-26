@@ -12,16 +12,23 @@
         v-model:selection="selection"
       />
     </div>
+<<<<<<< HEAD
     <SubmitMenu 
 			:selection="selection"
 			url="https://schoolvote.vincentscode.de/api/vote"
 		/>
+=======
+    <SubmitMenu :selection="selection" />
+		<span>{{ selection }}</span>
+    <input id="sendVoteButton" type="submit" @click="doTheVoteThing()" value="Do the vote!" />
+>>>>>>> d681fb65ceb8d469c4b77ce2b776ec44375ebb9a
   </div>
 </template>
 
 <script>
 import StatisticBar from './StatisticBar.vue';
 import SubmitMenu from './SubmitMenu.vue';
+import axios from 'axios';
 
 export default {
   name: 'Poll',
@@ -42,10 +49,26 @@ export default {
   methods: {
     ratio: function(votes) {
       return votes / this.data.votes;
+    },
+    doTheVoteThing: function() {
+      console.log("choiceID:", this.selection);
+      axios.post("https://schoolvote.vincentscode.de/api/vote", {
+        "userName": "asdf Name",
+        "choice": this.selection,
+      }).then(response => {
+        console.log("then");
+        console.log(response.data);
+        location.reload();
+      }).catch(function (error) {
+        console.log("error");
+        console.log(error.response.data);
+        alert(error.response.data);
+      });
     }
   },
   computed: {
     top_options: function() {
+      if (!this.data) return null;
       return [...this.data.options]
         .sort((a, b) => {
           return b.votes - a.votes;

@@ -1,6 +1,6 @@
 <template>
   <div class="statistic-bar-wrapper">
-    <h1 class="statistic-bar-title">{{ title }}</h1>
+    <h1 class="statistic-bar-title">{{ title }} (ID: {{ id }})</h1>
     <h2 class="statistic-bar-description">{{ description }}</h2>
     <input
       class="statistic-bar-checkbox"

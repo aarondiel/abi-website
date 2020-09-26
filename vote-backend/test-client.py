@@ -7,7 +7,7 @@ if vote:
 	print("Voting.")
 	payload = {
 		"userName": "asdf Name",
-		"choice": 1,
+		"choice": 13,
 	}
 	r = requests.post(url, data=payload)
 	print(r)
