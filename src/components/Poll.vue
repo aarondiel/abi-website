@@ -21,6 +21,9 @@
     <SubmitMenu :selection="selection" />
 		<span>{{ selection }}</span>
     <input id="sendVoteButton" type="submit" @click="doTheVoteThing()" value="Do the vote!" />
+<<<<<<< HEAD
+>>>>>>> d681fb65ceb8d469c4b77ce2b776ec44375ebb9a
+=======
 >>>>>>> d681fb65ceb8d469c4b77ce2b776ec44375ebb9a
   </div>
 </template>
