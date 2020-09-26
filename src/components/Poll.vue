@@ -12,8 +12,10 @@
         v-model:selection="selection"
       />
     </div>
-    <SubmitMenu :selection="selection" />
-		<span>{{ selection }}</span>
+    <SubmitMenu 
+			:selection="selection"
+			url="https://schoolvote.vincentscode.de/api/vote"
+		/>
   </div>
 </template>
 
@@ -29,7 +31,7 @@ export default {
   },
   data() {
     return {
-      selection: null
+      selection: -1
     };
   },
   props: {

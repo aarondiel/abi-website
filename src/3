@@ -14,16 +14,7 @@ export default {
   name: 'SubmitMenu',
   props: {
     selection: Number,
-    url: String,
-		colors: {
-			type: Object,
-			default() { 
-				return {
-					success: '#12bc00',
-					error: '#d70022'
-				}
-			}
-		}
+    url: String
   },
   watch: {
     selection: function(val) {
@@ -36,8 +27,10 @@ export default {
   },
   methods: {
     submit: async function() {
-			const response_text = document.getElementById('submit-menu-response');
-
+      console.log(
+        document.getElementById('submit-menu-name-input').value,
+        this.selection
+      );
       fetch(this.url, {
         method: 'POST',
         mode: 'cors',
@@ -54,17 +47,17 @@ export default {
         })
       })
         .then(async (response) => {
+          const response_text = document.getElementById('submit-menu-response');
           response_text.innerText = await response.text();
-          response_text.style.color = response.ok
-            ? this.colors.success
-            : this.colors.error;
-					response_text.style.display = 'block'
+          response_text.syle.color = response.ok
+            ? this.color.error
+            : this.color.success;
         })
         .catch((err) => {
           console.error(err);
+          const response_text = document.getElementById('submit-menu-response');
           response_text.innerText = 'what the fuck did you do to my site?';
-          response_text.style.color = this.colors.error;
-					response_text.style.display = 'block'
+          response_text.syle.color = this.color.error;
         });
     }
   }

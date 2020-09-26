@@ -6,7 +6,7 @@
       class="statistic-bar-checkbox"
       type="radio"
       :value="id"
-			:checked="id == selection"
+			:checked="id === selection"
       @change="$emit('update:selection', Number($event.target.value))"
     />
     <span class="statistic-bar-percent">{{ Math.ceil(percent * 100) }}%</span>
