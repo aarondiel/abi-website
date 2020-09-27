@@ -40,7 +40,7 @@ export default {
     count: Number
   },
   methods: {
-    ratio: function(votes) {
+    ratio(votes) {
       return votes / this.data.votes;
     },
   },
@@ -63,13 +63,15 @@ export default {
 
 <style scoped>
 div.poll-wrapper {
-  margin: 2em 1em 0 2em;
-  padding: 2em;
-  border-radius: 2em;
-  background-color: #2a2a2e;
+	z-index: 0;
 }
 
 div.poll-content {
+	border: solid 2em #2a2a2e;
+	margin: 0;
+  padding: 2em 0;
+  border-radius: 2em;
+  background-color: #2a2a2e;
   height: 70vh;
   overflow: scroll;
   scrollbar-width: none;

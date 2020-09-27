@@ -2,12 +2,11 @@
   <div class="statistic-bar-wrapper">
     <h1 class="statistic-bar-title">{{ title }} (ID: {{ id }})</h1>
     <h2 class="statistic-bar-description">{{ description }}</h2>
-    <input
-      class="statistic-bar-checkbox"
-      type="radio"
+    <!-- <input class="statistic-bar-checkbox" type="radio" :value="id" :checked="id === selection" @change="$emit('update:selection', Number($event.target.value))" /> -->
+    <Checkbox
       :value="id"
-			:checked="id === selection"
-      @change="$emit('update:selection', Number($event.target.value))"
+      :checked="id == selection"
+      @update:checked="$emit('update:selection', Number($event))"
     />
     <span class="statistic-bar-percent">{{ Math.ceil(percent * 100) }}%</span>
     <div :style="cssProps" class="statistic-bar"></div>
@@ -15,6 +14,8 @@
 </template>
 
 <script>
+import Checkbox from './Checkbox.vue';
+
 export default {
   name: 'StatisticBar',
   props: {
@@ -24,16 +25,20 @@ export default {
     percent: Number,
     selection: Number
   },
-	emits: [
-		'update:selection'
-	],
+  components: { Checkbox },
+  emits: ['update:selection'],
   computed: {
     cssProps() {
       return {
         '--bar-width': 100 * this.percent + '%'
       };
     }
-  }
+  },
+	methods: {
+		shit(stuff) {
+			console.log(stuff)
+		}
+	}
 };
 </script>
 
@@ -48,7 +53,7 @@ div.statistic-bar-wrapper {
   box-shadow: inset 0 0 0.5em #2a2a2e;
 }
 
-input.statistic-bar-checkbox {
+.checkbox-wrapper {
   grid-row: 1 / span 2;
   justify-self: center;
   align-self: center;

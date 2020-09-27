@@ -1,5 +1,6 @@
 <template>
-  <div class="submit-menu-wrapper">
+	<transition name='slide'>
+  <div class="submit-menu-wrapper" v-if="show">
     <label>
       <span class="submit-menu-name">name:</span>
       <input id="submit-menu-name-input" type="text" />
@@ -7,6 +8,7 @@
     <button class="submit-menu-button" @click="submit">submit</button>
     <p id="submit-menu-response"></p>
   </div>
+	</transition>
 </template>
 
 <script>
@@ -25,13 +27,14 @@ export default {
 			}
 		}
   },
+	data() {
+		return {
+			show: false
+		}
+	},
   watch: {
     selection: function(val) {
-      if (val != -1) {
-        this.$el.style.display = 'grid';
-      } else {
-        this.$el.style.display = 'none';
-      }
+			this.show = (val !== -1);
     }
   },
   methods: {
@@ -54,7 +57,7 @@ export default {
         })
       })
         .then(async (response) => {
-          response_text.innerText = await response.text();
+          response_text.innerText = await response.text()
           response_text.style.color = response.ok
             ? this.colors.success
             : this.colors.error;
@@ -72,16 +75,35 @@ export default {
 </script>
 
 <style scoped>
+.slide-enter-from, .slide-leave-to {
+	transform: scaleY(0);
+}
+
 div.submit-menu-wrapper {
-  display: none;
-  padding: 0 15%;
+	transition: 1s;
+	transform-origin: top;
+  transition: transform .4s ease-in-out;
+	display: grid;
+	position: relative;
+	top: -2em;
+	z-index: -1;
+	border: solid 0 2em 2em 2em #4a4a4f;
+  background-color: #4a4a4f;
+  border-radius: 0 0 2em 2em;
+	padding: 3em 0 1em 0;
   grid-template-columns: repeat(2, 1fr);
   grid-column-gap: 2em;
   justify-items: center;
   align-items: center;
 }
 
+div.submit-menu-wrapper * {
+  z-index: 0;
+}
+
 p#submit-menu-response {
+	margin: 1em 0 0 0;
+	font-family: 'Roboto Mono';
   display: none;
 	grid-column: 1 / span 2;
 }

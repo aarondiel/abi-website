@@ -1,12 +1,17 @@
 <template>
   <div class="app-wrapper">
-    <poll title="mottos" :data="mottos" :count=-1 />
+    <poll
+      title="mottos"
+      :data="mottos"
+      url="https://schoolvote.vincentscode.de/api/vote"
+      :count="-1"
+    />
   </div>
 </template>
 
 <script>
 import Poll from './components/Poll.vue';
-import infos from './assets/data.json'
+import infos from './assets/data.json';
 import axios from 'axios';
 
 export default {
@@ -17,24 +22,19 @@ export default {
   data() {
     return {
       mottos: null
-    }
+    };
   },
-  mounted () {
-    console.log(infos)
-    axios.get('https://schoolvote.vincentscode.de/api/vote').then(response => {
-        console.log("res", response.data)
-        this.mottos = infos.mottos
-        this.mottos.votes = response.data.length
-        const counts = Object.fromEntries([ ...response.data.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map()) ]);
+  mounted() {
+    axios.get('https://schoolvote.vincentscode.de/api/vote').then((response) => {
+        this.mottos = infos.mottos;
+        this.mottos.votes = response.data.length;
+        const counts = Object.fromEntries(
+					[...response.data.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map())]
+				);
         for (var i = this.mottos.options.length - 1; i >= 0; i--) {
-          var votes = 0;
-          if (counts[this.mottos.options[i].key]) {
-            votes = counts[this.mottos.options[i].key];
-          }
-          this.mottos.options[i].votes = votes
+          this.mottos.options[i].votes = counts[this.mottos.options[i].key] ? counts[this.mottos.options[i].key] : 0;
         }
-        console.log("mottos", this.mottos)
-      })
+      });
   }
 };
 </script>
@@ -49,8 +49,9 @@ html {
 }
 
 div.app-wrapper {
+	margin: 5% 20%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   column-gap: 8em;
 }
 </style>
