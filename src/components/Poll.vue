@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 div.poll-wrapper {
 	z-index: 0;
 }
@@ -73,14 +73,28 @@ div.poll-content {
   border-radius: 2em;
   background-color: #2a2a2e;
   height: 70vh;
-  overflow: scroll;
-  scrollbar-width: none;
-}
+  overflow-y: scroll;
+	scrollbar-width: none;
 
-h1.poll-title {
-  margin: 0 0 0.5em 0;
-  text-align: center;
-  font-family: 'Roboto Mono';
-  font-size: 5em;
+	h1 {
+		margin: 0 0 0.5em 0;
+		text-align: center;
+		font-family: 'Roboto Mono';
+		font-size: 5em;
+	}
+
+	&::-webkit-scrollbar {
+    width: 0.75rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(249, 249, 250, 0.6);
+		border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    display: none;
+  }
+
 }
 </style>
