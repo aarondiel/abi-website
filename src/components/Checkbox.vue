@@ -1,5 +1,5 @@
 <template>
-  <div :style="cssProps" @click="check()" class="checkbox-wrapper">
+  <div @click="check()" class="checkbox-wrapper">
     <img v-if="checked" src="../assets/checkmark.svg" />
     <span class="checkbox-box" />
   </div>
