@@ -1,39 +1,29 @@
 const mongoose = require('mongoose')
+const uacValidator = require('../helpers/uac-validator')
 
 const VoteSchema = new mongoose.Schema({
   // user input
-  userName: {
+  userAccessCode: {
     type: String,
-    required: [true, "Please provide a name."],
-    // check if name is valid
-    match: [/^([a-zA-Z\säöüß]){6,50}$/, 'Please provide a valid name (only use letters, max length of 50, min length of 6).'],
-    // check if name is in use
+    required: [true, "Bitte gib deinen Zugriffscode an."],
+    // check if uac is valid
     validate: {
       validator: function() {
-        return new Promise((res, rej) => Vote.findOne({userName: this.userName, _id: {$ne: this._id}}).then(data => res(!data)).catch(err => res(false)))
+        return new Promise((res, rej) => {
+          res(uacValidator.check(this.userAccessCode))
+        })
       },
-      message: 'Already voted.',
+      message: 'Bitte gib einen gültigen Zugriffscode an.',
     }
   },
 
   choice: {
     type: Number,
-    required: [true, "Please choose."],
+    required: [true, "Bitte wähle eine Option."],
   },
 
   // backend input
-  userIp: {
-    type: String,
-    required: false,
-    // check if ip is in use
-    validate: {
-      validator: function() {
-        return new Promise((res, rej) => Vote.findOne({userIp: this.userIp, _id: {$ne: this._id}}).then(data => res(!data)).catch(err => res(false)))
-      },
-      message: 'Already voted.',
-    }
-  },
-  creationDate: {
+  lastChanged: {
     type: Date,
     required: false,
   },

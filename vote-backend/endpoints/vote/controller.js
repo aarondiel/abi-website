@@ -3,15 +3,29 @@ const config = require('../../config')
 
 exports.postVote = (req, res, next) => {
   // set backend controlled properties
-  req.body.creationDate = Date.now();
-  req.body.userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  req.body.lastChanged = Date.now();
 
   // create the vote
-  return Vote.create(req.body).then(vote => {
-    res.status(200).json({message: "Voted."})
-  }).catch(err => {
-    next({ status: 500, message: err.message })
-  });
+  Vote.findOne({
+    userAccessCode: req.body.userAccessCode,
+  }).then(data => {
+    if (!data) {
+      return Vote.create(req.body).then(vote => {
+        res.status(200).json({message: "Voted."})
+      }).catch(err => {
+        next({ status: 500, message: err.message })
+      });
+    } else {
+      data.choice = req.body.choice
+      data.save(function(err) {
+        if (err) {
+          next({ status: 500, message: err.message })
+        } else {
+          res.status(200).json({message: "Vote updated."})
+        }
+      })
+    }
+  })
 }
 
 exports.listVotes = (req, res, next) => {
