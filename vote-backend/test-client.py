@@ -1,13 +1,13 @@
 import requests
 
 vote = True
-url = "https://schoolvote.vincentscode.de/api/vote"
+url = "http://localhost:4000/api/vote"
 
 if vote:
 	print("Voting.")
 	payload = {
-		"userName": "asdf Name",
-		"choice": 13,
+		"userAccessCode": "<uac>",
+		"choice": 6,
 	}
 	r = requests.post(url, data=payload)
 	print(r)
