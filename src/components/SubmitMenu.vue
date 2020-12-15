@@ -2,7 +2,7 @@
   <transition name="slide">
     <div class="submit-menu-wrapper" v-if="show">
 			<Textfield v-model:text="voteid" name="vote id" />
-      <button class="submit-menu-button" @click="submit">submit</button>
+			<Submit @click="submit">Submit</Submit>
       <p id="submit-menu-response"></p>
     </div>
   </transition>
@@ -11,11 +11,13 @@
 <script>
 import axios from 'axios';
 import Textfield from './Textfield.vue'
+import Submit from './Submit.vue'
 
 export default {
   name: 'SubmitMenu',
 	components: {
-		Textfield
+		Textfield,
+		Submit
 	},
   props: {
     selection: Number,
@@ -42,15 +44,15 @@ export default {
     }
   },
   methods: {
-    submit: function() {
+    submit: async function() {
       const response_text = document.getElementById('submit-menu-response');
 
-      axios.post(this.url, {
+      await axios.post(this.url, {
           userName: this.voteid,
           choice: this.selection
         })
         .then((response) => {
-          response_text.innerText = response.data;
+          response_text.innerText = response.data.message;
           response_text.style.color = this.colors.success;
         })
         .catch((err) => {
@@ -66,10 +68,9 @@ export default {
   }
 };
 </script>
-j
-<style scoped>
-.slide-enter-from,
-.slide-leave-to {
+
+<style scoped lang='scss'>
+.slide-enter-from, .slide-leave-to {
   transform: scaleY(0);
 }
 
@@ -89,10 +90,11 @@ div.submit-menu-wrapper {
   grid-column-gap: 2em;
   justify-items: center;
   align-items: center;
-}
+	font-family: 'Robot Mono';
 
-div.submit-menu-wrapper * {
-  z-index: 0;
+	* {
+		z-index: 0;
+	}
 }
 
 p#submit-menu-response {

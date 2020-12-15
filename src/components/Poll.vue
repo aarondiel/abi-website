@@ -1,7 +1,7 @@
 <template>
   <div class="poll-wrapper">
     <div class="poll-content">
-      <h1 class="poll-title">{{ title }}</h1>
+      <h1>{{ title }}</h1>
       <StatisticBar
         v-for="item in top_options"
         :key="item.key"
@@ -95,6 +95,5 @@ div.poll-content {
   &::-webkit-scrollbar-track {
     display: none;
   }
-
 }
 </style>

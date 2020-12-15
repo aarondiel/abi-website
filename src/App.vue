@@ -26,20 +26,20 @@ export default {
   },
   mounted() {
     axios.get('https://schoolvote.vincentscode.de/api/vote').then((response) => {
-        this.mottos = infos.mottos;
-        this.mottos.votes = response.data.length;
-        const counts = Object.fromEntries(
-					[...response.data.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map())]
-				);
-        for (var i = this.mottos.options.length - 1; i >= 0; i--) {
-          this.mottos.options[i].votes = counts[this.mottos.options[i].key] ? counts[this.mottos.options[i].key] : 0;
-        }
-      });
+			this.mottos = infos.mottos;
+			this.mottos.votes = response.data.length;
+			const counts = Object.fromEntries(
+				[...response.data.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map())]
+			);
+			for (var i = this.mottos.options.length - 1; i >= 0; i--) {
+				this.mottos.options[i].votes = counts[this.mottos.options[i].key] ? counts[this.mottos.options[i].key] : 0;
+			}
+		});
   }
 };
 </script>
 
-<style>
+<style lang='scss'>
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 
