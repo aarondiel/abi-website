@@ -1,6 +1,12 @@
 <template>
 	<label class="textfield-wrapper">
-		<input type="text" :value="text" @input="$emit('update:text', $event.target.value)" id="textfield-input" required />
+		<input
+			type="text"
+			:value="text"
+			@input="$emit('update:text', $event.target.value)"
+			id="textfield-input"
+			required
+		/>
 		<span>{{ name }}</span>
 	</label>
 </template>

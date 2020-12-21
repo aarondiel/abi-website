@@ -87,6 +87,10 @@ export default {
 	}
 }
 
+div.poll-wrapper {
+	z-index: 0;
+}
+
 div.poll-content {
 	border: solid 2em #2a2a2e;
 	margin: 0;
