@@ -39,7 +39,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 

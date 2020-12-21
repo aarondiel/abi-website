@@ -2,8 +2,9 @@
   <transition name="slide">
     <div class="submit-menu-wrapper" v-if="show">
 			<Textfield v-model:text="voteid" name="vote id" />
-      <button class="submit-menu-button" @click="submit">submit</button>
+			<SubmitButton @click="submit">submit</SubmitButton>
       <p id="submit-menu-response"></p>
+			<slot />
     </div>
   </transition>
 </template>
@@ -11,11 +12,13 @@
 <script>
 import axios from 'axios';
 import Textfield from './Textfield.vue'
+import SubmitButton from './SubmitButton.vue'
 
 export default {
   name: 'SubmitMenu',
 	components: {
-		Textfield
+		Textfield,
+		SubmitButton
 	},
   props: {
     selection: Number,

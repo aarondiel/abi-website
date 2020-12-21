@@ -41,6 +41,7 @@ input#textfield-input {
 	background: transparent;
 	width: 100%;
 	border: 0;
+	outline: 0;
 	border-bottom: dashed 5px $disabled;
 	color: #ffffff;
 	transition: 0.5s;
