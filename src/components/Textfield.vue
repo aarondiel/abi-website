@@ -35,6 +35,10 @@ label.textfield-wrapper {
 		top: 0;
 		transition: 0.2s;
 	}
+
+	&:hover {
+		cursor: text;
+	}
 }
 
 input#textfield-input {
@@ -45,6 +49,7 @@ input#textfield-input {
 	border-bottom: dashed 5px $disabled;
 	color: #ffffff;
 	transition: 0.5s;
+	outline: none;
 	
 	&:invalid {
 		box-shadow: none;
