@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
 const logger = require('morgan');
+var cors = require('cors')
 const config = require('./config')
 const mongodb = require('./datasource/mongodb')
 

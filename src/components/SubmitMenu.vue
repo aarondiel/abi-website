@@ -49,7 +49,7 @@ export default {
       const response_text = document.getElementById('submit-menu-response');
 
       await axios.post(this.url, {
-          userName: this.voteid,
+          userAccessCode: this.voteid,
           choice: this.selection
         })
         .then((response) => {
