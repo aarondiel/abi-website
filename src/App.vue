@@ -43,15 +43,42 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 
+$phone: 320px;
+$tablet: 480px;
+$laptop: 770px;
+$desktop: 1020px;
+$tv: 1200px;
+
 html {
-  background-color: #0c0c0d;
-  color: #ffffff;
+	background-color: #0c0c0d;
+	color: #ffffff;
+
+	@media (max-width: $phone) {
+		font-size: 0.2rem;
+	}
+
+	@media (min-width: $phone) and (max-width: $tablet) {
+		font-size: 0.4rem;
+	}
+
+	@media (min-width: $tablet) and (max-width: $laptop) {
+		font-size: 0.6rem;
+	}
+
+	@media (min-width: $laptop) and (max-width: $desktop) {
+		font-size: 0.8rem;
+	}
 }
 
 div.app-wrapper {
-	margin: 5% 20%;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  column-gap: 8em;
+	display: grid;
+	margin: 5% 5% 0 5%;
+	grid-template-columns: minmax(50em, 100em);
+	justify-items: center;
+	justify-content: center;
+}
+
+div.poll-wrapper {
+	width: 100%;
 }
 </style>

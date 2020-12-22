@@ -102,12 +102,12 @@ div.poll-content {
 	scrollbar-width: none;
 
 	&::-webkit-scrollbar {
-		width: 0.75rem;
+		width: 0.75em;
 	}
 
 	&::-webkit-scrollbar-thumb {
 		background: rgba(249, 249, 250, 0.6);
-		border-radius: 0.5rem;
+		border-radius: 0.5em;
 	}
 
 	&::-webkit-scrollbar-track {
@@ -115,7 +115,7 @@ div.poll-content {
 	}
 
 	span {
-		font-size: 2rem;
+		font-size: 2em;
 		@include heading;
 	}
 }

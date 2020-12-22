@@ -86,9 +86,9 @@ div.submit-menu-wrapper {
 	border: solid 0 2em 2em 2em #4a4a4f;
 	background-color: #4a4a4f;
 	border-radius: 0 0 2em 2em;
-	padding: 3em 0 1em 0;
+	padding: 3em 1.5em 1.5em 1.5em;
 	grid-template-columns: repeat(2, 1fr);
-	grid-column-gap: 2em;
+	column-gap: 2em;
 	justify-items: center;
 	align-items: center;
 	font-family: 'Robot Mono';

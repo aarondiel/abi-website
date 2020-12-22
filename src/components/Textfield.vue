@@ -8,6 +8,7 @@
 			required
 		/>
 		<span>{{ name }}</span>
+		<hr />
 	</label>
 </template>
 
@@ -27,19 +28,26 @@ $disabled: #002d3e;
 $focused: #00feff;
 
 label.textfield-wrapper {
-	margin: 0.5em 0 0 0;
 	position: relative;
 	font-family: 'Roboto Mono';
-	height: 2.5em;
-	border-radius: 0.25em;
 
 	span {
-		font-size: 1em;
+		width: 100%;
+		heigth: 100%;
+		font-size: 0.9em;
 		display: block;
 		position: absolute;
+		top: calc((100% - 0.9em)/2);
 		color: #ffffff;
-		top: 0;
 		transition: 0.2s;
+	}
+
+	hr {
+		margin: 0;
+		width: 100%;
+		position: absolute;
+		bottom: -0.75em;
+		border: dashed 0.25em $disabled;
 	}
 
 	&:hover {
@@ -49,31 +57,32 @@ label.textfield-wrapper {
 
 input#textfield-input {
 	background: transparent;
-	width: 100%;
 	border: 0;
 	outline: 0;
-	border-bottom: dashed 5px $disabled;
+	width: 100%;
+	height: 100%;
 	color: #ffffff;
 	transition: 0.5s;
-	outline: none;
 	
 	&:invalid {
 		box-shadow: none;
 	}
 
 	&:valid ~ span {
-		font-size: 0.9em;
+		font-size: 0.8em;
 		color: $disabled;
-		transform: translateY(-1.1em);
+		top: -1em;
 	}
 
 	&:focus {
-		border-bottom-color: $focused;
+		~ hr {
+			border-color: $focused;
+		}
 
 		~ span {
-			font-size: 0.9em;
+			font-size: 0.8em;
 			color: $focused;
-			transform: translateY(-1.1em);
+			top: -1em;
 		}
 	}
 }
