@@ -35,9 +35,14 @@ export default {
     }
   },
   data() {
+		let uri = window.location.search.substring(1); 
+		let params = new URLSearchParams(uri);
+		let id = params.get("id")
+		let show = id !== "";
+
     return {
-      show: false,
-			voteid: ""
+      show: show,
+			voteid: id
     };
   },
   watch: {

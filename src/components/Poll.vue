@@ -52,6 +52,7 @@ export default {
 
 		rerender() {
 			this.$refs.statisticbar.$forceUpdate();
+
 		}
 	},
 	computed: {
