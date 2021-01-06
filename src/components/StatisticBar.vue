@@ -33,12 +33,7 @@ export default {
         '--bar-width': 100 * this.percent + '%'
       };
     }
-  },
-	methods: {
-		shit(stuff) {
-			console.log(stuff)
-		}
-	}
+  }
 };
 </script>
 

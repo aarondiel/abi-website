@@ -20,6 +20,7 @@ export default {
 		Textfield,
 		SubmitButton
 	},
+	emits: ['submit'],
   props: {
     selection: Number,
     url: String,
@@ -65,6 +66,8 @@ export default {
 					response_text.style.color = this.colors.error;
         })
 			response_text.style.display = 'block';
+
+			this.$emit('submit');
     }
   }
 };

@@ -8,6 +8,7 @@
 			</span>
 			<StatisticBar
 				v-for="item in top_options"
+				ref="statisticbar"
 				:key="item.key"
 				:id="item.key"
 				:title="item.title"
@@ -19,6 +20,7 @@
 		<SubmitMenu
 			:selection="selection"
 			url="https://schoolvote.vincentscode.de/api/vote"
+			@submit="rerender"
 		/>
 	</div>
 </template>
@@ -46,6 +48,10 @@ export default {
 	methods: {
 		ratio(votes) {
 			return votes / this.data.votes;
+		},
+
+		rerender() {
+			this.$refs.statisticbar.$forceUpdate();
 		}
 	},
 	computed: {
