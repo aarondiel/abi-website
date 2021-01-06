@@ -1,6 +1,6 @@
 <template>
   <div class="statistic-bar-wrapper">
-    <h1 class="statistic-bar-title">{{ title }} (ID: {{ id }})</h1>
+    <h1 class="statistic-bar-title">{{ title }}</h1>
     <h2 class="statistic-bar-description">{{ description }}</h2>
     <!-- <input class="statistic-bar-checkbox" type="radio" :value="id" :checked="id === selection" @change="$emit('update:selection', Number($event.target.value))" /> -->
     <Checkbox

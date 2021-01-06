@@ -1,6 +1,6 @@
 {
   "mottos": {
-    "votes": 20,
+    "votes": 100,
     "options": [
       {
         "key": 0,
@@ -11,7 +11,7 @@
       {
         "key": 1,
         "title": "Abitalisten",
-        "description": "",
+        "description": "13 Jahre Klassenkampf",
         "votes": null
       },
       {
@@ -28,8 +28,8 @@
       },
       {
         "key": 4,
-        "title": "Highschool Musabical",
-        "description": "We're breaking free",
+        "title": "Abipedia",
+        "description": "13 Jahre geklaut, kopiert und eingefügt",
         "votes": null
       },
       {
@@ -70,124 +70,142 @@
       },
       {
         "key": 11,
-        "title": "Abiciao",
-        "description": "Wir drucken unsere Noten selber",
-        "votes": null
-      },
-      {
-        "key": 12,
-        "title": "Api zapft es",
-        "description": "Wenigstens die Masse hat 1,0",
-        "votes": null
-      },
-      {
-        "key": 13,
         "title": "Abi for looking for freedom",
         "description": "",
         "votes": null
       },
       {
-        "key": 14,
+        "key": 12,
         "title": "Abiversal Studios",
         "description": "13 Jahre im falschen Film",
         "votes": null
       },
       {
-        "key": 15,
+        "key": 13,
         "title": "Abikalypse",
         "description": "Der Weltuntergang wäre einfacher gewesen",
         "votes": null
       },
       {
-        "key": 16,
+        "key": 14,
         "title": "Abiwehr",
         "description": "Getarnte Intelligenz",
         "votes": null
       },
       {
-        "key": 17,
+        "key": 15,
         "title": "Labirinth",
         "description": "Planlos zum Ziel",
         "votes": null
       },
       {
-        "key": 18,
+        "key": 16,
         "title": "Gruselkabinett",
         "description": "",
         "votes": null
       },
       {
-        "key": 19,
+        "key": 17,
         "title": "Abiliner Luft",
         "description": "Der freshe Ruf nach der Freiheit",
         "votes": null
       },
       {
-        "key": 20,
+        "key": 18,
         "title": "How I met my abi",
         "description": "Folge 2020",
         "votes": null
       },
       {
-        "key": 21,
+        "key": 19,
         "title": "Abistoteles",
         "description": "Ich weiß, dass ich nichts weiß",
         "votes": null
       },
       {
-        "key": 22,
+        "key": 20,
         "title": "Abi",
         "description": "22 Zoll",
         "votes": null
       },
       {
-        "key": 23,
+        "key": 21,
         "title": "Cannabis",
         "description": "Wir haben es durchgezogen",
         "votes": null
       },
       {
-        "key": 24,
+        "key": 22,
         "title": "Abithur",
         "description": "Wenn das Elite von die Gymnahsium gehen tut",
         "votes": null
       },
       {
-        "key": 25,
-        "title": "Coronabirus",
+        "key": 23,
+        "title": "Coronabirus / Coronabi",
         "description": "Wir haben es endlich besiegt",
         "votes": null
       },
       {
-        "key": 26,
-        "title": "Coronabier",
-        "description": "",
-        "votes": null
-      },
-      {
-        "key": 27,
+        "key": 24,
         "title": "Klopabier",
         "description": "Alles für'n Arsch",
         "votes": null
       },
       {
+        "key": 25,
+        "title": "Yallah Habibi",
+        "description": "Brudi muss los",
+        "votes": null
+      },
+	  {
+        "key": 26,
+        "title": "Abiquarium",
+        "description": "Hinaus ins große weite Meer",
+        "votes": null
+	  },
+	  {
+        "key": 27,
+        "title": "Abitendo",
+        "description": "Level 13 complete",
+        "votes": null
+	  },
+	  {
         "key": 28,
-        "title": "Abiterium",
-        "description": "Wir haben den Virus besiegt",
+        "title": "Die Leiden der Jungen Abiturienten",
+        "description": "Ein Drama in 13 Akten",
         "votes": null
-      },
-      {
+	  },
+	  {
         "key": 29,
-        "title": "Coronabi",
-        "description": "",
+        "title": "Abisode XXIV",
+        "description": "Das Wars, Das Kollegium Schreckt Zurück",
         "votes": null
-      },
-      {
+	  },
+	  {
         "key": 30,
-        "title": "Abkeyemi",
-        "description": "Wir haben den Virus besiegt",
+        "title": "Hakuna Matabi",
+        "description": "Ohne Sorgen, die Könige von Morgen",
         "votes": null
-      }
+	  },
+	  {
+        "key": 31,
+        "title": "Abinal",
+        "description": "Scheiße war das eng",
+        "votes": null
+	  },
+	  {
+        "key": 32,
+        "title": "Highschool Musabical / Highschool Musicabil",
+        "description": "We're breaking free",
+        "votes": null
+	  },
+	  {
+        "key": 33,
+        "title": "Abikinibottom",
+        "description": "Bootsfahrschule lieht nun hinter uns",
+        "votes": null
+	  }
     ]
   }
 }
