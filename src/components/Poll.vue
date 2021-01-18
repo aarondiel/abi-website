@@ -20,7 +20,7 @@
 		<SubmitMenu
 			:selection="selection"
 			url="https://schoolvote.vincentscode.de/api/vote"
-			@submit="rerender"
+			@submit="$emit('submit')"
 		/>
 	</div>
 </template>
@@ -35,6 +35,7 @@ export default {
 		StatisticBar,
 		SubmitMenu
 	},
+	emits: ['submit'],
 	data() {
 		return {
 			selection: -1
@@ -48,11 +49,6 @@ export default {
 	methods: {
 		ratio(votes) {
 			return votes / this.data.votes;
-		},
-
-		rerender() {
-			this.$refs.statisticbar.$forceUpdate();
-
 		}
 	},
 	computed: {
