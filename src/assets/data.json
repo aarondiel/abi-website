@@ -1,6 +1,6 @@
 {
   "mottos": {
-    "votes": 100,
+    "votes": null,
     "options": [
       {
         "key": 0,
@@ -64,14 +64,14 @@
       },
       {
         "key": 10,
-        "title": "Abisaurus Rex",
-        "description": "",
+        "title": "Abithur",
+        "description": "Wenn das Elite von die Gymnahsium gehen tut",
         "votes": null
       },
       {
         "key": 11,
-        "title": "Abi for looking for freedom",
-        "description": "",
+        "title": "Die goldenen Zwanziger",
+        "description": "Danach kam die Krise",
         "votes": null
       },
       {
@@ -124,8 +124,8 @@
       },
       {
         "key": 20,
-        "title": "Abi",
-        "description": "22 Zoll",
+        "title": "Alabin",
+        "description": "In jeder Flasche steckt ein Genie",
         "votes": null
       },
       {
@@ -136,72 +136,66 @@
       },
       {
         "key": 22,
-        "title": "Abithur",
-        "description": "Wenn das Elite von die Gymnahsium gehen tut",
-        "votes": null
-      },
-      {
-        "key": 23,
         "title": "Coronabirus / Coronabi",
         "description": "Wir haben es endlich besiegt",
         "votes": null
       },
       {
-        "key": 24,
+        "key": 23,
         "title": "Klopabier",
         "description": "Alles für'n Arsch",
         "votes": null
       },
       {
-        "key": 25,
+        "key": 24,
         "title": "Yallah Habibi",
         "description": "Brudi muss los",
         "votes": null
       },
 	  {
-        "key": 26,
+        "key": 25,
         "title": "Abiquarium",
         "description": "Hinaus ins große weite Meer",
         "votes": null
 	  },
 	  {
-        "key": 27,
+        "key": 26,
         "title": "Abitendo",
         "description": "Level 13 complete",
         "votes": null
 	  },
 	  {
-        "key": 28,
+        "key": 27,
         "title": "Die Leiden der Jungen Abiturienten",
         "description": "Ein Drama in 13 Akten",
         "votes": null
 	  },
 	  {
-        "key": 29,
+        "key": 28,
         "title": "Abisode XXIV",
         "description": "Das Wars, Das Kollegium Schreckt Zurück",
         "votes": null
 	  },
 	  {
-        "key": 30,
+        "key": 29,
         "title": "Hakuna Matabi",
         "description": "Ohne Sorgen, die Könige von Morgen",
         "votes": null
 	  },
 	  {
-        "key": 31,
+        "key": 30,
         "title": "Abinal",
         "description": "Scheiße war das eng",
         "votes": null
 	  },
 	  {
-        "key": 32,
+        "key": 31,
         "title": "Highschool Musabical / Highschool Musicabil",
         "description": "We're breaking free",
         "votes": null
 	  },
 	  {
-        "key": 33,
+        "key": 32,
         "title": "Abikinibottom",
         "description": "Bootsfahrschule lieht nun hinter uns",
         "votes": null

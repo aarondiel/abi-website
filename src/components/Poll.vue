@@ -53,12 +53,23 @@ export default {
 	},
 	computed: {
 		top_options() {
-			if (!this.data) return null;
-			return [...this.data.options]
-				.sort((a, b) => {
+			if (!this.data)
+				return null;
+
+			let sorted = [...this.data.options].sort((a, b) => {
 					return b.votes - a.votes;
-				})
-				.slice(0, this.count);
+			});
+
+			if (this.count !== -1) {
+				if (this.count < 0)
+					sorted.slice(0, this.count + 1);
+				else
+					sorted.slice(0, this.count);
+			}
+
+			console.log(this.count, sorted);
+
+			return sorted;
 		},
 
 		selected() {
@@ -100,7 +111,7 @@ div.poll-content {
 	padding: 2em 0;
 	border-radius: 2em;
 	background-color: #2a2a2e;
-	height: 70vh;
+	height: 75vh;
 	overflow-y: scroll;
 	scrollbar-width: none;
 

@@ -22,18 +22,17 @@ export default {
   },
   data() {
     return {
-      mottos: null
+      mottos: infos.mottos
     };
   },
 	methods: {
 		getvotes() {
 			axios.get('https://schoolvote.vincentscode.de/api/vote').then((response) => {
-				this.mottos = infos.mottos;
 				this.mottos.votes = response.data.length;
 				const counts = Object.fromEntries(
 					[...response.data.reduce((map, key) => map.set(key, (map.get(key) || 0) + 1), new Map())]
 				);
-				for (var i = this.mottos.options.length - 1; i >= 0; i--) {
+				for (let i = this.mottos.options.length - 1; i >= 0; i--) {
 					this.mottos.options[i].votes = counts[this.mottos.options[i].key] ? counts[this.mottos.options[i].key] : 0;
 				}
 			});
@@ -79,7 +78,7 @@ html {
 div.app-wrapper {
 	display: grid;
 	margin: 5% 5% 0 5%;
-	grid-template-columns: minmax(50em, 100em);
+	grid-template-columns: minmax(50em, 70em);
 	justify-items: center;
 	justify-content: center;
 }
