@@ -69,9 +69,8 @@ export default {
 <style lang="scss">
 .parallax-wrapper {
 	position: relative;
-	clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-	height: 70vh;
-	min-height: 100vh;
+	/*clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);*/
+	height: 100vh;
 	scroll-behavior: smooth;
 	overflow: hidden;
 	z-index: -1;
