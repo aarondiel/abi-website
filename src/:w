@@ -1,0 +1,35 @@
+<template>
+	<div style="z-index: 10; background-color: #ff00ff; height: 400px;">
+		testtesttesttest
+	</div>
+	<div style="position: relative;">
+		<Parallax :fixed=true>
+			<img class="banner" src="./assets/mojave-day.jpg">
+		</Parallax>
+	</div>
+	<div style="background-color: #ff00ff; height: 400px;">
+		testtesttesttest
+	</div>
+</template>
+
+<script>
+import Parallax from './components/Parallax.vue'
+
+export default {
+  name: 'App',
+  components: {
+    Parallax
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
