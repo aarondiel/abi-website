@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
+const config = require('../config');
 
 mongoose.set('runValidators', true);
 
 exports.connect = () => {
 	return new Promise((resolve, reject) => {
-		mongoose.connect('mongodb://localhost/abi-votes', { useNewUrlParser: true, useUnifiedTopology: true });
+		mongoose.connect(
+			`${config.mongodb.url}:${config.mongodb.port}/abi`,
+			{ useNewUrlParser: true, useUnifiedTopology: true }
+		);
 
 		const connection = mongoose.connection;
 

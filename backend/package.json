@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "app.js",
 	"scripts": {
-		"dev": "nodemon app.js"
+		"dev": "nodemon app.js",
+		"test": "node test-client.js"
 	},
 	"author": "aarondiel",
 	"license": "ISC",
@@ -12,9 +13,10 @@
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
-		"mongoose": "^5.11.18"
+		"mongoose": "^5.11.15"
 	},
 	"devDependencies": {
+		"node-fetch": "^2.6.1",
 		"nodemon": "^2.0.7"
 	}
 }
