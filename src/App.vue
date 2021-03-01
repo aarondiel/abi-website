@@ -2,6 +2,11 @@
 	<Parallax class='banner'>
 		<img src='./assets/banner.jpg'>
 	</Parallax>
+	<h1>abi 2022</h1>
+	<Parallax class='banner'>
+		<img src='./assets/vote-banner.jpg'>
+	</Parallax>
+	<h1>Mottos</h1>
 </template>
 
 <script>
@@ -68,12 +73,34 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
+	color: #ffffff;
 }
 
 .banner {
-	clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+	clip-path: polygon(0 0, 100% 0%, 100% 75%, 0 100%);
 	filter: drop-shadow(0 2.5px 10px $shadow);
 	height: 70vh;
+
+	&:not(:first-of-type) {
+		z-index: -5;
+		transform: translateY(-25%);
+		clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 75%);
+	}
+
+	+ h1 {
+		position: absolute;
+
+		&:first-of-type {
+			font-size: 10rem;
+			left: 50%;
+			transform: translate(-60%, -50vh);
+		}
+
+		&:not(:first-of-type) {
+			font-size: 8rem;
+			right: 25%;
+			transform: translate(50%, -65vh);
+		}
+	}
 }
 </style>
