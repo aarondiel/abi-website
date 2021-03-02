@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const sloganVoteSchema = new mongoose.Schema({
+const gbrVoteSchema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
@@ -18,4 +18,4 @@ const sloganVoteSchema = new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('slogan-votes', sloganVoteSchema);
+module.exports = mongoose.model('gbr-votes', gbrVoteSchema);

@@ -1,14 +1,30 @@
 <template>
 	<nav>
-		<router-link to="/abi/gbr">Gbr Vertrag</router-link>
-		<router-link to="/">Mottos</router-link>
+		<router-link to="/gbr">Gbr Vertrag</router-link>
+		<router-link to="/">abi 2022</router-link>
+		<p ref="currentRoute"></p>
 	</nav>
 	<router-view/>
+	<button @click="currentRoute">current route</button>
 </template>
 
 <script>
 export default {
-	name: 'App'
+	name: 'App',
+	watch: {
+		$route(to) {
+			let name = '';
+			switch(to.fullPath) {
+				case '/':
+					name = ''
+					break
+				case '/gbr':
+					name = 'gbr vertrag'
+					break
+			}
+			this.$refs.currentRoute.innerText = name;
+		}
+	},
 }
 </script>
 

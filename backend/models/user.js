@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
 	code: {
 		type: String,
 		required: true
+	},
+
+	gbr: {
+		type: Boolean,
+		required: true
 	}
 });
 

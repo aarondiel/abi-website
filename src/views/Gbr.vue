@@ -1,6 +1,6 @@
 <template>
   <div class="gbr">
-		<button @click= sh>
+		<h1>GbR Vertrag</h1>
   </div>
 </template>
 

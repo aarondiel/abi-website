@@ -7,9 +7,9 @@ const routes = [
     component: () => import('@/views/Home.vue')
   },
   {
-    path: '/abi/gbr',
+    path: '/gbr',
     name: 'gbr-vote',
-    component: () => import('@/views/abi/Gbr.vue')
+    component: () => import('@/views/Gbr.vue')
   }
 ];
 
