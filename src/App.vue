@@ -1,11 +1,10 @@
 <template>
 	<nav>
-		<router-link to="/gbr">Gbr Vertrag</router-link>
 		<router-link to="/">abi 2022</router-link>
 		<p ref="currentRoute"></p>
+		<img src="./assets/menu.svg" alt="menu button"/>
 	</nav>
 	<router-view/>
-	<button @click="currentRoute">current route</button>
 </template>
 
 <script>
@@ -19,7 +18,7 @@ export default {
 					name = ''
 					break
 				case '/gbr':
-					name = 'gbr vertrag'
+					name = 'GbR Vertrag'
 					break
 			}
 			this.$refs.currentRoute.innerText = name;
@@ -29,33 +28,57 @@ export default {
 </script>
 
 <style lang="scss">
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+$text: 'Roboto Mono', monospace;
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+$heading: 'Oswald', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
+$cursive: 'Amatic SC', cursive;
+
+$primary: #1E1532;
+$secondary: #675C80;
+$grey: red;
+
+body {
+	margin: 0;
+}
+
 #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
+	font-family: $text;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
 	color: #2c3e50;
 }
 
 nav {
 	width: 100%;
+	height: 50px;
+	background-color: $primary;
 	display: flex;
-	justify-content: center;
-	justify-items: center;
+	justify-content: space-between;
+	align-items: center;
+	color: #ffffff;
+	font-size: 1.25rem;
+	box-shadow: 0 2px 8px #000000;
+
+	> * {
+		margin: 0 1rem;
+	}
 
 	a {
-		padding: 0 2rem;
-		font-weight: bold;
-		font-size: 2rem;
-		color: #2c3e50;
+		/*abi 2022*/
+		color: #ffffff;
+		text-decoration: none;
+		text-shadow: 0 2px 2px #000000;
 
 		&:hover {
-			color: grey;
+			color: $secondary;
 		}
+	}
 
-		&.router-link-exact-active {
-			color: #42b983;
-		}
+	img {
+		height: 25px;
 	}
 }
 </style>

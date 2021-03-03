@@ -1,13 +1,19 @@
 <template>
-  <div class="gbr">
-		<h1>GbR Vertrag</h1>
-  </div>
+	<div class="gbr">
+		<FileMenu fileType="pdf"/>
+	</div>
 </template>
 
 <script>
+import FileMenu from '../components/FileMenu.vue'
+
 export default {
-  name: 'Gbr',
-	setup() {
+	name: 'Gbr',
+	components: {
+		FileMenu
 	}
 }
 </script>
+
+<style lang="scss" scoped>
+</style>
