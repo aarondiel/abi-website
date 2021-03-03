@@ -38,7 +38,6 @@ export default {
 	display: flex;
 	align-items: center;
 	height: 40px;
-	margin: 1rem;
 	background-color: colors.$grey;
 	border-radius: 5px;
 	box-shadow: 0 2px 2px #000000;
