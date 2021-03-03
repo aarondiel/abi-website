@@ -1,7 +1,10 @@
 <template>
-	<span class='filePath'>
+	<div class='fileMenu'>
 		<img :src='filePath' alt='file image'/>
-	</span>
+		<span>
+			<slot/>
+		</span>
+	</div>
 </template>
 
 <script>
@@ -10,7 +13,8 @@ import { ref } from 'vue';
 export default {
 	name: 'FileMenu',
 	props: {
-		fileType: String
+		fileType: String,
+		text: String
 	},
 	setup(props) {
 		let filePath = ref('');
@@ -28,8 +32,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.filePath {
+@use '../scss/colors';
+
+.fileMenu {
+	display: flex;
+	align-items: center;
+	height: 40px;
 	margin: 1rem;
-	background-color: $grey;
+	background-color: colors.$grey;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px #000000;
+
+	img {
+		margin: 0 0.5rem;
+		height: 75%;
+	}
 }
 </style>

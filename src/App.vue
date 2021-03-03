@@ -28,24 +28,15 @@ export default {
 </script>
 
 <style lang="scss">
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
-$text: 'Roboto Mono', monospace;
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
-$heading: 'Oswald', sans-serif;
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap');
-$cursive: 'Amatic SC', cursive;
-
-$primary: #1E1532;
-$secondary: #675C80;
-$grey: red;
+@use './scss/colors';
+@use './scss/fonts';
 
 body {
 	margin: 0;
 }
 
 #app {
-	font-family: $text;
+	font-family: fonts.$text;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
@@ -54,7 +45,7 @@ body {
 nav {
 	width: 100%;
 	height: 50px;
-	background-color: $primary;
+	background-color: colors.$primary;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -73,7 +64,7 @@ nav {
 		text-shadow: 0 2px 2px #000000;
 
 		&:hover {
-			color: $secondary;
+			color: colors.$secondary;
 		}
 	}
 

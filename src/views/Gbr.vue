@@ -1,6 +1,8 @@
 <template>
 	<div class="gbr">
-		<FileMenu fileType="pdf"/>
+		<FileMenu fileType="pdf" text>
+			der vertrag
+		</FileMenu>
 	</div>
 </template>
 
