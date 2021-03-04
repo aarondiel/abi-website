@@ -6,6 +6,9 @@
 	</nav>
 	<article>
 		<router-view/>
+		<footer>
+			<p>a website designed and written by aaron diel</p>
+		</footer>
 	</article>
 </template>
 
@@ -34,9 +37,13 @@ export default {
 @use './scss/fonts';
 @use './scss/breakpoints';
 
+html {
+	height: 100%;
+}
+
 body {
 	margin: 0;
-	height: 100vh;
+	height: 100%;
 }
 
 #app {
@@ -49,11 +56,17 @@ body {
 
 article {
 	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
 	box-shadow: 2px 2px 4px #000000;
 	max-width: breakpoints.$tablet;
 	height: calc(100% - 50px);
-	justify-content: center;
 	margin: 0 auto;
+
+	footer {
+		margin: 0 1rem;
+		font-size: 0.75rem;
+	}
 }
 
 nav {

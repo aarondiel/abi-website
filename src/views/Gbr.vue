@@ -22,8 +22,8 @@
 		</form>
 
 		<form>
-			<input id='abi-prank-checkbox' type='checkbox' name='test'/>
-			<label for='abi-prank-checkbox'>Beteiligung an der Organisation</label>
+			<input id='abi-organisation-checkbox' type='checkbox' name='test'/>
+			<label for='abi-organisation-checkbox'>Beteiligung an der Organisation</label>
 		</form>
 
 		<h3>Verbot an der Beteiligung von:</h3>
@@ -66,17 +66,63 @@
 				</form>
 			</li>
 		</ul>
+
+		<section>
+			<h2>Abstimmen:</h2>
+			<form class='wrap'>
+				<label for='code-input'>Zugangscode:</label>
+				<input id='code-input' type='text' :value='id'/>
+			</form>
+			<button @click='submitVote'>Abstimmen!</button>
+		</section>
 	</div>
 </template>
 
 <script>
-import FileMenu from '../components/FileMenu.vue'
+import FileMenu from '../components/FileMenu.vue';
+import { ref } from 'vue';
 
 export default {
 	name: 'Gbr',
 	components: {
 		FileMenu
-	}
+	},
+	setup() {
+		// get the id parameter from the url
+		const uri = window.location.search.substring(1); 
+		const params = new URLSearchParams(uri);
+		const id = ref(params.get("id"));
+
+		return {
+			id
+		}
+	},
+	methods: {
+		submitVote() {
+			const exclusion = {
+				'prom': document.getElementById('abi-prom-checkbox').checked,
+				'aftershow': document.getElementById('aftershow-checkbox').checked,
+				'prank': document.getElementById('abi-prank-checkbox').checked
+			}
+
+			const fees = {
+				'hoodies': document.getElementById('extra-hoodies').value,
+				'tickets': document.getElementById('extra-tickets').value
+			}
+
+			const body = {
+				'hoodiesName': document.getElementById('hoodies-checkbox').checked,
+				'paperName': document.getElementById('paper-checkbox').checked,
+				'votings': document.getElementById('votings-checkbox').checked,
+				'organisation': document.getElementById('abi-organisation-checkbox').checked,
+				'code': document.getElementById('code-input').value,
+				exclusion,
+				fees,
+			}
+
+			console.log(body);
+		}
+	},
 }
 </script>
 
@@ -85,10 +131,12 @@ export default {
 @use '../scss/colors';
 
 .gbr {
-	margin: 1rem 1rem 0 1rem;
+	width: 100%;
+	margin-top: 1rem;
 
 	h2 {
-		margin: 0.25rem 0 0 0;
+		margin-top: 1rem;
+		margin-bottom: 0;
 		font-family: fonts.$cursive;
 		font-size: 2rem;
 		color: colors.$primary;
@@ -121,6 +169,24 @@ export default {
 	input[type='text'] {
 		width: 100%;
 		margin-bottom: 0.5rem;
+	}
+
+	section {
+		box-sizing: border-box;
+		width: 100%;
+		color: #ffffff;
+		background-color: colors.$primary;
+		padding: 1rem;
+
+		h2 {
+			color: #ffffff;
+			margin: 0;
+		}
+	}
+
+	> *:not(section) {
+		margin-left: 1rem;
+		margin-right: 1rem
 	}
 }
 </style>
