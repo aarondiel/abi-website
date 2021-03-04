@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 
 router.get('/', ({ res }) => {
-	res.send('<p>abi website frontend</p>');
 });
 
 module.exports = router;

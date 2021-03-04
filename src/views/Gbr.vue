@@ -89,7 +89,7 @@ export default {
 	},
 	setup() {
 		// get the id parameter from the url
-		const uri = window.location.search.substring(1); 
+		const uri = window.location.search.substring(1);
 		const params = new URLSearchParams(uri);
 		const id = ref(params.get("id"));
 
@@ -100,27 +100,38 @@ export default {
 	methods: {
 		submitVote() {
 			const exclusion = {
-				'prom': document.getElementById('abi-prom-checkbox').checked,
-				'aftershow': document.getElementById('aftershow-checkbox').checked,
-				'prank': document.getElementById('abi-prank-checkbox').checked
+				prom: document.getElementById('abi-prom-checkbox').checked,
+				aftershow: document.getElementById('aftershow-checkbox').checked,
+				prank: document.getElementById('abi-prank-checkbox').checked
 			}
 
 			const fees = {
-				'hoodies': document.getElementById('extra-hoodies').value,
-				'tickets': document.getElementById('extra-tickets').value
+				hoodies: document.getElementById('extra-hoodies').value,
+				tickets: document.getElementById('extra-tickets').value
 			}
 
-			const body = {
-				'hoodiesName': document.getElementById('hoodies-checkbox').checked,
-				'paperName': document.getElementById('paper-checkbox').checked,
-				'votings': document.getElementById('votings-checkbox').checked,
-				'organisation': document.getElementById('abi-organisation-checkbox').checked,
-				'code': document.getElementById('code-input').value,
+			const data = {
+				hoodiesName: document.getElementById('hoodies-checkbox').checked,
+				paperName: document.getElementById('paper-checkbox').checked,
+				votings: document.getElementById('votings-checkbox').checked,
+				organisation: document.getElementById('abi-organisation-checkbox').checked,
+				code: document.getElementById('code-input').value,
 				exclusion,
 				fees,
 			}
 
-			console.log(body);
+			fetch('http://localhost:8080/api/abi/gbr/', {
+				method: 'POST',
+				mode: 'cors',
+				cache: 'no-cache',
+				credentials: 'omit',
+				headers: { 'Content-Type': 'application/json' },
+				redirect: 'follow',
+				referrerPolicy: 'no-referrer',
+				body: JSON.stringify(data)
+			}).then(response => {
+				console.log(response);
+			});
 		}
 	},
 }
