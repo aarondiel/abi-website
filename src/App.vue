@@ -4,7 +4,9 @@
 		<p ref="currentRoute"></p>
 		<img src="./assets/menu.svg" alt="menu button"/>
 	</nav>
-	<router-view/>
+	<article>
+		<router-view/>
+	</article>
 </template>
 
 <script>
@@ -30,9 +32,11 @@ export default {
 <style lang="scss">
 @use './scss/colors';
 @use './scss/fonts';
+@use './scss/breakpoints';
 
 body {
 	margin: 0;
+	height: 100vh;
 }
 
 #app {
@@ -40,6 +44,16 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
+	height: 100%;
+}
+
+article {
+	display: flex;
+	box-shadow: 2px 2px 4px #000000;
+	max-width: breakpoints.$tablet;
+	height: calc(100% - 50px);
+	justify-content: center;
+	margin: 0 auto;
 }
 
 nav {
@@ -62,7 +76,6 @@ nav {
 		color: #ffffff;
 		text-decoration: none;
 		text-shadow: 0 2px 2px #000000;
-
 		&:hover {
 			color: colors.$secondary;
 		}
