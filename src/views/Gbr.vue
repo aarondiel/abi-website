@@ -110,17 +110,16 @@ export default {
 				tickets: document.getElementById('extra-tickets').value
 			}
 
-			const data = {
+			const submission = {
 				hoodiesName: document.getElementById('hoodies-checkbox').checked,
 				paperName: document.getElementById('paper-checkbox').checked,
 				votings: document.getElementById('votings-checkbox').checked,
 				organisation: document.getElementById('abi-organisation-checkbox').checked,
-				code: document.getElementById('code-input').value,
 				exclusion,
 				fees,
 			}
 
-			fetch('http://localhost:8080/api/abi/gbr/', {
+			fetch('http://localhost:8080/abi/api/gbr/', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
@@ -128,7 +127,10 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify(data)
+				body: JSON.stringify({
+					code: document.getElementById('code-input').value,
+					submission
+				})
 			}).then(response => {
 				console.log(response);
 			});

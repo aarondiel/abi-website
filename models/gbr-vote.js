@@ -28,15 +28,15 @@ const feesSchema = new mongoose.Schema({
 				return Math.round(v / 10) * 10
 			}
 
-			const re = /\^d{1,3}(?=%)$/;
-
-			let num = re.match(v);
+			// find a 1 to 3 digit number followed by a %
+			let num = v.match(/\d{1,3}(?=%)/);
 			if (num === null)
 				return null;
 
 			// will round the number to a multiple of tens insted of ones
 			// i.e. 69 -> 70, 42 -> 40, 127 -> 130
-			num = Math.round(num[0] / 10) * 10;
+			num = parseInt(num[0]);
+			num = Math.round(num / 10) * 10;
 			return num
 		},
 		required: [true, 'fee for hoodies is invalid']
@@ -51,15 +51,14 @@ const feesSchema = new mongoose.Schema({
 				return Math.round(v / 10) * 10
 			}
 
-			const re = /\^d{1,3}(?=%)$/;
-
-			let num = re.match(v);
+			let num = v.match(/\d{1,3}(?=%)/);
 			if (num === null)
-				return -1;
+				return null;
 
 			// will round the number to a multiple of tens insted of ones
 			// i.e. 69 -> 70, 42 -> 40, 127 -> 130
-			num = Math.round(num[0] / 10) * 10;
+			num = parseInt(num[0]);
+			num = Math.round(num / 10) * 10;
 			return num
 		},
 		required: [true, 'fee for hoodies is invalid']
@@ -87,50 +86,21 @@ const submissionSchema = new mongoose.Schema({
 		required: true
 	},
 
-	exclustion: {
-		type: exclustionSchema,
-		required: true
-	},
+	exclustion: exclustionSchema,
 
-	fees: {
-		type: feesSchema,
-		required: true
-	},
+	fees: feesSchema
 })
 
 const gbrVoteSchema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
-		get: v => {
-			users.findById(v)
-			return v
-		},
-		set: v => {
-			// test if v is a valid objectid
-			const re = /^[0-9a-fA-F]{24}$/;
-			if (re.test(v))
-				return v;
-
-			// assume that v is a validator code
-			users.findOne({ code: v }).then(user => {
-				if (!data)
-					return null;
-
-				return user.id;
-			})
-		},
 		required: true
 	},
 
 	submission: {
 		type: submissionSchema,
 		required: true
-	},
-
-	lastChanged: {
-		type: Date,
-		required: false
 	}
 });
 
