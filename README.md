@@ -1,24 +1,42 @@
 # abi-website
 
-## Project setup
+## project setup
+### 1. first install all necessary packages using
 ```
 npm install
 ```
+### 2. create a config.json file for configurating the project
+it should have the following structure:
+```
+{
+	"port": 1234,
+	"mongodb": {
+		"url": "mongodb://127.0.0.1",
+		"port": "1234"
+	}
+}
+```
+### 3. build the static frontend
+```
+npm run build
+```
+### 4. run the server
+```
+npm run production
+```
 
-### Compiles and hot-reloads for development
+## for development
+### hot-reloading the frontend
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### hot-reloading the backend
 ```
-npm run build
+npm run dev
 ```
 
-### Lints and fixes files
+### linting
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
