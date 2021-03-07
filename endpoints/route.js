@@ -6,9 +6,9 @@ const history = require('connect-history-api-fallback')
 
 const distPath = path.join(process.cwd(), 'dist')
 
+router.use('/api', api);
+
 router.use('/', history())
 router.use('/', express.static(distPath))
-
-router.use('/api', api);
 
 module.exports = router;

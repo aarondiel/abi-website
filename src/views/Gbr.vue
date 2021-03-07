@@ -18,7 +18,7 @@
 
 		<form>
 			<input id='votings-checkbox' type='checkbox' name='test'/>
-			<label for='votings-checkbox'>Auschluß von allen folgenden Abstimmungen</label>
+			<label for='votings-checkbox'>Auschluss von allen folgenden Abstimmungen</label>
 		</form>
 
 		<form>
