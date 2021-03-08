@@ -25,6 +25,18 @@ npm run build
 npm run production
 ```
 
+## systemd service
+to run the server as a systemd service,
+copy the abi-website.service file into ~/.config/systemd/user/
+
+change the WorkingDirectory according to the installtion directory
+of the repository
+
+you can run the service with
+```
+systemctl --user start abi-website.service
+```
+
 ## for development
 ### hot-reloading the frontend
 ```
