@@ -37,13 +37,8 @@ export default {
 @use './scss/fonts';
 @use './scss/breakpoints';
 
-html {
-	height: 100%;
-}
-
 body {
 	margin: 0;
-	height: 100%;
 }
 
 #app {
@@ -51,7 +46,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
-	height: 100%;
+	min-height: 100vh;
 }
 
 article {
@@ -60,7 +55,7 @@ article {
 	justify-content: flex-start;
 	box-shadow: 2px 2px 4px #000000;
 	max-width: breakpoints.$tablet;
-	height: calc(100% - 50px);
+	min-height: calc(100vh - 50px);
 	margin: 0 auto;
 
 	footer {
