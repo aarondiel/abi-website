@@ -3,7 +3,7 @@ Description=abi website
 After=network.target syslog.target mongodb.service nginx.service
 
 [Service]
-Restart=always
+Restart=on-failure
 WorkingDirectory=/home/aaron/abi-website/
 ExecStart=/usr/bin/npm run production
 

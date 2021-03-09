@@ -37,6 +37,16 @@ you can run the service with
 systemctl --user start abi-website.service
 ```
 
+to enable on startup
+```
+systemctl --user enable abi-website.service
+```
+
+and to look at the output of the service
+```
+journalctl --user -f -u abi-website.service
+```
+
 ## for development
 ### hot-reloading the frontend
 ```
