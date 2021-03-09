@@ -74,6 +74,7 @@
 				<input id='code-input' type='text' :value='id'/>
 			</form>
 			<button @click='submitVote'>Abstimmen!</button>
+			<span id='vote-response'></span>
 		</section>
 	</div>
 </template>
@@ -98,17 +99,17 @@ export default {
 		}
 	},
 	methods: {
-		submitVote() {
+		async submitVote() {
 			const exclusion = {
 				prom: document.getElementById('abi-prom-checkbox').checked,
 				aftershow: document.getElementById('aftershow-checkbox').checked,
 				prank: document.getElementById('abi-prank-checkbox').checked
-			}
+			};
 
 			const fees = {
 				hoodies: document.getElementById('extra-hoodies').value,
 				tickets: document.getElementById('extra-tickets').value
-			}
+			};
 
 			const submission = {
 				hoodiesName: document.getElementById('hoodies-checkbox').checked,
@@ -117,9 +118,12 @@ export default {
 				organisation: document.getElementById('abi-organisation-checkbox').checked,
 				exclusion,
 				fees,
-			}
+			};
 
-			fetch('http://localhost:8080/abi/api/gbr/', {
+			const code = document.getElementById('code-input').value;
+
+			// const response = await fetch('http://aarondiel.com:8080/abi/api/gbr', {
+			const response = await fetch('http://localhost:8080/abi/api/gbr', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
@@ -127,13 +131,19 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({
-					code: document.getElementById('code-input').value,
-					submission
-				})
-			}).then(response => {
-				console.log(response);
-			});
+				body: JSON.stringify({ code, submission })
+			})
+
+			const message = await response.json();
+			const voteResponse = document.getElementById('vote-response');
+
+			if (response.ok) {
+				voteResponse.className = 'ok';
+				voteResponse.innerText = 'successfully voted';
+			} else {
+				voteResponse.className = 'failed';
+				voteResponse.innerText = message.error;
+			}
 		}
 	},
 }
@@ -194,6 +204,18 @@ export default {
 		h2 {
 			color: #ffffff;
 			margin: 0;
+		}
+
+		#vote-response {
+			margin-left: 1rem;
+
+			&.failed {
+				color: colors.$red;
+			}
+
+			&.ok {
+				color: colors.$green;
+			}
 		}
 	}
 

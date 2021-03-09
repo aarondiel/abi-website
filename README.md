@@ -47,6 +47,12 @@ and to look at the output of the service
 journalctl --user -f -u abi-website.service
 ```
 
+note that in order for the process to keep running even if the user logs out
+you neet to run
+```
+sudo loginctl enable-linger
+```
+
 ## for development
 ### hot-reloading the frontend
 ```

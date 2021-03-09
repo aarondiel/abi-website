@@ -7,29 +7,31 @@ router.get('/', (res) => {
 	res.send('votes for gbr');
 })
 
-router.post('/', (req, res) => {
-	users.findOne({ code: req.body.code }).then(user => {
-		if (!user)
-			return res.status(400).json({
-				message: 'code does not exist'
-			});
+router.post('/', async (req, res) => {
+	const user = await users.findOne({ code: req.body.code });
 
-		let data = { ...req.body }
-		delete data['code']
+	if (!user)
+		return res.status(400).json({
+			message: 'code does not exist'
+		});
 
-		gbrVote.updateOne(
-			{ user: user.id },
-			{ $set: data },
-			{ upsert: true }
-		).then(response => {
-			res.status(200).json({
-				message: response
-			});
-		}).catch(err => {
-			res.status(400).json({
-				message: err
-			});
+	let data = { ...req.body }
+	delete data['code']
+
+	gbrVote.updateOne(
+		{ user: user.id },
+		{ $set: data },
+		{ upsert: true }
+	).then(response => {
+		res.status(200).json(response);
+	}).catch(err => {
+		// collect every validation error
+		let message = Object.values(err.errors);
+		message = message.map(v => {
+			return v.message
 		})
+
+		res.status(400).json({ error: message[0] });
 	})
 });
 

@@ -61,7 +61,7 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'fee for hoodies is invalid']
+		required: [true, 'fee for tickets is invalid']
 	}
 })
 
