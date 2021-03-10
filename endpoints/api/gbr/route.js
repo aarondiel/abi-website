@@ -3,17 +3,18 @@ const router = express.Router();
 const gbrVote = require.main.require('./models/gbr-vote');
 const users = require.main.require('./models/user');
 
-router.get('/', (res) => {
-	res.send('votes for gbr');
-})
-
 router.post('/', async (req, res) => {
 	const user = await users.findOne({ code: req.body.code });
 
 	if (!user)
 		return res.status(400).json({
-			message: 'code does not exist'
+			message: 'code existiert nicht'
 		});
+
+	if (!user.gbr)
+		return res.status(400).json({
+			error: 'du hast den gbr vertrag nicht unterschrieben'
+		})
 
 	let data = { ...req.body }
 	delete data['code']

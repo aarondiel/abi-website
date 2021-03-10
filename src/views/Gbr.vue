@@ -1,6 +1,6 @@
 <template>
-	<div class="gbr">
-		<FileMenu fileType="pdf" text>
+	<div class='gbr'>
+		<FileMenu fileType='pdf' text>
 			der vertrag
 		</FileMenu>
 
@@ -160,7 +160,7 @@ export default {
 		margin-top: 1rem;
 		margin-bottom: 0;
 		font-family: fonts.$cursive;
-		font-size: 2rem;
+		font-size: 2.25rem;
 		color: colors.$primary;
 	}
 

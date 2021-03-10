@@ -21,8 +21,8 @@ const exclustionSchema = new mongoose.Schema({
 const feesSchema = new mongoose.Schema({
 	hoodies: {
 		type: Number,
-		min: [0, 'fee for hoodies is to low'],
-		max: [100, 'fee for hoodies is to high'],
+		min: [0, 'aufschlag für hoodies zu niedrig'],
+		max: [100, 'aufschlag für hoodies zu hoch'],
 		set: v => {
 			if (typeof v === Number) {
 				return Math.round(v / 10) * 10
@@ -39,13 +39,13 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'fee for hoodies is invalid']
+		required: [true, 'aufschlag für hoodies ist ungültig']
 	},
 
 	tickets: {
 		type: Number,
-		min: [0, 'fee for tickets is too low'],
-		max: [100, 'fee for tickets is too high'],
+		min: [0, 'aufschlag für tickets zu niedrig'],
+		max: [100, 'aufschlag für tickets zu hoch'],
 		set: v => {
 			if (typeof v === Number) {
 				return Math.round(v / 10) * 10
@@ -61,7 +61,7 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'fee for tickets is invalid']
+		required: [true, 'aufschlag für tickets ist ungültig']
 	}
 })
 
