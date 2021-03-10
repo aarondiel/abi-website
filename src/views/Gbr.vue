@@ -18,12 +18,12 @@
 
 		<form>
 			<input id='votings-checkbox' type='checkbox' name='test'/>
-			<label for='votings-checkbox'>Auschluss von allen folgenden Abstimmungen</label>
+			<label for='votings-checkbox'>Ausschluss von allen folgenden Abstimmungen</label>
 		</form>
 
 		<form>
 			<input id='abi-organisation-checkbox' type='checkbox' name='test'/>
-			<label for='abi-organisation-checkbox'>Beteiligung an der Organisation</label>
+			<label for='abi-organisation-checkbox'>Ausschluss vom organisieren</label>
 		</form>
 
 		<h3>Verbot an der Beteiligung von:</h3>
