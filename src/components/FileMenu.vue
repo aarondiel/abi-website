@@ -38,7 +38,7 @@ export default {
 	display: flex;
 	align-items: center;
 	height: 40px;
-	background-color: colors.$grey;
+	background-color: colors.$light-grey;
 	border-radius: 5px;
 	box-shadow: 0 2px 2px #000000;
 

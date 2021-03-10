@@ -53,26 +53,19 @@
 		<h3>Aufpreis für:</h3>
 		<ul>
 			<li>
-				<form class='wrap'>
-					<label for='extra-hoodies'>Hoodies</label>
-					<input id='extra-hoodies' type='text'/>
-				</form>
+				<h4>Hoodies</h4>
+				<TextInput unit='%' ref='hoodiesInput'/>
 			</li>
 
 			<li>
-				<form class='wrap'>
-					<label for='extra-tickets'>Tickets für Abiball etc.</label>
-					<input id='extra-tickets' type='text'/>
-				</form>
+				<h4>Tickets für Abiball etc.</h4>
+				<TextInput unit='%' ref='ticketsInput'/>
 			</li>
 		</ul>
 
 		<section>
 			<h2>Abstimmen:</h2>
-			<form class='wrap'>
-				<label for='code-input'>Zugangscode:</label>
-				<input id='code-input' type='text' :value='id'/>
-			</form>
+			<TextInput ref='codeInput'>Zugangscode</TextInput>
 			<button @click='submitVote'>Abstimmen!</button>
 			<span id='vote-response'></span>
 		</section>
@@ -81,12 +74,14 @@
 
 <script>
 import FileMenu from '../components/FileMenu.vue';
+import TextInput from '../components/TextInput.vue';
 import { ref } from 'vue';
 
 export default {
 	name: 'Gbr',
 	components: {
-		FileMenu
+		FileMenu,
+		TextInput
 	},
 	setup() {
 		// get the id parameter from the url
@@ -94,8 +89,13 @@ export default {
 		const params = new URLSearchParams(uri);
 		const id = ref(params.get("id"));
 
+		const hoodieFee = ref('');
+		const ticketsFee = ref('');
+
 		return {
-			id
+			id,
+			hoodieFee,
+			ticketsFee
 		}
 	},
 	methods: {
@@ -107,8 +107,8 @@ export default {
 			};
 
 			const fees = {
-				hoodies: document.getElementById('extra-hoodies').value,
-				tickets: document.getElementById('extra-tickets').value
+				hoodies: this.$refs.hoodiesInput.text + '%',
+				tickets: this.$refs.ticketsInput.text + '%'
 			};
 
 			const submission = {
@@ -117,13 +117,12 @@ export default {
 				votings: document.getElementById('votings-checkbox').checked,
 				organisation: document.getElementById('abi-organisation-checkbox').checked,
 				exclusion,
-				fees,
+				fees
 			};
 
-			const code = document.getElementById('code-input').value;
+			const code = this.$refs.codeInput.text;
 
-			// const response = await fetch('http://aarondiel.com:8080/abi/api/gbr', {
-			const response = await fetch('http://localhost:8080/abi/api/gbr', {
+			const response = await fetch('http://aarondiel.com:8080/abi/api/gbr', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
@@ -169,6 +168,10 @@ export default {
 		margin: 1rem 0 0 0;
 	}
 
+	h4 {
+		margin: 0;
+	}
+
 	form {
 		display: flex;
 		align-items: center;
@@ -195,6 +198,7 @@ export default {
 	}
 
 	section {
+		margin-top: 1rem;
 		box-sizing: border-box;
 		width: 100%;
 		color: #ffffff;
