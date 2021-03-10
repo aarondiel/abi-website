@@ -58,8 +58,13 @@
 			</li>
 
 			<li>
-				<h4>Tickets für Abiball etc.</h4>
+				<h4>Tickets für Abiball</h4>
 				<TextInput unit='%' ref='ticketsInput'/>
+			</li>
+
+			<li>
+				<h4>Abizeitung</h4>
+				<TextInput unit='%' ref='paperInput'/>
 			</li>
 		</ul>
 
@@ -108,7 +113,8 @@ export default {
 
 			const fees = {
 				hoodies: this.$refs.hoodiesInput.text + '%',
-				tickets: this.$refs.ticketsInput.text + '%'
+				tickets: this.$refs.ticketsInput.text + '%',
+				paper: this.$refs.paperInput.text + '%'
 			};
 
 			const submission = {

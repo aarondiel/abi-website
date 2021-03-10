@@ -62,6 +62,28 @@ const feesSchema = new mongoose.Schema({
 			return num
 		},
 		required: [true, 'aufschlag für tickets ist ungültig']
+	},
+
+	paper: {
+		type: Number,
+		min: [0, 'aufschlag für zeitung zu niedrig'],
+		max: [100, 'aufschlag für zeitung zu hoch'],
+		set: v => {
+			if (typeof v === Number) {
+				return Math.round(v / 10) * 10
+			}
+
+			let num = v.match(/\d{1,3}(?=%)/);
+			if (num === null)
+				return null;
+
+			// will round the number to a multiple of tens insted of ones
+			// i.e. 69 -> 70, 42 -> 40, 127 -> 130
+			num = parseInt(num[0]);
+			num = Math.round(num / 10) * 10;
+			return num
+		},
+		required: [true, 'aufschlag für zeitung ist ungültig']
 	}
 })
 
