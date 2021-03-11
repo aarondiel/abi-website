@@ -23,7 +23,7 @@
 
 		<form>
 			<input id='abi-organisation-checkbox' type='checkbox' name='test'/>
-			<label for='abi-organisation-checkbox'>Ausschluss vom organisieren</label>
+			<label for='abi-organisation-checkbox'>Ausschluss vom Organisieren</label>
 		</form>
 
 		<h3>Verbot an der Beteiligung von:</h3>
