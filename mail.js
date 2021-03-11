@@ -11,40 +11,45 @@ const transport = nodemailer.createTransport({
 	}
 });
 
-const message = {
-	from: config.mail.username,
-	to: 'aaron.diel@t-online.de',
-	subject: 'abitur 2022 organisation',
-	html: '<h1>test</h1>'
-};
-
-const props = {
-	title: 'fuck you'
-};
-
-function parseHtml() {
-	let template = fs.readFileSync('./mail.html', 'utf-8');
-	
+function parseHtml(template, props) {
 	// find and replace all literals ${ text } with props[text]
 	template = template.replace(
 		/\$\{\s*([^\{\}\s]+)\s*\}/g,
 		(match, capture) => props[capture]
 	);
 
+	// remove all tabbing at the beginning of each line
+	template = template.replace(/^\s+/gm, '');
+
+	// remove all newlines
+	template = template.replace(/\n/g, '');
+
 	return template;
 }
 
 async function main() {
+	const template = fs.readFileSync('./mail.html', 'utf-8');
+
+	const props = {
+		title: 'fuck you',
+		code: 'testcode'
+	};
+
+	const message = {
+		from: `abi organisations bot <${config.mail.username}>`,
+		to: 'aaron.diel@t-online.de',
+		subject: 'abitur 2022 organisation',
+		html: parseHtml(template, props)
+	};
+
 	const info = await transport.sendMail(message);
 
 	console.log(info);
 }
 
-parseHtml();
-
-//main().then(() => {
-	//process.exit(0);
-//}).catch(err => {
-	//console.err(err);
-	//process.exit(1);
-//});
+main().then(() => {
+	process.exit(0);
+}).catch(err => {
+	console.err(err);
+	process.exit(1);
+});

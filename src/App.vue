@@ -56,7 +56,7 @@ article {
 	box-shadow: 2px 2px 4px #000000;
 	max-width: breakpoints.$tablet;
 	min-height: calc(100vh - 50px);
-	margin: 0 auto;
+	margin: 0;
 
 	footer {
 		margin: 0 1rem;
