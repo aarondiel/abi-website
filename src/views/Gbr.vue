@@ -6,69 +6,86 @@
 
 		<h2>Bestrafungen/Konsequenzen für alle, die den GbR-Vertrag nicht unterschrieben haben:</h2>
 
-		<form>
-			<input id='hoodies-checkbox' type='checkbox' name='test'/>
-			<label for='hoodies-checkbox'>Der Name wird nicht auf die Abi-Hoodies gedruckt</label>
-		</form>
+		<section class='form'>
+			<legend>
+				<p>Kreuze alle Bestrafungen an die du für gerecht hälst.</p>
+				<p>Du kannst auch keine der Optionen ankreuzen, falls du denkst, dass diese nicht notwendig sind</p>
+				<p>Wenn über 50% für einen der Nachteile gestimmt haben, wird dieser in Kraft treten.</p>
+				<p>Neben diesen ankreuzbaren Nachteilen, gibt es auch noch die Aufpreise.</p>
+				<p>Hier gib bitte jeweils eine Zahl von 0 bist 100 ein (es wird auf zehnerstellen gerundet).</p>
+				<p>Diese Zahl ist die pozentuale Preiserhöhung für das jeweilige Produkt.</p>
+				<p>Der Preis für die Nicht-GbR-Mitglieder ist dann der Noramlpreis + der gewählte Aufpreis.</p>
+				<p>0% entspräche somit dem Originalpreis und 100% dem doppelten Preis.</p>
+				<p>Falls mindestens 50% aller stimmen keinen Aufpreis angeben, wird dieser auch nicht eingeführt, sonst wird der Durchschnitt aller Angaben gebildet.</p>
+				<p>Zum Abstimmen dann einfach den Zugangscode, den du per E-Mail zugesendet bekommen hast, eintippen und auf "Abstimmen!" klicken</p>
+			</legend>
 
-		<form>
-			<input id='paper-checkbox' type='checkbox' name='test'/>
-			<label for='paper-checkbox'>Die Person wird nicht in der Abi-Zeitung vermerkt</label>
-		</form>
-
-		<form>
-			<input id='votings-checkbox' type='checkbox' name='test'/>
-			<label for='votings-checkbox'>Ausschluss von allen folgenden Abstimmungen</label>
-		</form>
-
-		<form>
-			<input id='abi-organisation-checkbox' type='checkbox' name='test'/>
-			<label for='abi-organisation-checkbox'>Ausschluss vom Organisieren</label>
-		</form>
-
-		<h3>Verbot an der Beteiligung von:</h3>
-		<ul class='subpoints'>
-			<li>
+			<div>
 				<form>
-					<input id='abi-prom-checkbox' type='checkbox'/>
-					<label for='abi-prom-checkbox'>Abi-Ball</label>
+					<input id='hoodies-checkbox' type='checkbox' name='test'/>
+					<label for='hoodies-checkbox'>Der Name wird nicht auf die Abi-Hoodies gedruckt</label>
 				</form>
-			</li>
 
-			<li>
 				<form>
-					<input id='aftershow-checkbox' type='checkbox'/>
-					<label for='aftershow-checkbox'>Aftershow partys</label>
+					<input id='paper-checkbox' type='checkbox' name='test'/>
+					<label for='paper-checkbox'>Die Person wird nicht in der Abi-Zeitung vermerkt</label>
 				</form>
-			</li>
 
-			<li>
 				<form>
-					<input id='abi-prank-checkbox' type='checkbox'/>
-					<label for='abi-prank-checkbox'>Abistreich</label>
+					<input id='votings-checkbox' type='checkbox' name='test'/>
+					<label for='votings-checkbox'>Ausschluss von allen folgenden Abstimmungen</label>
 				</form>
-			</li>
-		</ul>
 
-		<h3>Aufpreis für:</h3>
-		<ul>
-			<li>
-				<h4>Hoodies</h4>
-				<TextInput unit='%' ref='hoodiesInput'/>
-			</li>
+				<form>
+					<input id='abi-organisation-checkbox' type='checkbox' name='test'/>
+					<label for='abi-organisation-checkbox'>Ausschluss vom Organisieren</label>
+				</form>
 
-			<li>
-				<h4>Tickets für Abiball</h4>
-				<TextInput unit='%' ref='ticketsInput'/>
-			</li>
+				<h3>Verbot an der Beteiligung von:</h3>
+				<ul class='subpoints'>
+					<li>
+						<form>
+							<input id='abi-prom-checkbox' type='checkbox'/>
+							<label for='abi-prom-checkbox'>Abi-Ball</label>
+						</form>
+					</li>
 
-			<li>
-				<h4>Abizeitung</h4>
-				<TextInput unit='%' ref='paperInput'/>
-			</li>
-		</ul>
+					<li>
+						<form>
+							<input id='aftershow-checkbox' type='checkbox'/>
+							<label for='aftershow-checkbox'>Aftershow partys</label>
+						</form>
+					</li>
 
-		<section>
+					<li>
+						<form>
+							<input id='abi-prank-checkbox' type='checkbox'/>
+							<label for='abi-prank-checkbox'>Abistreich</label>
+						</form>
+					</li>
+				</ul>
+
+				<h3>Aufpreis für:</h3>
+				<ul>
+					<li>
+						<h4>Hoodies</h4>
+						<TextInput unit='%' ref='hoodiesInput'/>
+					</li>
+
+					<li>
+						<h4>Tickets für Abiball</h4>
+						<TextInput unit='%' ref='ticketsInput'/>
+					</li>
+
+					<li>
+						<h4>Abizeitung</h4>
+						<TextInput unit='%' ref='paperInput'/>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section class='submit'>
 			<h2>Abstimmen:</h2>
 			<TextInput ref='codeInput' :defaultText='id'>Zugangscode</TextInput>
 			<button @click='submitVote'>Abstimmen!</button>
@@ -151,6 +168,7 @@ export default {
 <style lang="scss" scoped>
 @use '../scss/fonts';
 @use '../scss/colors';
+@use '../scss/breakpoints';
 
 .gbr {
 	width: 100%;
@@ -197,7 +215,7 @@ export default {
 		margin-bottom: 0.5rem;
 	}
 
-	section {
+	section.submit {
 		margin-top: 1rem;
 		box-sizing: border-box;
 		width: 100%;
@@ -223,9 +241,34 @@ export default {
 		}
 	}
 
-	> *:not(section) {
+	> *:not(section.submit) {
 		margin-left: 1rem;
 		margin-right: 1rem
+	}
+}
+
+section.form {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+
+	@media (min-width: breakpoints.$tablet) {
+		flex-direction: row-reverse;
+	}
+
+	/*explanation text*/
+	> legend {
+		padding: 0;
+		min-width: 20rem;
+
+		p {
+			margin: 0;
+			font-size: 0.8rem;
+		}
+
+		p + p {
+			margin-top: 1rem;
+		}
 	}
 }
 </style>
