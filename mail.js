@@ -34,28 +34,42 @@ async function main() {
 
 	await mongodb.connect();
 
-	const students = await users.find({ gbr: true });
+	const students = await users.find({
+		gbr: true,
+		name: {
+			$in: [
+				///till/i,
+				///klehr/i,
+				///baas/i,
+				///zobe/i,
+				///mirj/i,
+				///kobe/i,
+				///nabe/i,
+				///schn/i,
+				///berg/i,
+				/diel/i,
+				///hedr/i,
+				///stra/i,
+				///luck/i
+			]
+		}
+	});
 
 	for (student of students) {
-		console.log(student.name);
+		const props = {
+			code: student.code
+		};
+
+		const message = {
+			from: `abi organisations bot <${config.mail.username}>`,
+			to: student.email,
+			subject: 'abitur 2022 organisation',
+			html: parseHtml(template, props)
+		};
+
+		const info = await transport.sendMail(message);
+		console.log(info);
 	}
-	return;
-
-	const props = {
-		title: 'fuck you',
-		code: 'testcode'
-	};
-
-	const message = {
-		from: `abi organisations bot <${config.mail.username}>`,
-		to: 'pixelcat444@gmail.com',
-		subject: 'abitur 2022 organisation',
-		html: parseHtml(template, props)
-	};
-
-	const info = await transport.sendMail(message);
-
-	console.log(info);
 }
 
 main().then(() => {
