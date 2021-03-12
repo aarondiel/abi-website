@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
 const config = require('./config');
 const fs = require('fs');
+const mongodb = require('./models/mongodb');
+const users = require('./models/user')
 
 const transport = nodemailer.createTransport({
 	host: config.mail.host,
@@ -30,6 +32,15 @@ function parseHtml(template, props) {
 async function main() {
 	const template = fs.readFileSync('./mail.html', 'utf-8');
 
+	await mongodb.connect();
+
+	const students = await users.find({ gbr: true });
+
+	for (student of students) {
+		console.log(student.name);
+	}
+	return;
+
 	const props = {
 		title: 'fuck you',
 		code: 'testcode'
@@ -37,7 +48,7 @@ async function main() {
 
 	const message = {
 		from: `abi organisations bot <${config.mail.username}>`,
-		to: 'aaron.diel@t-online.de',
+		to: 'pixelcat444@gmail.com',
 		subject: 'abitur 2022 organisation',
 		html: parseHtml(template, props)
 	};
@@ -50,6 +61,6 @@ async function main() {
 main().then(() => {
 	process.exit(0);
 }).catch(err => {
-	console.err(err);
+	console.error(err);
 	process.exit(1);
 });

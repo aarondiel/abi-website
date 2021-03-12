@@ -70,7 +70,7 @@
 
 		<section>
 			<h2>Abstimmen:</h2>
-			<TextInput ref='codeInput'>Zugangscode</TextInput>
+			<TextInput ref='codeInput' :defaultText='id'>Zugangscode</TextInput>
 			<button @click='submitVote'>Abstimmen!</button>
 			<span id='vote-response'></span>
 		</section>
@@ -80,7 +80,6 @@
 <script>
 import FileMenu from '../components/FileMenu.vue';
 import TextInput from '../components/TextInput.vue';
-import { ref } from 'vue';
 
 export default {
 	name: 'Gbr',
@@ -92,15 +91,10 @@ export default {
 		// get the id parameter from the url
 		const uri = window.location.search.substring(1);
 		const params = new URLSearchParams(uri);
-		const id = ref(params.get("id"));
-
-		const hoodieFee = ref('');
-		const ticketsFee = ref('');
+		const id = params.get("id");
 
 		return {
-			id,
-			hoodieFee,
-			ticketsFee
+			id
 		}
 	},
 	methods: {
