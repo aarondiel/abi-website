@@ -141,7 +141,7 @@ export default {
 				voteResponse.innerText = 'successfully voted';
 			} else {
 				voteResponse.className = 'failed';
-				voteResponse.innerText = message.error;
+				voteResponse.innerText = message.message;
 			}
 		}
 	},

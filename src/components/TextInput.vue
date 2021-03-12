@@ -23,10 +23,10 @@ export default {
 		unit: String
 	},
 	emits: [ 'update:modelValue' ],
-	setup() {
+	setup(props) {
 		// the text property is there if you don't want to use
 		// v-bind to get the text of the input
-		let text = ''
+		let text = props.defaultText ?? '';
 
 		return {
 			text
