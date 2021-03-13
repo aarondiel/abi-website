@@ -84,8 +84,9 @@ nav {
 		color: #ffffff;
 		text-decoration: none;
 		text-shadow: 0 2px 2px #000000;
+
 		&:hover {
-			color: colors.$secondary;
+			color: colors.$grey;
 		}
 	}
 
