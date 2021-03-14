@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
 	if (!user.gbr)
 		return res.status(400).json({
-			error: 'du hast den gbr vertrag nicht unterschrieben'
+			message: 'du hast den gbr vertrag nicht unterschrieben'
 		})
 
 	let data = { ...req.body }
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 			return v.message
 		})
 
-		res.status(400).json({ error: message[0] });
+		res.status(400).json({ message: message[0] });
 	})
 });
 

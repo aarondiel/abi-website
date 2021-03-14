@@ -141,7 +141,7 @@ export default {
 
 			const code = this.$refs.codeInput.text;
 
-			const response = await fetch('http://aarondiel.com:8080/abi/api/gbr', {
+			const response = await fetch('http://aarondiel.com/abi/api/gbr', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
