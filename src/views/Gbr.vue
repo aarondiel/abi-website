@@ -7,18 +7,18 @@
 		<h2>Bestrafungen/Konsequenzen für alle, die den GbR-Vertrag nicht unterschrieben haben:</h2>
 
 		<section class='form'>
-			<legend>
-				<p>Kreuze alle Bestrafungen an die du für gerecht hälst.</p>
-				<p>Du kannst auch keine der Optionen ankreuzen, falls du denkst, dass diese nicht notwendig sind</p>
+			<Collapsible :toggled='true'>
+				<p>Kreuze alle Bestrafungen an, die du für gerecht hälst.</p>
+				<p>Du kannst auch keine der Optionen ankreuzen, falls du denkst, dass diese nicht notwendig sind.</p>
 				<p>Wenn über 50% für einen der Nachteile gestimmt haben, wird dieser in Kraft treten.</p>
-				<p>Neben diesen ankreuzbaren Nachteilen, gibt es auch noch die Aufpreise.</p>
-				<p>Hier gib bitte jeweils eine Zahl von 0 bist 100 ein (es wird auf zehnerstellen gerundet).</p>
-				<p>Diese Zahl ist die pozentuale Preiserhöhung für das jeweilige Produkt.</p>
-				<p>Der Preis für die Nicht-GbR-Mitglieder ist dann der Noramlpreis + der gewählte Aufpreis.</p>
+				<p>Neben diesen ankreuzbaren Nachteilen gibt es auch noch die Aufpreise.</p>
+				<p>Bitte gib hier jeweils eine Zahl von 0 bis 100 ein (es wird auf Zehnerstellen gerundet).</p>
+				<p>Diese Zahl ist die prozentuale Preiserhöhung für das jeweilige Produkt.</p>
+				<p>Der Preis für die Nicht-GbR-Mitglieder ist dann der Normalpreis + der gewählte Aufpreis.</p>
 				<p>0% entspräche somit dem Originalpreis und 100% dem doppelten Preis.</p>
-				<p>Falls mindestens 50% aller stimmen keinen Aufpreis angeben, wird dieser auch nicht eingeführt, sonst wird der Durchschnitt aller Angaben gebildet.</p>
-				<p>Zum Abstimmen dann einfach den Zugangscode, den du per E-Mail zugesendet bekommen hast, eintippen und auf "Abstimmen!" klicken</p>
-			</legend>
+				<p>Falls mindestens 50% aller Stimmen keinen Aufpreis angeben, wird dieser auch nicht eingeführt, sonst wird der Durchschnitt aller Angaben gebildet.</p>
+				<p>Zum Abstimmen dann einfach den Zugangscode, den du per E-Mail zugesendet bekommen hast, eintippen und auf "Abstimmen!" klicken.</p>
+			</Collapsible>
 
 			<div>
 				<form>
@@ -97,12 +97,14 @@
 <script>
 import FileMenu from '../components/FileMenu.vue';
 import TextInput from '../components/TextInput.vue';
+import Collapsible from '../components/Collapsible.vue';
 
 export default {
 	name: 'Gbr',
 	components: {
 		FileMenu,
-		TextInput
+		TextInput,
+		Collapsible
 	},
 	setup() {
 		// get the id parameter from the url
@@ -257,9 +259,8 @@ section.form {
 	}
 
 	/*explanation text*/
-	> legend {
-		padding: 0;
-		min-width: 20rem;
+	> .collapsible {
+		width: 100%;
 
 		p {
 			margin: 0;
@@ -268,6 +269,11 @@ section.form {
 
 		p + p {
 			margin-top: 1rem;
+		}
+
+		@media (min-width: breakpoints.$tablet) {
+			margin-left: 1rem;
+			width: 50%;
 		}
 	}
 }

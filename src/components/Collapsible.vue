@@ -3,59 +3,65 @@
 		<button
 			@click='collapse'
 			ref='button'
-		>{{ title }}</button>
-		<transition>
-			<legend
-				ref='content'
-			>
+		>
+			{{ title }}
+		</button>
+
+		<Expandible>
+			<legend v-if='active'>
 				<slot/>
 			</legend>
-		</transition>
+		</Expandible>
 	</div>
 </template>
 
 <script>
 import { onMounted, ref } from 'vue';
+import Expandible from './Expandible.vue';
 
 export default {
 	name: 'Collapsible',
+	components: {
+		Expandible
+	},
 	props: {
 		title: {
 			type: String,
 			default: 'info'
 		},
-		toggled: Boolean
+		toggled: {
+			type: Boolean,
+			default: false
+		}
 	},
 	setup(props) {
-		console.log(props)
-		let active = props.toggled ?? false;
+		const active = ref(props.toggled);
 
 		const button = ref(NaN);
-		const content = ref(NaN);
+
+		const updateDom = () => {
+			if (active.value)
+				button.value.classList.add('active');
+			else
+				button.value.classList.remove('active');
+		}
 
 		const collapse = () => {
-			active = !active;
-
-			if (active) {
-				button.value.classList.add('active');
-				content.value.classList.add('active');
-			} else {
-				button.value.classList.remove('active');
-				content.value.classList.remove('active');
-			}
+			active.value = !active.value;
+			updateDom();
 		}
 
 		onMounted(() => {
-			collapse();
+			updateDom();
 		})
 
 		return {
 			active,
 			collapse,
-			content,
+			updateDom,
 			button
 		};
-	},
+	}
 };
 </script>
 
@@ -64,6 +70,8 @@ export default {
 @use '../scss/fonts';
 
 .collapsible {
+	width: 100%;
+
 	> button {
 		width: 100%;
 		border: 0;
@@ -82,13 +90,9 @@ export default {
 
 	> legend {
 		background-color: colors.$light-grey;
-		transition: max-height 0.5s ease-in-out;
-		overflow: hidden;
-		max-height: 0;
-
-		&.active {
-			max-height: 100px;
-		}
+		width: 100%;
+		padding: 1rem;
+		box-sizing: border-box;
 	}
 }
-</style>>
+</style>
