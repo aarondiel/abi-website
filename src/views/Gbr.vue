@@ -1,13 +1,15 @@
 <template>
 	<div class='gbr'>
-		<FileMenu fileType='pdf' text>
-			der vertrag
-		</FileMenu>
+		<a href='files/gbr vertrag.pdf' download>
+			<FileMenu fileType='pdf'>
+				der vertrag
+			</FileMenu>
+		</a>
 
 		<h2>Bestrafungen/Konsequenzen für alle, die den GbR-Vertrag nicht unterschrieben haben:</h2>
 
 		<section class='form'>
-			<Collapsible :toggled='true'>
+			<Collapsible :toggled='isBig'>
 				<p>Kreuze alle Bestrafungen an, die du für gerecht hälst.</p>
 				<p>Du kannst auch keine der Optionen ankreuzen, falls du denkst, dass diese nicht notwendig sind.</p>
 				<p>Wenn über 50% für einen der Nachteile gestimmt haben, wird dieser in Kraft treten.</p>
@@ -112,8 +114,12 @@ export default {
 		const params = new URLSearchParams(uri);
 		const id = params.get("id");
 
+		const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+		const isBig = document.body.clientWidth > 62 * rem;
+
 		return {
-			id
+			id,
+			isBig
 		}
 	},
 	methods: {
@@ -175,6 +181,12 @@ export default {
 .gbr {
 	width: 100%;
 	margin-top: 1rem;
+
+	> a {
+		display: block;
+		text-decoration: none;
+		color: #000000;
+	}
 
 	h2 {
 		margin-top: 1rem;
@@ -260,7 +272,8 @@ section.form {
 
 	/*explanation text*/
 	> .collapsible {
-		width: 100%;
+		width: 75%;
+		margin: 1rem auto;
 
 		p {
 			margin: 0;
@@ -272,7 +285,7 @@ section.form {
 		}
 
 		@media (min-width: breakpoints.$tablet) {
-			margin-left: 1rem;
+			margin: 0 0 0 1rem;
 			width: 50%;
 		}
 	}
