@@ -1,6 +1,7 @@
 const mongodb = require('./models/mongodb');
 const users = require('./models/user');
 const gbrVote = require('./models/gbr-vote')
+const util = require('util');
 
 async function getGbrVotes() {
 	await mongodb.connect();
@@ -24,7 +25,7 @@ async function getGbrVotes() {
 		}
 	]);
 
-	console.log(JSON.stringify(query, null, 2));
+	console.log(util.inspect(query, false, null, true));
 }
 
 getGbrVotes().then(() => {
