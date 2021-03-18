@@ -108,7 +108,7 @@ const submissionSchema = new mongoose.Schema({
 		required: true
 	},
 
-	exclustion: exclustionSchema,
+	exclusion: exclustionSchema,
 
 	fees: feesSchema
 })
