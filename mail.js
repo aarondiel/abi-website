@@ -35,27 +35,13 @@ async function main() {
 	await mongodb.connect();
 
 	const students = await users.find({
-		gbr: true,
-		name: {
-			$in: [
-				///till/i,
-				///klehr/i,
-				///baas/i,
-				///zobe/i,
-				///mirj/i,
-				///kobe/i,
-				///nabe/i,
-				///schn/i,
-				///berg/i,
-				/diel/i,
-				///hedr/i,
-				///stra/i,
-				///luck/i
-			]
-		}
+		gbr: true
 	});
 
 	for (student of students) {
+		if (!student?.email)
+			continue;
+
 		const props = {
 			code: student.code
 		};
@@ -68,7 +54,11 @@ async function main() {
 		};
 
 		const info = await transport.sendMail(message);
-		console.log(info);
+
+		if (info.accepted)
+			console.log(`successfully sent mail to ${student.name}`);
+		else
+			console.log(`failed to send mail to ${student.name}`);
 	}
 }
 
