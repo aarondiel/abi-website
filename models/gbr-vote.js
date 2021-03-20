@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const users = require('./user')
 
-const exclustionSchema = new mongoose.Schema({
+const exclusionsSchema = new mongoose.Schema({
+	_id: false,
+
 	prom: {
 		type: Boolean,
 		required: true
@@ -19,6 +21,8 @@ const exclustionSchema = new mongoose.Schema({
 })
 
 const feesSchema = new mongoose.Schema({
+	_id: false,
+
 	hoodies: {
 		type: Number,
 		min: [0, 'aufschlag für hoodies zu niedrig'],
@@ -108,7 +112,7 @@ const submissionSchema = new mongoose.Schema({
 		required: true
 	},
 
-	exclusion: exclustionSchema,
+	exclusions: exclusionsSchema,
 
 	fees: feesSchema
 })

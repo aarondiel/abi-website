@@ -124,7 +124,7 @@ export default {
 	},
 	methods: {
 		async submitVote() {
-			const exclusion = {
+			const exclusions = {
 				prom: document.getElementById('abi-prom-checkbox').checked,
 				aftershow: document.getElementById('aftershow-checkbox').checked,
 				prank: document.getElementById('abi-prank-checkbox').checked
@@ -141,7 +141,7 @@ export default {
 				paperName: document.getElementById('paper-checkbox').checked,
 				votings: document.getElementById('votings-checkbox').checked,
 				organisation: document.getElementById('abi-organisation-checkbox').checked,
-				exclusion,
+				exclusions,
 				fees
 			};
 
