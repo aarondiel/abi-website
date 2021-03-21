@@ -1,0 +1,29 @@
+$breakpoints: (
+	phone: 43rem,
+	tablet: 62rem,
+	pc: 82rem
+);
+
+@mixin phone() {
+	$breakpoint: map-get($breakpoints, phone);
+
+	@media (min-width: $breakpoint) {
+		@content;
+	}
+}
+
+@mixin tablet() {
+	$breakpoint: map-get($breakpoints, tablet);
+
+	@media (min-width: $breakpoint) {
+		@content;
+	}
+}
+
+@mixin pc() {
+	$breakpoint: map-get($breakpoints, pc);
+
+	@media (min-width: $breakpoint) {
+		@content;
+	}
+}

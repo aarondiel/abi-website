@@ -176,7 +176,7 @@ export default {
 <style lang="scss" scoped>
 @use '../scss/fonts';
 @use '../scss/colors';
-@use '../scss/breakpoints';
+@use '../scss/media';
 
 .gbr {
 	width: 100%;
@@ -266,7 +266,7 @@ section.form {
 	justify-content: space-between;
 	flex-direction: column;
 
-	@media (min-width: breakpoints.$tablet) {
+	@include media.tablet() {
 		flex-direction: row-reverse;
 	}
 
@@ -284,7 +284,7 @@ section.form {
 			margin-top: 1rem;
 		}
 
-		@media (min-width: breakpoints.$tablet) {
+		@include media.tablet() {
 			margin: 0 0 0 1rem;
 			width: 50%;
 		}

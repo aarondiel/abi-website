@@ -1,6 +1,7 @@
 <template>
 	<transition
 		name='expand'
+		class='optimize'
 		@enter='enter'
 		@after-enter='afterEnter'
 		@leave='leave'
@@ -64,11 +65,9 @@ export default {
 </script>
 
 <style scoped>
-* {
+.optimize {
 	will-change: height;
-	transform: translateZ(0);
 	backface-visibility: hidden;
-	perspective: 1000px;
 }
 
 .expand-enter-active, .expand-leave-active {

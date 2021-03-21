@@ -1,7 +1,7 @@
 <template>
 	<div class='collapsible'>
 		<button
-			@click='collapse'
+			@click='toggle'
 			ref='button'
 		>
 			{{ title }}
@@ -21,23 +21,26 @@ import Expandible from './Expandible.vue';
 
 export default {
 	name: 'Collapsible',
+
 	components: {
 		Expandible
 	},
+
 	props: {
 		title: {
 			type: String,
 			default: 'info'
 		},
+
 		toggled: {
 			type: Boolean,
 			default: false
 		}
 	},
+
 	setup(props) {
 		const active = ref(props.toggled);
-
-		const button = ref(NaN);
+		const button = ref(null);
 
 		const updateDom = () => {
 			if (active.value)
@@ -46,7 +49,7 @@ export default {
 				button.value.classList.remove('active');
 		}
 
-		const collapse = () => {
+		const toggle = () => {
 			active.value = !active.value;
 			updateDom();
 		}
@@ -57,7 +60,7 @@ export default {
 
 		return {
 			active,
-			collapse,
+			toggle,
 			updateDom,
 			button
 		};
