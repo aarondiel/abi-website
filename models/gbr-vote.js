@@ -25,8 +25,8 @@ const feesSchema = new mongoose.Schema({
 
 	hoodies: {
 		type: Number,
-		min: [0, 'aufschlag für hoodies zu niedrig'],
-		max: [100, 'aufschlag für hoodies zu hoch'],
+		min: [ 0, 'aufschlag für hoodies zu niedrig' ],
+		max: [ 100, 'aufschlag für hoodies zu hoch' ],
 		set: v => {
 			if (typeof v === Number) {
 				return Math.round(v / 10) * 10
@@ -43,13 +43,13 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'aufschlag für hoodies ist ungültig']
+		required: [ true, 'aufschlag für hoodies ist ungültig']
 	},
 
 	tickets: {
 		type: Number,
-		min: [0, 'aufschlag für tickets zu niedrig'],
-		max: [100, 'aufschlag für tickets zu hoch'],
+		min: [ 0, 'aufschlag für tickets zu niedrig' ],
+		max: [ 100, 'aufschlag für tickets zu hoch' ],
 		set: v => {
 			if (typeof v === Number) {
 				return Math.round(v / 10) * 10
@@ -65,13 +65,13 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'aufschlag für tickets ist ungültig']
+		required: [ true, 'aufschlag für tickets ist ungültig' ]
 	},
 
 	paper: {
 		type: Number,
-		min: [0, 'aufschlag für zeitung zu niedrig'],
-		max: [100, 'aufschlag für zeitung zu hoch'],
+		min: [ 0, 'aufschlag für zeitung zu niedrig' ],
+		max: [ 100, 'aufschlag für zeitung zu hoch' ],
 		set: v => {
 			if (typeof v === Number) {
 				return Math.round(v / 10) * 10
@@ -87,11 +87,13 @@ const feesSchema = new mongoose.Schema({
 			num = Math.round(num / 10) * 10;
 			return num
 		},
-		required: [true, 'aufschlag für zeitung ist ungültig']
+		required: [ true, 'aufschlag für zeitung ist ungültig' ]
 	}
 })
 
 const submissionSchema = new mongoose.Schema({
+	_id: false,
+
 	hoodiesName: {
 		type: Boolean,
 		required: true
@@ -118,6 +120,8 @@ const submissionSchema = new mongoose.Schema({
 })
 
 const gbrVoteSchema = new mongoose.Schema({
+	_id: false,
+
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
