@@ -89,6 +89,26 @@ async function getGbrPercent() {
 	return query;
 }
 
+async function getGbrFucked() {
+	const query = await gbrVote.aggregate([
+		{ $match: { 'submission.exclusions': { $exists: false } } },
+		{ $lookup: {
+				from: 'users',
+				localField: 'user',
+				foreignField: '_id',
+				as: 'user'
+			}
+		},
+		{ $unwind: '$user' },
+		{ $project: {
+			_id: false,
+			name: '$user.name'
+		} }
+	]);
+
+	return query;
+}
+
 async function main() {
 	await mongodb.connect();
 
@@ -101,6 +121,10 @@ async function main() {
 
 		case 'getGbrPercent':
 			query = await getGbrPercent();
+			break;
+
+		case 'getGbrFucked':
+			query = await getGbrFucked();
 			break;
 	}
 
