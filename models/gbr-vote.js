@@ -120,7 +120,7 @@ const submissionSchema = new mongoose.Schema({
 })
 
 const gbrVoteSchema = new mongoose.Schema({
-	_id: false,
+	versionKey: false,
 
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
