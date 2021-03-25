@@ -1,10 +1,9 @@
 <template>
-	<div class='textMessage' ref='textMessage'>
-		<slot/>
+	<div class='textMessage' ref='container'>
+		<p><slot/></p>
 		<svg
 			viewBox='0 0 100 100'
 			xmlns='http://www.w3.org/2000/svg'
-			ref='textHandle'
 			v-if="type === 'message'"
 		>
 			<path d='
@@ -46,29 +45,23 @@ export default {
 	},
 
 	setup(props) {
-		const result = new Object();
-		const textMessage = ref(null);
+		const container = ref(null);
 
+		let classes = new Array();
 		if (props.type === 'message') {
-			const textHandle = ref(null)
 			const side = props?.side ?? 'left';
 
-			result.textHandle = textHandle;
-
-			onMounted(() => {
-				textMessage.value.classList.add(side);
-				textHandle.value.classList.add(side);
-			})
+			classes.push(side);
 		}
 
-		if (props.type === 'info') {
-			onMounted(() => {
-				textMessage.value.classList.add('info');
-			})
-		}
+		if (props.type === 'info')
+			classes.push('info');
 
-		result.textMessage = textMessage;
-		return result;
+		onMounted(() => {
+			container.value.classList.add(classes.join(' '));
+		})
+
+		return { container }
 	}
 };
 </script>
@@ -77,30 +70,52 @@ export default {
 @use '../scss/colors';
 
 .textMessage {
-	color: #ffffff;
-	padding: 1rem;
-	border-radius: 0.75rem;
-	width: 60%;
+	max-width: 60%;
 	margin-bottom: 1rem;
-
-	&.info {
-		color: inherit;
-		background-color: colors.$light-grey;
-		width: 80%;
-		margin-left: auto;
-		margin-right: auto;
-	}
 
 	&.left {
 		transform: translateX(1rem);
-		margin-right: auto;
-		background-color: colors.$primary;
+
+		> p {
+			background-color: colors.$primary;
+		}
+
+		> svg {
+			transform: translateX(-0.75rem);
+			left: 0;
+			fill: colors.$primary;
+		}
 	}
 
 	&.right {
 		transform: translateX(-1rem);
 		margin-left: auto;
-		background-color: colors.$secondary;
+		text-align: right;
+
+		> p {
+			background-color: colors.$secondary;
+		}
+
+		> svg {
+			transform: translateX(0.75rem);
+			right: 0;
+			fill: colors.$secondary;
+		}
+	}
+
+	&.info > p {
+		color: inherit;
+		background-color: colors.$light-grey;
+		max-width: 80%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	> p {
+		display: inline-block;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		color: #ffffff;
 	}
 
 	> svg {
@@ -108,18 +123,6 @@ export default {
 		width: 1.5rem;
 		height: 1.5rem;
 		bottom: 0;
-
-		&.left {
-			transform: translateX(-0.75rem);
-			left: 0;
-			fill: colors.$primary;
-		}
-
-		&.right {
-			transform: translateX(0.75rem);
-			right: 0;
-			fill: colors.$secondary;
-		}
 	}
 }
 </style>

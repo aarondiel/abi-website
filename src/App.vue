@@ -122,10 +122,6 @@ a {
 }
 
 article {
-	display: flex;
-	box-sizing: border-box;
-	flex-direction: column;
-	align-items: flex-start;
 	box-shadow: 0 0.25rem 0.5rem #000000;
 	max-width: map-get(media.$breakpoints, tablet);
 	min-height: 100vh;
