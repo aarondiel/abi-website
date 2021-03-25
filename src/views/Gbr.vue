@@ -103,11 +103,13 @@ import Collapsible from '../components/Collapsible.vue';
 
 export default {
 	name: 'Gbr',
+
 	components: {
 		FileMenu,
 		TextInput,
 		Collapsible
 	},
+
 	setup() {
 		// get the id parameter from the url
 		const uri = window.location.search.substring(1);
@@ -122,6 +124,7 @@ export default {
 			isBig
 		}
 	},
+
 	methods: {
 		async submitVote() {
 			const exclusions = {
@@ -158,7 +161,6 @@ export default {
 				body: JSON.stringify({ code, submission })
 			})
 
-			const message = await response.json();
 			const voteResponse = document.getElementById('vote-response');
 
 			if (response.ok) {
@@ -166,6 +168,8 @@ export default {
 				voteResponse.innerText = 'successfully voted';
 			} else {
 				voteResponse.className = 'failed';
+
+				const message = await response.json();
 				voteResponse.innerText = message.message;
 			}
 		}

@@ -15,7 +15,12 @@ const routes = [
     path: '/quotes',
     name: 'quotes',
     component: () => import('@/views/Quotes.vue')
-  }
+  },
+	{
+		path: '/:path(.*)*',
+    name: 'notFound',
+    component: () => import('@/views/NotFound.vue')
+	}
 ];
 
 const router = createRouter({
