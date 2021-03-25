@@ -10,6 +10,11 @@ const routes = [
     path: '/gbr',
     name: 'gbr-vote',
     component: () => import('@/views/Gbr.vue')
+  },
+  {
+    path: '/quotes',
+    name: 'quotes',
+    component: () => import('@/views/Quotes.vue')
   }
 ];
 

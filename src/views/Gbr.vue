@@ -2,7 +2,7 @@
 	<div class='gbr'>
 		<a href='files/gbr vertrag.pdf' download>
 			<FileMenu fileType='pdf'>
-				der vertrag
+				<p>Der Vertrag</p>
 			</FileMenu>
 		</a>
 
@@ -173,7 +173,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../scss/fonts';
 @use '../scss/colors';
 @use '../scss/media';
@@ -182,26 +182,17 @@ export default {
 	width: 100%;
 	margin-top: 1rem;
 
+	> * + * {
+		margin-top: 1rem;
+	}
+
+	> *:not(section.submit) {
+		margin-left: 1rem;
+		margin-right: 1rem
+	}
+
 	> a {
 		display: block;
-		text-decoration: none;
-		color: #000000;
-	}
-
-	h2 {
-		margin-top: 1rem;
-		margin-bottom: 0;
-		font-family: fonts.$cursive;
-		font-size: 2.25rem;
-		color: colors.$primary;
-	}
-
-	h3 {
-		margin: 1rem 0 0 0;
-	}
-
-	h4 {
-		margin: 0;
 	}
 
 	form {
@@ -224,13 +215,37 @@ export default {
 		margin-right: 0.5rem;
 	}
 
-	input[type='text'] {
-		width: 100%;
-		margin-bottom: 0.5rem;
-	}
+	section.form {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
 
+		@include media.tablet() {
+			flex-direction: row-reverse;
+		}
+
+		/*explanation text*/
+		> .collapsible {
+			width: 75%;
+			margin: 1rem auto;
+
+			p {
+				margin: 0;
+				font-size: 0.8rem;
+			}
+
+			p + p {
+				margin-top: 1rem;
+			}
+
+			@include media.tablet() {
+				margin: 0 0 0 1rem;
+				width: 50%;
+			}
+		}
+	}
+	
 	section.submit {
-		margin-top: 1rem;
 		box-sizing: border-box;
 		width: 100%;
 		color: #ffffff;
@@ -239,7 +254,6 @@ export default {
 
 		h2 {
 			color: #ffffff;
-			margin: 0;
 		}
 
 		#vote-response {
@@ -252,41 +266,6 @@ export default {
 			&.ok {
 				color: colors.$green;
 			}
-		}
-	}
-
-	> *:not(section.submit) {
-		margin-left: 1rem;
-		margin-right: 1rem
-	}
-}
-
-section.form {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: column;
-
-	@include media.tablet() {
-		flex-direction: row-reverse;
-	}
-
-	/*explanation text*/
-	> .collapsible {
-		width: 75%;
-		margin: 1rem auto;
-
-		p {
-			margin: 0;
-			font-size: 0.8rem;
-		}
-
-		p + p {
-			margin-top: 1rem;
-		}
-
-		@include media.tablet() {
-			margin: 0 0 0 1rem;
-			width: 50%;
 		}
 	}
 }

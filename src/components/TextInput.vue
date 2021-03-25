@@ -42,7 +42,7 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 @use '../scss/colors';
 @use '../scss/fonts';
 
@@ -68,7 +68,7 @@ export default {
 		text-shadow: 0 1px 1px colors.$dark-grey;
 	}
 
-	input {
+	> input {
 		background: transparent;
 		width: 100%;
 		height: 100%;
@@ -83,14 +83,14 @@ export default {
 		}
 
 		&:is(:focus, :valid) ~ p {
-			left: 8px;
+			left: 0.5rem;
 			top: 0;
-			color: colors.$primary;
+			color: colors.$secondary;
 			font-size: 1rem;
 		}
 	}
 
-	span {
+	> span {
 		position: absolute;
 		right: 0;
 		height: 50px;
@@ -99,37 +99,28 @@ export default {
 		p {
 			font-size: 2rem;
 			font-weight: bold;
-			color: #000000;
+			color: colors.$dark-grey;
 			margin: 0;
 			height: 100%;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-		}
-
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background-color: colors.$grey;
-			opacity: 0.5;
+			background-color: rgba(colors.$grey, 0.5);
 			border-top-right-radius: 5px;
 			border-bottom-right-radius: 5px;
 		}
 	}
+
+	> hr {
+		position: absolute;
+		width: 90%;
+		left: 50%;
+		margin: 0;
+		transform: translateX(-50%);
+		border: none;
+		border-top: 3px dashed colors.$grey;
+		bottom: 7px;
+	}
 }
 
-hr {
-	position: absolute;
-	width: 90%;
-	left: 50%;
-	margin: 0;
-	transform: translateX(-50%);
-	border: none;
-	border-top: 3px dashed colors.$grey;
-	bottom: 7px;
-}
 </style>

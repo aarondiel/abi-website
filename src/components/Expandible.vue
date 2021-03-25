@@ -29,15 +29,12 @@ export default {
 			el.style.visibility = null;
 			el.style.height = 0;
 
-			// Force repaint to make sure the
-			// animation is triggered correctly.
+			// force repaint to make sure the animation is triggered correctly
 			getComputedStyle(el).height;
 
-			// Trigger the animation.
-			// We use `requestAnimationFrame` because we need
-			// to make sure the browser has finished
-			// painting after setting the `height`
-			// to `0` in the line above.
+			// trigger the animation using 'requestAnimationFrame'
+			// this is done to make sure that the browser has finished painting
+			// after setting the 'height' to '0' in the line above
 			requestAnimationFrame(() => {
 				el.style.height = height;
 			});
@@ -52,8 +49,7 @@ export default {
 			
 			el.style.height = height;
 
-			// Force repaint to make sure the
-			// animation is triggered correctly.
+			// force repaint to make sure the animation is triggered correctly
 			getComputedStyle(el).height;
 
 			requestAnimationFrame(() => {

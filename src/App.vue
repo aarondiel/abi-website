@@ -12,6 +12,7 @@
 	<nav class='menu hidden' ref='menu'>
 		<img src='./assets/cross.svg' alt='close' @click='toggleMenu'/>
 		<router-link to='/gbr'>GbR Vertrag</router-link>
+		<router-link to='/quotes'>Zitate</router-link>
 	</nav>
 
 	<article>
@@ -32,10 +33,28 @@ export default {
 	setup() {
 		const nav = ref(null);
 		const menu = ref(null);
+		let menuActive = false;
+
+		const outOfMenuClick = ev => {
+			// check if the user clicked on the left side of the screen
+			if (ev.pageX < (document.body.clientWidth / 2))
+				toggleMenu();
+		}
 
 		const toggleMenu = () => {
-			nav.value.classList.toggle('hidden');
-			menu.value.classList.toggle('hidden');
+			menuActive = !menuActive;
+
+			if (menuActive) {
+				nav.value.classList.add('hidden');
+				menu.value.classList.remove('hidden');
+
+				document.addEventListener('click', outOfMenuClick);
+			} else {
+				nav.value.classList.remove('hidden');
+				menu.value.classList.add('hidden');
+
+				document.removeEventListener('click', outOfMenuClick);
+			}
 		}
 
 		return {
@@ -56,6 +75,10 @@ export default {
 
 				case '/gbr':
 					name = 'GbR Vertrag'
+					break
+
+				case '/quotes':
+					name = 'Zitate'
 					break
 			}
 
@@ -83,6 +106,21 @@ body {
 	min-height: 100vh;
 }
 
+h2 {
+	font-family: fonts.$cursive;
+	color: colors.$primary;
+	font-size: 2.25rem;
+}
+
+h1, h2, h3, h4, h5, h6, p { 
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
 article {
 	display: flex;
 	box-sizing: border-box;
@@ -95,7 +133,7 @@ article {
 	margin: 0 auto;
 
 	footer {
-		margin: 0 1rem;
+		margin: 1rem;
 		font-size: 0.75rem;
 	}
 }
@@ -112,8 +150,6 @@ nav {
 	}
 
 	> a {
-		color: #ffffff;
-		text-decoration: none;
 		text-shadow: 0 2px 2px #000000;
 
 		&:hover {
@@ -154,6 +190,7 @@ nav.menu {
 	right: 0;
 	transition: transform 0.5s ease-in-out;
 	padding-left: 1rem;
+	box-sizing: border-box;
 
 	@include media.tablet() {
 		width: 50vw;
