@@ -1,6 +1,6 @@
 <template>
 	<div class='textMessage' ref='textMessage'>
-		<p><slot/></p>
+		<slot/>
 		<svg
 			viewBox='0 0 100 100'
 			xmlns='http://www.w3.org/2000/svg'
@@ -107,16 +107,16 @@ export default {
 		position: absolute;
 		width: 1.5rem;
 		height: 1.5rem;
+		bottom: 0;
 
 		&.left {
-			transform: translateX(-0.75rem) translateY(-0.5rem);
+			transform: translateX(-0.75rem);
 			left: 0;
 			fill: colors.$primary;
 		}
 
 		&.right {
-			transform: translateX(0.75rem) translateY(-0.5rem);
-
+			transform: translateX(0.75rem);
 			right: 0;
 			fill: colors.$secondary;
 		}
