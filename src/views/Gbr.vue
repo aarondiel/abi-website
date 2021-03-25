@@ -226,11 +226,10 @@ export default {
 
 		/*explanation text*/
 		> .collapsible {
-			width: 75%;
-			margin: 1rem auto;
+			width: 90%;
+			margin: 0 auto 1rem auto;
 
 			p {
-				margin: 0;
 				font-size: 0.8rem;
 			}
 
