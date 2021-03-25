@@ -34,8 +34,7 @@ export default {
 				messages: [
 					{
 						_id: 1234,
-						type: 'message',
-						side: 'left',
+						type: 'info',
 						text: 'kill me please1'
 					},
 

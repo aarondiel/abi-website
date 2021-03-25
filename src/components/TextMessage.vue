@@ -103,12 +103,16 @@ export default {
 		}
 	}
 
-	&.info > p {
-		color: inherit;
-		background-color: colors.$light-grey;
-		max-width: 80%;
+	&.info {
 		margin-left: auto;
 		margin-right: auto;
+		text-align: center;
+
+		> p {
+			color: inherit;
+			background-color: colors.$light-grey;
+			max-width: 80%;
+		}
 	}
 
 	> p {
