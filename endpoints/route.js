@@ -8,7 +8,9 @@ const distPath = join(process.cwd(), 'dist')
 
 router.use('/api', api);
 
-router.use('/', history())
+router.use('/', history({
+	exclusions: [ '/api' ]
+}))
 router.use('/', express.static(distPath))
 
 export default router;
