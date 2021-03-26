@@ -1,14 +1,14 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const api = require('./api/route');
-const path = require('path');
-const history = require('connect-history-api-fallback')
+import api from './api/route.js';
+import { join } from 'path';
+import history from '../lib/html-history-fallback.js'
 
-const distPath = path.join(process.cwd(), 'dist')
+const distPath = join(process.cwd(), 'dist')
 
 router.use('/api', api);
 
 router.use('/', history())
 router.use('/', express.static(distPath))
 
-module.exports = router;
+export default router;

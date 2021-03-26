@@ -1,9 +1,9 @@
-const express = require('express')
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const config = require('./config');
-const abi = require('./endpoints/route');
-const mongodb = require('./models/mongodb');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import config from './config.js';
+import abi from './endpoints/route.js';
+import mongodb from './models/mongodb.js';
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // endpoints
 app.use('/abi', abi);
 
-mongodb.connect().then(() => {
+mongodb().then(() => {
 	app.listen(config.port, () => {
 		console.log(`listening on http://localhost:${config.port}`);
 	});

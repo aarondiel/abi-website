@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const slogan = require('./slogan/route');
-const gbr = require('./gbr/route');
+import { Router } from 'express'
+const router = Router();
+import slogan from './slogan/route.js';
+import gbr from './gbr/route.js';
 
 router.use('/slogan', slogan);
 router.use('/gbr', gbr);
 
-module.exports = router;
+export default router;

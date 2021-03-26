@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const users = require('./user')
+import mongoose from 'mongoose';
 
 const exclusionsSchema = new mongoose.Schema({
 	_id: false,
@@ -134,4 +133,4 @@ const gbrVoteSchema = new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('gbr-votes', gbrVoteSchema);
+export default mongoose.model('gbr-votes', gbrVoteSchema);

@@ -1,7 +1,7 @@
-const express = require('express')
-const router = express.Router();
-const vote = require.main.require('./models/slogan-vote');
-const users = require.main.require('./models/user');
+import { Router } from 'express';
+const router = Router()
+import vote from '../../../models/slogan-vote.js';
+import users from '../../../models/user.js';
 
 router.post('/', (req, res) => {
 	// find the user with the corresponding code
@@ -48,4 +48,4 @@ router.get('/', ({ res }) => {
 	});
 });
 
-module.exports = router;
+export default router;

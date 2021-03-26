@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const sloganVoteSchema = new mongoose.Schema({
 	user: {
@@ -18,4 +18,4 @@ const sloganVoteSchema = new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('slogan-votes', sloganVoteSchema);
+export default mongoose.model('slogan-votes', sloganVoteSchema);

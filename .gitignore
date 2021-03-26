@@ -1,7 +1,7 @@
 node_modules
 /dist
 test.js
-config.json
+config.js
 
 # local env files
 .env.local

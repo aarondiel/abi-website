@@ -20,4 +20,4 @@ const sloganSchema = new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('slogan', sloganSchema);
+export default mongoose.model('slogan', sloganSchema);

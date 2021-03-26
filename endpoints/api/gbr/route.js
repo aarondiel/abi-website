@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const gbrVote = require.main.require('./models/gbr-vote');
-const users = require.main.require('./models/user');
+import { Router } from 'express';
+const router = Router();
+import gbrVote from '../../../models/gbr-vote.js';
+import users from '../../../models/user.js';
 
 router.post('/', async (req, res) => {
 	const user = await users.findOne({ code: req.body.code });
@@ -36,4 +36,4 @@ router.post('/', async (req, res) => {
 	})
 });
 
-module.exports = router;
+export default router;

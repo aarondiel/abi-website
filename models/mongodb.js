@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const config = require('../config');
+import mongoose from 'mongoose';
+import config from '../config.js';
 
 mongoose.set('runValidators', true);
 
-exports.connect = () => {
+export default function connect() {
 	return new Promise((resolve, reject) => {
 		mongoose.connect(
 			`${config.mongodb.url}:${config.mongodb.port}/abi`,
