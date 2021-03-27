@@ -3,12 +3,17 @@
 	"version": "0.9.0",
 	"private": true,
 	"scripts": {
-    "production": "cd frontend && npm run build && cd ../backend && npm run production",
-    "dev": "cd backend && npm run dev",
-    "mail": "cd backend && npm run mail",
-    "query": "cd backend && npm run query",
+		"install": "cd frontend && npm install && cd ../backend && npm install",
+		"production": "cd frontend && npm run build && cd ../backend && npm run production",
+		"dev": "cd backend && npm run dev",
+		"mail": "cd backend && npm run mail",
+		"query": "cd backend && npm run query",
 		"serve": "cd frontend && npm run serve",
 		"build": "cd frontend && npm run build"
+	},
+	"dependencies": {
+		"backend": "file:backend",
+		"frontend": "file:frontend"
 	},
 	"repository": {
 		"type": "git",
