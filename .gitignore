@@ -1,7 +1,6 @@
-node_modules
-/dist
-test.js
-config.js
+*node_modules
+frontend/dist
+backend/config.js
 
 # local env files
 .env.local

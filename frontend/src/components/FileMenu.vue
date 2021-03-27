@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../scss/colors';
 
 .fileMenu {
@@ -42,7 +42,7 @@ export default {
 	border-radius: 5px;
 	box-shadow: 0 2px 2px #000000;
 
-	img {
+	> img {
 		margin: 0 0.5rem;
 		height: 75%;
 	}

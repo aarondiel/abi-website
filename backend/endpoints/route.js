@@ -4,7 +4,7 @@ import api from './api/route.js';
 import { join } from 'path';
 import history from '../lib/html-history-fallback.js'
 
-const distPath = join(process.cwd(), 'dist')
+const distPath = join(process.cwd(), '../frontend/dist')
 
 router.use('/api', api);
 
