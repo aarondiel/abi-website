@@ -2,7 +2,7 @@
 	<div class='quotes'>
 		<h2>quotes</h2>
 
-		<blockquote v-for='quote in getQuotes()' :key='quote._id'>
+		<blockquote v-for='quote in quotes' :key='quote._id'>
 			<TextMessage
 				v-for='message in quote.messages'
 				:key='message._id'
@@ -18,6 +18,7 @@
 
 <script>
 import TextMessage from '../components/TextMessage.vue';
+import { ref } from 'vue';
 
 export default {
 	name: 'Quotes',
@@ -27,32 +28,7 @@ export default {
 	},
 
 	setup() {
-		/*let quotes = [*/
-			/*{*/
-				/*_id: 1234,*/
-				/*messages: [*/
-					/*{*/
-						/*_id: 1234,*/
-						/*type: 'info',*/
-						/*text: 'kill me please1'*/
-					/*},*/
-
-					/*{*/
-						/*_id: 4312,*/
-						/*type: 'message',*/
-						/*side: 'right',*/
-						/*text: 'kill me please2'*/
-					/*},*/
-
-					/*{*/
-						/*_id: 2341,*/
-						/*type: 'message',*/
-						/*side: 'left',*/
-						/*text: 'kill me please3'*/
-					/*}*/
-				/*]*/
-			/*},*/
-		/*]*/
+		let quotes = ref(new Array());
 
 		const getQuotes = async () => {
 			const response = await fetch('http://aarondiel.com/abi/api/quotes', {
@@ -68,12 +44,15 @@ export default {
 
 			if (response.ok) {
 				const message = await response.json();
-				return message;
+				console.log(message)
+				quotes.value = message;
+				return;
 			}
 
-			return [ {
+			quotes.value =  [ {
 				_id: 1,
-				message: [ {
+				submittedBy: 'anonymous',
+				messages: [ {
 					_id: 1,
 					type: 'info',
 					text: "couldn't fetch quotes"
@@ -81,7 +60,9 @@ export default {
 			} ];
 		}
 
-		return { getQuotes }
+		getQuotes();
+
+		return { quotes, getQuotes }
 	}
 };
 </script>

@@ -32,7 +32,21 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
 	try {
 		const limit = req.body?.num ?? 10;
-		const query = await quotes.aggregate([ { $limit: limit } ]);
+		const query = await quotes.aggregate([
+			{ $limit: limit },
+			{ $lookup: {
+				from: 'users',
+				localField: 'submittedBy',
+				foreignField: '_id',
+				as: 'submittedBy'
+			} },
+			{ $unwind: '$submittedBy' },
+			{ $project: {
+				_id: '$_id',
+				submittedBy: '$submittedBy.name',
+				messages: '$messages'
+			}}
+		]);
 
 		res.status(200).json(query);
 	} catch (error) {

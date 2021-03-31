@@ -1,44 +1,39 @@
 import mongoose from 'mongoose';
 
-const messageSchema = new mongoose.Schema(
-	{
-		_id: false,
+const messageSchema = new mongoose.Schema({
+	type: {
+		type: String,
 
-		kind: {
-			type: String,
-
-			validate: (v) => {
-				return ['message', 'info'].indexOf(v) !== -1;
-			},
-
-			required: true
+		validate: (v) => {
+			return ['message', 'info'].indexOf(v) !== -1;
 		},
 
-		side: {
-			type: String,
+		required: true
+	},
 
-			validate: (v) => {
-				return ['left', 'right'].indexOf(v) !== -1;
-			},
+	side: {
+		type: String,
 
-			required: function () {
-				// only required if message kind is 'message'
-				return this.kind === 'message';
-			}
+		validate: (v) => {
+			return ['left', 'right'].indexOf(v) !== -1;
 		},
 
-		name: {
-			type: String,
-			required: true
-		},
-
-		message: {
-			type: String,
-			required: true
+		required: function () {
+			// only required if message kind is 'message'
+			return this.kind === 'message';
 		}
 	},
-	{ _id: false }
-);
+
+	name: {
+		type: String,
+		required: true
+	},
+
+	text: {
+		type: String,
+		required: true
+	}
+});
 
 const quoteSchema = new mongoose.Schema(
 	{
@@ -49,7 +44,10 @@ const quoteSchema = new mongoose.Schema(
 			required: true
 		},
 
-		messages: [messageSchema]
+		messages: {
+			type: [ messageSchema ],
+			required: true
+		}
 	},
 	{ versionKey: false }
 );
