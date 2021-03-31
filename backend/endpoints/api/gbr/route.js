@@ -16,8 +16,8 @@ router.post('/', async (req, res) => {
 			message: 'du hast den gbr vertrag nicht unterschrieben'
 		})
 
-	let data = { ...req.body }
-	delete data['code']
+	let data = { ...req.body };
+	delete data.code;
 
 	gbrVote.updateOne(
 		{ user: user.id },
@@ -27,10 +27,7 @@ router.post('/', async (req, res) => {
 		res.status(200).json(response);
 	}).catch(err => {
 		// collect every validation error
-		let message = Object.values(err.errors);
-		message = message.map(v => {
-			return v.message
-		})
+		const message = Object.values(err.errors).map(v => v.message);
 
 		res.status(400).json({ message: message[0] });
 	})

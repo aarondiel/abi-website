@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 
 const sloganVoteSchema = new mongoose.Schema({
+	versionKey: false,
+
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
@@ -9,7 +11,7 @@ const sloganVoteSchema = new mongoose.Schema({
 
 	choice: {
 		type: Number,
-		required: [true, "bitte wähle eine option"]
+		required: [true, 'bitte wähle eine option']
 	},
 
 	lastChanged: {
