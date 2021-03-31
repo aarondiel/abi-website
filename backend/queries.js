@@ -1,6 +1,6 @@
-const mongodb = require('./models/mongodb');
-const gbrVote = require('./models/gbr-vote')
-const util = require('util');
+import mongodb from './models/mongodb.js';
+import gbrVote from './models/gbr-vote.js';
+import util from 'util';
 
 async function getGbrVotes() {
 	const query = await gbrVote.aggregate([
@@ -110,7 +110,7 @@ async function getGbrFucked() {
 }
 
 async function main() {
-	await mongodb.connect();
+	await mongodb();
 
 	let query = new Object();
 
