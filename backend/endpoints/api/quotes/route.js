@@ -23,18 +23,20 @@ router.post('/', async (req, res) => {
 		);
 		
 		res.status(200).json({ message: 'successfully submitted quote' });
-	} catch (e) {
+	} catch (error) {
+		console.error(error);
 		res.status(500).json({ message: 'some error accured' });
-		console.error(e);
 	}
 });
 
 router.get('/', async (req, res) => {
 	try {
-		const query = await quotes.aggregate([ { $limit: req.body.num } ]);
+		const limit = req.body?.num ?? 10;
+		const query = await quotes.aggregate([ { $limit: limit } ]);
 
 		res.status(200).json(query);
-	} catch {
+	} catch (error) {
+		console.log(error)
 		res.status(500).json({ message: 'some error accured' });
 	}
 });
