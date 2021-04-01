@@ -38,7 +38,6 @@ const messageSchema = new mongoose.Schema({
 
 		required: [ function() {
 				// only required if message type is 'message'
-				console.log(this.type);
 				return this.type === 'message';
 			},
 			'name was not specified'
@@ -53,7 +52,10 @@ const messageSchema = new mongoose.Schema({
 
 const quoteSchema = new mongoose.Schema(
 	{
-		_id: mongoose.Types.ObjectId,
+		_id: {
+			type: mongoose.Types.ObjectId,
+			default: mongoose.Types.ObjectId
+		},
 
 		submittedBy: {
 			type: mongoose.Types.ObjectId,
@@ -65,7 +67,10 @@ const quoteSchema = new mongoose.Schema(
 			required: true
 		}
 	},
-	{ versionKey: false }
+	{
+		versionKey: false,
+		timestamps: true
+	}
 );
 
 export default mongoose.model('quotes', quoteSchema);
