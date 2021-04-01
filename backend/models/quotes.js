@@ -18,7 +18,7 @@ const messageSchema = new mongoose.Schema({
 			return ['left', 'right'].indexOf(v) !== -1;
 		},
 
-		required: function () {
+		required: function() {
 			// only required if message kind is 'message'
 			return this.kind === 'message';
 		}
@@ -26,7 +26,9 @@ const messageSchema = new mongoose.Schema({
 
 	name: {
 		type: String,
-		required: true
+		required: function() {
+			return this.kind === 'message';
+		}
 	},
 
 	text: {
