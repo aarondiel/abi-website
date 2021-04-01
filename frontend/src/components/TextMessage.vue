@@ -1,7 +1,7 @@
 <template>
 	<div class='textMessage' ref='container'>
-		<h5>{{ name }}</h5>
-		<p><slot/></p>
+		<h5 :contentEditable='editable' ref='contentName'>{{ name }}</h5>
+		<p :contentEditable='editable' ref='content'><slot/></p>
 		<svg
 			viewBox='0 0 100 100'
 			xmlns='http://www.w3.org/2000/svg'
@@ -42,11 +42,18 @@ export default {
 			validator: v => {
 				return [ 'left', 'right' ].indexOf(v) !== -1;
 			}
+		},
+
+		editable: {
+			type: Boolean,
+			default: false
 		}
 	},
 
 	setup(props) {
 		const container = ref(null);
+		const contentName = ref(null);
+		const content = ref(null);
 
 		let classes = new Array();
 		if (props.type === 'message') {
@@ -60,9 +67,16 @@ export default {
 
 		onMounted(() => {
 			container.value.classList.add(classes.join(' '));
-		})
+		});
 
-		return { container }
+		const getContent = () => {
+			return {
+				name: contentName.value.innerText,
+				content: content.value.innerText
+			}
+		}
+
+		return { container, getContent, contentName, content };
 	}
 };
 </script>
@@ -73,6 +87,10 @@ export default {
 .textMessage {
 	max-width: 60%;
 	margin-bottom: 1rem;
+
+	> *:focus-visible {
+		outline: none;
+	}
 
 	&.left {
 		transform: translateX(1rem);
@@ -93,6 +111,10 @@ export default {
 		margin-left: auto;
 		text-align: right;
 
+		h5 {
+			margin-left: auto;
+		}
+
 		> p {
 			background-color: colors.$secondary;
 		}
@@ -109,18 +131,29 @@ export default {
 		margin-right: auto;
 		text-align: center;
 
+		> h5 {
+			margin: 0 auto;
+			max-width: 80%;
+		}
+
 		> p {
 			color: inherit;
 			background-color: colors.$light-grey;
-			max-width: 80%;
 		}
 	}
 
+	h5 {
+		word-wrap: break-word;
+		max-width: 60%;
+	}
+
 	> p {
+		max-width: 60%;
 		display: inline-block;
 		padding: 1rem;
 		border-radius: 0.75rem;
 		color: #ffffff;
+		word-wrap: break-word;
 	}
 
 	> svg {

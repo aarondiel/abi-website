@@ -13,7 +13,6 @@
 				{{ message.text }}
 			</TextMessage>
 		</blockquote>
-
 	</div>
 </template>
 
@@ -29,9 +28,9 @@ export default {
 	},
 
 	setup() {
-		let quotes = ref(new Array());
+		const quotes = ref([]);
 
-		const getQuotes = async () => {
+		async function getQuotes() {
 			const response = await fetch('http://aarondiel.com/abi/api/quotes', {
 				method: 'GET',
 				mode: 'cors',
@@ -45,7 +44,6 @@ export default {
 
 			if (response.ok) {
 				const message = await response.json();
-				console.log(message)
 				quotes.value = message;
 				return;
 			}
@@ -56,7 +54,7 @@ export default {
 				messages: [ {
 					_id: 1,
 					type: 'info',
-					text: "couldn't fetch quotes"
+					text: 'couldn\'t fetch quotes'
 				} ]
 			} ];
 		}
@@ -69,12 +67,32 @@ export default {
 </script>
 
 <style lang='scss'>
+@use '../scss/media';
+
 .quotes {
 	width: 100%;
 	padding: 1rem;
 	box-sizing: border-box;
 
-	> blockquote {
+	@include media.phone {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+
+		> h2 {
+			grid-column: 1 / span 3;
+		}
+
+		> blockquote {
+			grid-column-end: span 2;
+
+			&:nth-child(2n) {
+				grid-column-start: 2;
+			}
+		}
+	}
+
+	blockquote {
 		width: 100%;
 		margin: 0 0 1rem 0;
 		padding: 1rem;
