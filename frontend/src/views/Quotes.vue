@@ -8,6 +8,7 @@
 				:key='message._id'
 				:type='message.type'
 				:side='message.side'
+				:name='message.name'
 			>
 				{{ message.text }}
 			</TextMessage>

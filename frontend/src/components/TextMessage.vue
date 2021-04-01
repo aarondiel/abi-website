@@ -1,5 +1,6 @@
 <template>
 	<div class='textMessage' ref='container'>
+		<h5>{{ name }}</h5>
 		<p><slot/></p>
 		<svg
 			viewBox='0 0 100 100'
