@@ -23,12 +23,26 @@ import { ref } from 'vue';
 export default {
 	name: 'Quotes',
 
+	props: {
+		page: {
+			type: String,
+			default: ':0'
+		}
+	},
+
 	components: {
 		TextMessage
 	},
 
-	setup() {
+	setup(props) {
 		const quotes = ref([]);
+		let offset = props?.page ?? ':0';
+
+		// test if page prop is valid
+		if (!/:\d+/.test(offset))
+			offset = ':0';
+
+		offset = parseInt(offset.slice(1, offset.length));
 
 		async function getQuotes() {
 			const response = await fetch('http://aarondiel.com/abi/api/quotes', {
@@ -39,8 +53,11 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
+				body: JSON.stringify({
+					offset: 3 * offset,
+					limit: 3
+				})
 			})
-
 
 			if (response.ok) {
 				const message = await response.json();

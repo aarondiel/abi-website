@@ -12,9 +12,10 @@ const routes = [
     component: () => import('@/views/Gbr.vue')
   },
   {
-    path: '/quotes',
+		path: '/quotes:page?',
     name: 'quotes',
-    component: () => import('@/views/Quotes.vue')
+    component: () => import('@/views/Quotes.vue'),
+		props: true
   },
 	{
 		path: '/:path(.*)*',

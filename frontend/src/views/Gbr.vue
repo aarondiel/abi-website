@@ -119,10 +119,7 @@ export default {
 		const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 		const isBig = document.body.clientWidth > 62 * rem;
 
-		return {
-			id,
-			isBig
-		}
+		return { id, isBig }
 	},
 
 	methods: {
