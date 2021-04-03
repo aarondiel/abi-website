@@ -28,8 +28,9 @@ router.post('/', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
 	try {
-		const limit = req.body?.limit ?? 10;
-		const offset = req.body?.offset ?? 0;
+		const limit = parseInt(req.query?.limit) ?? 10;
+		const offset = parseInt(req.query?.offset) ?? 0;
+
 		const query = await quotes.aggregate([
 			{ $sort: { createdAt: -1 } },
 			{ $skip: offset },
