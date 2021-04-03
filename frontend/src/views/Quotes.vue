@@ -13,6 +13,10 @@
 				{{ message.text }}
 			</TextMessage>
 		</blockquote>
+
+		<a>← vorherige seite</a>
+		<a>zitat einreichen</a>
+		<a>nächste seite →</a>
 	</div>
 </template>
 
@@ -45,19 +49,18 @@ export default {
 		offset = parseInt(offset.slice(1, offset.length));
 
 		async function getQuotes() {
-			const response = await fetch('http://aarondiel.com/abi/api/quotes', {
-				method: 'GET',
-				mode: 'cors',
-				cache: 'no-cache',
-				credentials: 'omit',
-				headers: { 'Content-Type': 'application/json' },
-				redirect: 'follow',
-				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({
-					offset: 3 * offset,
-					limit: 3
-				})
-			})
+			const response = await fetch(
+				`http://aarondiel.com/abi/api/quotes?offset=${3 * offset}&limit=3`,
+				{
+					method: 'GET',
+					mode: 'cors',
+					cache: 'no-cache',
+					credentials: 'omit',
+					headers: { 'Content-Type': 'application/json' },
+					redirect: 'follow',
+					referrerPolicy: 'no-referrer'
+				}
+			);
 
 			if (response.ok) {
 				const message = await response.json();
@@ -85,6 +88,7 @@ export default {
 
 <style lang='scss'>
 @use '../scss/media';
+@use '../scss/colors';
 
 .quotes {
 	width: 100%;
@@ -116,6 +120,20 @@ export default {
 		box-sizing: border-box;
 		box-shadow: inset 0 0.25rem 0.5rem mix(#000000, #ffffff, 25%);
 		border-radius: 1rem;
+	}
+
+	a {
+		color: colors.$secondary;
+		cursor: pointer;
+
+		&:nth-of-type(2) {
+			text-align: center;
+			font-size: 0.8rem;
+		}
+
+		&:nth-of-type(3) {
+			text-align: right;
+		}
 	}
 }
 </style>
