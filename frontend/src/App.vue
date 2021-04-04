@@ -68,16 +68,16 @@ export default {
 		$route(to) {
 			let name = '';
 
-			switch (to.fullPath) {
-				case '/':
+			switch (to.name) {
+				case 'home':
 					name = ''
 					break
 
-				case '/gbr':
+				case 'gbr':
 					name = 'GbR Vertrag'
 					break
 
-				case '/quotes':
+				case 'quotes':
 					name = 'Zitate'
 					break
 			}
@@ -126,6 +126,7 @@ article {
 	max-width: map-get(media.$breakpoints, tablet);
 	min-height: 100vh;
 	padding-top: 3.125rem;
+	box-sizing: border-box;
 	margin: 0 auto;
 
 	footer {
@@ -155,6 +156,8 @@ nav {
 }
 
 nav.bar {
+	position: fixed;
+	top: 0;
 	width: 100%;
 	height: 3.125rem;
 	justify-content: space-between;
