@@ -130,7 +130,7 @@ article {
 	margin: 0 auto;
 
 	footer {
-		margin: 1rem;
+		padding: 1rem;
 		font-size: 0.75rem;
 	}
 }
