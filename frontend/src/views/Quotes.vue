@@ -14,9 +14,11 @@
 			</TextMessage>
 		</blockquote>
 
-		<a>← vorherige seite</a>
-		<a>zitat einreichen</a>
-		<a>nächste seite →</a>
+		<span>
+			<a @click='navigatePage($router, -1)'>← vorherige seite</a>
+			<a>zitat einreichen</a>
+			<a @click='navigatePage($router, 1)'>nächste seite →</a>
+		</span>
 	</div>
 </template>
 
@@ -50,7 +52,7 @@ export default {
 
 		async function getQuotes() {
 			const response = await fetch(
-				`http://aarondiel.com/abi/api/quotes?offset=${3 * offset}&limit=3`,
+				`https://aarondiel.com/abi/api/quotes?offset=${3 * offset}&limit=3`,
 				{
 					method: 'GET',
 					mode: 'cors',
@@ -81,7 +83,16 @@ export default {
 
 		getQuotes();
 
-		return { quotes, getQuotes }
+		function navigatePage(router, page) {
+			if (typeof page === 'number') {
+				offset += page
+				getQuotes()
+			}
+
+			router.push({ name: 'quotes', params: { page: `:${offset}` } })
+		}
+
+		return { quotes, getQuotes, navigatePage }
 	}
 };
 </script>
@@ -122,17 +133,14 @@ export default {
 		border-radius: 1rem;
 	}
 
-	a {
+	> span {
 		color: colors.$secondary;
-		cursor: pointer;
+		grid-column: 1 / span 3;
+		display: flex;
+		justify-content: space-between;
 
-		&:nth-of-type(2) {
-			text-align: center;
-			font-size: 0.8rem;
-		}
-
-		&:nth-of-type(3) {
-			text-align: right;
+		a {
+			cursor: pointer;
 		}
 	}
 }
