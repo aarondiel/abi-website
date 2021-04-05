@@ -1,7 +1,5 @@
 <template>
 	<div class='quotes'>
-		<h2>quotes</h2>
-
 		<div v-if='submission' class='submission'>
 			<blockquote>
 				<TextMessage

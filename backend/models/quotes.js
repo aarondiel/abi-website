@@ -64,7 +64,13 @@ const quoteSchema = new mongoose.Schema(
 
 		messages: {
 			type: [ messageSchema ],
-			required: true
+			required: true,
+			validate: [
+				v => {
+					return v.length > 0;
+				},
+				'gib mindestens ein zitat an'
+			]
 		}
 	},
 	{
