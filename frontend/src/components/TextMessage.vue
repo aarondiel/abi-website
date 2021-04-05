@@ -55,7 +55,7 @@ export default {
 		const contentName = ref();
 		const content = ref();
 
-		let classes = new Array();
+		let classes = [];
 		if (props.type === 'message') {
 			const side = props?.side ?? 'left';
 
@@ -65,8 +65,11 @@ export default {
 		if (props.type === 'info')
 			classes.push('info');
 
+		if (props.editable)
+			classes.push('editable');
+
 		onMounted(() => {
-			container.value.classList.add(classes.join(' '));
+			container.value.classList.add(...classes);
 		});
 
 		const getContent = () => {
@@ -117,6 +120,10 @@ export default {
 		transform: translateX(1rem);
 		margin-right: auto;
 
+		h5 {
+			margin-right: auto;
+		}
+
 		> p {
 			background-color: colors.$primary;
 			align-self: flex-start;
@@ -162,6 +169,12 @@ export default {
 			background-color: colors.$light-grey;
 			align-self: center;
 		}
+	}
+
+	&.editable > h5 {
+		border-bottom: 4px solid colors.$grey;
+		margin-bottom: 0.125rem;
+		min-width: 2rem;
 	}
 }
 </style>
