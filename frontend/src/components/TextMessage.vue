@@ -51,9 +51,9 @@ export default {
 	},
 
 	setup(props) {
-		const container = ref(null);
-		const contentName = ref(null);
-		const content = ref(null);
+		const container = ref();
+		const contentName = ref();
+		const content = ref();
 
 		let classes = new Array();
 		if (props.type === 'message') {
@@ -87,21 +87,43 @@ export default {
 .textMessage {
 	max-width: 60%;
 	margin-bottom: 1rem;
+	word-wrap: break-word;
+	display: flex;
+	flex-direction: column;
 
 	> *:focus-visible {
 		outline: none;
 	}
 
+	> * {
+		max-width: 100%;
+	}
+
+	> p {
+		display: inline-block;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		color: #ffffff;
+	}
+
+	> svg {
+		position: absolute;
+		bottom: 0;
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+
 	&.left {
 		transform: translateX(1rem);
+		margin-right: auto;
 
 		> p {
 			background-color: colors.$primary;
+			align-self: flex-start;
 		}
 
 		> svg {
 			transform: translateX(-0.75rem);
-			left: 0;
 			fill: colors.$primary;
 		}
 	}
@@ -109,7 +131,6 @@ export default {
 	&.right {
 		transform: translateX(-1rem);
 		margin-left: auto;
-		text-align: right;
 
 		h5 {
 			margin-left: auto;
@@ -117,6 +138,7 @@ export default {
 
 		> p {
 			background-color: colors.$secondary;
+			align-self: flex-end;
 		}
 
 		> svg {
@@ -129,38 +151,17 @@ export default {
 	&.info {
 		margin-left: auto;
 		margin-right: auto;
-		text-align: center;
+		max-width: 80%;
 
 		> h5 {
 			margin: 0 auto;
-			max-width: 80%;
 		}
 
 		> p {
 			color: inherit;
 			background-color: colors.$light-grey;
+			align-self: center;
 		}
-	}
-
-	h5 {
-		word-wrap: break-word;
-		max-width: 60%;
-	}
-
-	> p {
-		max-width: 60%;
-		display: inline-block;
-		padding: 1rem;
-		border-radius: 0.75rem;
-		color: #ffffff;
-		word-wrap: break-word;
-	}
-
-	> svg {
-		position: absolute;
-		width: 1.5rem;
-		height: 1.5rem;
-		bottom: 0;
 	}
 }
 </style>
