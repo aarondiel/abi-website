@@ -172,7 +172,7 @@ export default {
 	}
 
 	&.editable > h5 {
-		border-bottom: 4px solid colors.$grey;
+		border-bottom: 2px solid colors.$grey;
 		margin-bottom: 0.125rem;
 		min-width: 2rem;
 	}

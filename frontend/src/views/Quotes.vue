@@ -11,7 +11,6 @@
 					:type='message.type'
 					:side='message.side'
 					:ref='"submissionText" + message.id'
-					name='____'
 				/>
 			</blockquote>
 
@@ -24,6 +23,7 @@
 			<section>
 				<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
 				<button @click='submitQuote($refs)'>zitat einreichen</button>
+				<p ref='submitResponse'></p>
 			</section>
 		</div>
 
@@ -151,8 +151,13 @@ export default {
 			});
 
 			const message = await response.json();
+			
+			if (response.ok)
+				refs.submitResponse.className='ok';
+			else
+				refs.submitResponse.className='failed';
 
-			console.log(message);
+			refs.submitResponse.innerText = message.message;
 		}
 
 		function navigatePage(router, page) {
@@ -238,17 +243,35 @@ export default {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+		align-items: center;
+
+		> * + * {
+			margin-top: 1rem;
+		}
 
 		> form {
-			margin-bottom: 1rem;
 			width: 100%;
 		}
+
+		> p {
+			&.ok {
+				color: green
+			}
+
+			&.failed {
+				color: red;
+			}
+		}
+
 
 		@include media.phone {
 			flex-direction: row;
 
+			> * + * {
+				margin-top: 0;
+			}
+
 			> form {
-				margin-bottom: 0;
 				width: unset;
 			}
 		}
