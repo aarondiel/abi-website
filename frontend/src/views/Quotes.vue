@@ -78,6 +78,7 @@ export default {
 
 		if (offset === ':submit') {
 			submission.value = true;
+			offset = 0;
 		} else {
 			offset = parseInt(offset.slice(1, offset.length));
 
@@ -162,6 +163,7 @@ export default {
 			if (typeof page === 'number') {
 				submission.value = false;
 
+				console.log(offset, page)
 				offset += page;
 				getQuotes();
 				router.push({ name: 'quotes', params: { page: `:${offset}` } });
