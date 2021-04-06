@@ -19,7 +19,7 @@
 			'/>
 		</svg>
 
-		<img v-if='closable' src='../assets/trash.svg' alt='delete' @click='$emit("close")'/>
+		<img v-if='closable' src='../assets/trash.svg' alt='delete' @click='$emit("close", $event.target.value)'/>
 	</div>
 </template>
 

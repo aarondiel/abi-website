@@ -9,7 +9,8 @@
 					:closable='true'
 					:type='message.type'
 					:side='message.side'
-					:ref='"submissionText" + message.id'
+					:ref='el => { if (el) message.ref = el }'
+					@close='deleteMessage(message.id)'
 				/>
 			</blockquote>
 
@@ -74,7 +75,7 @@ export default {
 	setup(props) {
 		const quotes = ref([]);
 		const submission = ref(false);
-		const submissionBuffer = ref(Array());
+		const submissionBuffer = ref([]);
 		let offset = props?.page ?? ':0';
 
 		if (offset === ':submit') {
@@ -117,14 +118,20 @@ export default {
 			} ];
 		}
 
-		getQuotes();
+		if (!submission.value)
+			getQuotes();
 
 		function addMessage(type) {
 			submissionBuffer.value.push({
 				type: type === 'info' ? 'info' : 'message',
 				side: type === 'info' ? undefined : type,
-				id: submissionBuffer.value.length
+				id: Math.floor(Math.random() * 0xffffff),
+				ref: null
 			})
+		}
+
+		function deleteMessage(id) {
+			submissionBuffer.value = submissionBuffer.value.filter(v => v.id !== id);
 		}
 
 		async function submitQuote(refs) {
@@ -151,7 +158,7 @@ export default {
 			});
 
 			const message = await response.json();
-			
+
 			if (response.ok)
 				refs.submitResponse.className='ok';
 			else
@@ -164,7 +171,6 @@ export default {
 			if (typeof page === 'number') {
 				submission.value = false;
 
-				console.log(offset, page)
 				offset += page;
 				getQuotes();
 				router.push({ name: 'quotes', params: { page: `:${offset}` } });
@@ -178,10 +184,10 @@ export default {
 
 		return {
 			quotes,
-			getQuotes,
 			navigatePage,
 			submission,
 			submissionBuffer,
+			deleteMessage,
 			addMessage,
 			submitQuote
 		};
