@@ -6,6 +6,7 @@
 					v-for='message in submissionBuffer'
 					:key='message.id'
 					:editable='true'
+					:closable='true'
 					:type='message.type'
 					:side='message.side'
 					:ref='"submissionText" + message.id'

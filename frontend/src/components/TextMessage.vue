@@ -1,7 +1,11 @@
 <template>
 	<div class='textMessage' ref='container'>
-		<h5 :contentEditable='editable' ref='contentName'>{{ name }}</h5>
-		<p :contentEditable='editable' ref='content'><slot/></p>
+		<div>
+			<h5 :contentEditable='editable' ref='contentName'>{{ name }}</h5>
+
+			<p :contentEditable='editable' ref='content'><slot/></p>
+		</div>
+
 		<svg
 			viewBox='0 0 100 100'
 			xmlns='http://www.w3.org/2000/svg'
@@ -14,6 +18,8 @@
 				z
 			'/>
 		</svg>
+
+		<img v-if='closable' src='../assets/trash.svg' alt='delete' @click='$emit("close")'/>
 	</div>
 </template>
 
@@ -47,8 +53,15 @@ export default {
 		editable: {
 			type: Boolean,
 			default: false
+		},
+
+		closable: {
+			type: Boolean,
+			default: false
 		}
 	},
+
+	emits: [ 'close' ],
 
 	setup(props) {
 		const container = ref();
@@ -87,91 +100,83 @@ export default {
 <style lang='scss'>
 @use '../scss/colors';
 
+$triangleSize: 1.5rem;
+
 .textMessage {
-	max-width: 60%;
+	position: relative;
 	margin-bottom: 1rem;
-	word-wrap: break-word;
 	display: flex;
-	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
 
-	> *:focus-visible {
-		outline: none;
-	}
+	div {
+		display: flex;
+		flex-direction: column;
+		word-wrap: break-word;
+		max-width: 50%;
 
-	> * {
-		max-width: 100%;
-	}
+		> *:focus-visible {
+			outline: none;
+		}
 
-	> p {
-		display: inline-block;
-		padding: 1rem;
-		border-radius: 0.75rem;
-		color: #ffffff;
+		> p {
+			display: inline;
+			border-radius: 0.75rem;
+			color: #ffffff;
+			padding: 1rem;
+		}
 	}
 
 	> svg {
 		position: absolute;
 		bottom: 0;
-		width: 1.5rem;
-		height: 1.5rem;
+		width: $triangleSize;
+		height: $triangleSize;
+	}
+
+	> img {
+		width: 2.5rem;
+		height: 2.5rem;
+		cursor: pointer;
 	}
 
 	&.left {
-		transform: translateX(1rem);
-		margin-right: auto;
+		padding-left: $triangleSize / 2;
 
-		h5 {
-			margin-right: auto;
-		}
-
-		> p {
+		> div > p {
 			background-color: colors.$primary;
-			align-self: flex-start;
 		}
 
 		> svg {
-			transform: translateX(-0.75rem);
+			left: 0;
 			fill: colors.$primary;
 		}
 	}
 
 	&.right {
-		transform: translateX(-1rem);
-		margin-left: auto;
+		padding-right: $triangleSize / 2;
+		flex-flow: row-reverse;
 
-		h5 {
-			margin-left: auto;
-		}
-
-		> p {
+		> div > p {
 			background-color: colors.$secondary;
-			align-self: flex-end;
 		}
 
 		> svg {
-			transform: translateX(0.75rem);
 			right: 0;
 			fill: colors.$secondary;
 		}
 	}
 
 	&.info {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: 80%;
+		justify-content: center;
 
-		> h5 {
-			margin: 0 auto;
-		}
-
-		> p {
+		> div > p {
 			color: inherit;
 			background-color: colors.$light-grey;
-			align-self: center;
 		}
 	}
 
-	&.editable > h5 {
+	&.editable > div > h5 {
 		border-bottom: 2px solid colors.$grey;
 		margin-bottom: 0.125rem;
 		min-width: 2rem;
