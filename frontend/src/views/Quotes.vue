@@ -146,6 +146,15 @@ export default {
 
 			const code = codeInput.value.text;
 
+			const messages = submissionBuffer.value.map(v => {
+				return {
+					type: v.type,
+					side: v.side,
+					text: v.text,
+					name: v.name
+				}
+			})
+
 			const response = await fetch('https://aarondiel.com/abi/api/quotes', {
 				method: 'POST',
 				mode: 'cors',
@@ -154,10 +163,7 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({
-					code,
-					messages: submissionBuffer.value
-				})
+				body: JSON.stringify({ code, messages })
 			});
 
 			const message = await response.json();
