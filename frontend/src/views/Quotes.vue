@@ -22,7 +22,7 @@
 
 			<section>
 				<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
-				<button @click='submitQuote($refs)'>zitat einreichen</button>
+				<button @click='submitQuote'>zitat einreichen</button>
 				<p ref='submitResponse'></p>
 			</section>
 		</div>
@@ -76,6 +76,9 @@ export default {
 		const quotes = ref([]);
 		const submission = ref(false);
 		const submissionBuffer = ref([]);
+		const codeInput = ref();
+		const submitResponse = ref();
+
 		let offset = props?.page ?? ':0';
 
 		if (offset === ':submit') {
@@ -134,14 +137,14 @@ export default {
 			submissionBuffer.value = submissionBuffer.value.filter(v => v.id !== id);
 		}
 
-		async function submitQuote(refs) {
+		async function submitQuote() {
 			for (const message of submissionBuffer.value) {
-				const content = refs[`submissionText${message.id}`].getContent();
+				const content = message.ref.getContent();
 				message.text = content.content;
 				message.name = content.name;
 			}
 
-			const code = refs.codeInput.text;
+			const code = codeInput.value.text;
 
 			const response = await fetch('https://aarondiel.com/abi/api/quotes', {
 				method: 'POST',
@@ -160,11 +163,11 @@ export default {
 			const message = await response.json();
 
 			if (response.ok)
-				refs.submitResponse.className='ok';
+				submitResponse.value.className='ok';
 			else
-				refs.submitResponse.className='failed';
+				submitResponse.value.className='failed';
 
-			refs.submitResponse.innerText = message.message;
+			submitResponse.value.innerText = message.message;
 		}
 
 		function navigatePage(router, page) {
@@ -186,6 +189,8 @@ export default {
 			quotes,
 			navigatePage,
 			submission,
+			codeInput,
+			submitResponse,
 			submissionBuffer,
 			deleteMessage,
 			addMessage,
