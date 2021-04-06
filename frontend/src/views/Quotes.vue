@@ -225,6 +225,7 @@ export default {
 
 	> div.submission > span {
 		display: flex;
+		justify-content: space-between;
 		flex-direction: column;
 
 		@include media.tablet {
@@ -233,6 +234,7 @@ export default {
 
 		> .textMessage {
 			cursor: pointer;
+			width: 30%;
 		}
 	}
 
