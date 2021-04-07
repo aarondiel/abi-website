@@ -156,6 +156,7 @@ nav {
 }
 
 nav.bar {
+	z-index: 100;
 	position: fixed;
 	top: 0;
 	width: 100%;

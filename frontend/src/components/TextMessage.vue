@@ -83,8 +83,13 @@ export default {
 
 		onMounted(() => {
 			container.value.classList.add(...classes);
-		});
 
+			contentName.value.onpaste = (e) => {
+				console.log(e)
+				e.target.innerText = e.srcElement.innerText;
+			}
+		});
+		
 		const getContent = () => {
 			return {
 				name: contentName.value.innerText,
