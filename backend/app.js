@@ -12,11 +12,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // endpoints
-app.use('/abi', abi);
+if (process.env.NODE_ENV === 'production')
+	app.use('/abi', abi);
+else
+	app.use('/', abi);
 
 mongodb().then(() => {
 	app.listen(config.port, () => {
-		console.log(`listening on http://localhost:${config.port}`);
+		console.log(`listening on http://localhost:${config.port}/abi`);
 	});
 });
 

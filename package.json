@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"install": "cd frontend && npm install && cd ../backend && npm install",
-		"production": "cd frontend && npm run build && cd ../backend && npm run production",
+		"production": "NODE_ENV=production sh -c 'cd frontend && npm run build && env && cd ../backend && npm run production'",
 		"dev": "cd backend && npm run dev",
 		"mail": "cd backend && npm run mail",
 		"query": "cd backend && npm run query",
