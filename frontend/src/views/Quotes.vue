@@ -6,9 +6,11 @@
 					v-for='message in submissionBuffer'
 					:key='message.id'
 					:editable='true'
+					:closable='true'
 					:type='message.type'
 					:side='message.side'
-					:ref='"submissionText" + message.id'
+					:ref='el => { if (el) message.ref = el }'
+					@close='deleteMessage(message.id)'
 				/>
 			</blockquote>
 
@@ -20,7 +22,7 @@
 
 			<section>
 				<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
-				<button @click='submitQuote($refs)'>zitat einreichen</button>
+				<button @click='submitQuote'>zitat einreichen</button>
 				<p ref='submitResponse'></p>
 			</section>
 		</div>
@@ -73,7 +75,10 @@ export default {
 	setup(props) {
 		const quotes = ref([]);
 		const submission = ref(false);
-		const submissionBuffer = ref(Array());
+		const submissionBuffer = ref([]);
+		const codeInput = ref();
+		const submitResponse = ref();
+
 		let offset = props?.page ?? ':0';
 
 		if (offset === ':submit') {
@@ -116,24 +121,39 @@ export default {
 			} ];
 		}
 
-		getQuotes();
+		if (!submission.value)
+			getQuotes();
 
 		function addMessage(type) {
 			submissionBuffer.value.push({
 				type: type === 'info' ? 'info' : 'message',
 				side: type === 'info' ? undefined : type,
-				id: submissionBuffer.value.length
+				id: Math.floor(Math.random() * 0xffffff),
+				ref: null
 			})
 		}
 
-		async function submitQuote(refs) {
+		function deleteMessage(id) {
+			submissionBuffer.value = submissionBuffer.value.filter(v => v.id !== id);
+		}
+
+		async function submitQuote() {
 			for (const message of submissionBuffer.value) {
-				const content = refs[`submissionText${message.id}`].getContent();
+				const content = message.ref.getContent();
 				message.text = content.content;
 				message.name = content.name;
 			}
 
-			const code = refs.codeInput.text;
+			const code = codeInput.value.text;
+
+			const messages = submissionBuffer.value.map(v => {
+				return {
+					type: v.type,
+					side: v.side,
+					text: v.text,
+					name: v.name
+				}
+			})
 
 			const response = await fetch('https://aarondiel.com/abi/api/quotes', {
 				method: 'POST',
@@ -143,27 +163,23 @@ export default {
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({
-					code,
-					messages: submissionBuffer.value
-				})
+				body: JSON.stringify({ code, messages })
 			});
 
 			const message = await response.json();
-			
-			if (response.ok)
-				refs.submitResponse.className='ok';
-			else
-				refs.submitResponse.className='failed';
 
-			refs.submitResponse.innerText = message.message;
+			if (response.ok)
+				submitResponse.value.className='ok';
+			else
+				submitResponse.value.className='failed';
+
+			submitResponse.value.innerText = message.message;
 		}
 
 		function navigatePage(router, page) {
 			if (typeof page === 'number') {
 				submission.value = false;
 
-				console.log(offset, page)
 				offset += page;
 				getQuotes();
 				router.push({ name: 'quotes', params: { page: `:${offset}` } });
@@ -177,10 +193,12 @@ export default {
 
 		return {
 			quotes,
-			getQuotes,
 			navigatePage,
 			submission,
+			codeInput,
+			submitResponse,
 			submissionBuffer,
+			deleteMessage,
 			addMessage,
 			submitQuote
 		};
@@ -224,6 +242,7 @@ export default {
 
 	> div.submission > span {
 		display: flex;
+		justify-content: space-between;
 		flex-direction: column;
 
 		@include media.tablet {
@@ -232,6 +251,7 @@ export default {
 
 		> .textMessage {
 			cursor: pointer;
+			width: 30%;
 		}
 	}
 
