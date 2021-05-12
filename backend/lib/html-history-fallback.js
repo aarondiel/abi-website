@@ -1,5 +1,5 @@
 function acceptsHeader(accept, acceptedHeaders) {
-	if (accepts === undefined)
+	if (accept === undefined)
 		return false;
 
 	const accepts = accept.split(',');
