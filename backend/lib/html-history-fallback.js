@@ -1,9 +1,12 @@
 function acceptsHeader(accept, acceptedHeaders) {
+	if (accepts === undefined)
+		return false;
+
 	const accepts = accept.split(',');
 
 	// check if any of the accepted headers are in accepts
 	for (const header of acceptedHeaders) {
-		if (accepts.indexOf(header) !== -1) 
+		if (accepts.indexOf(header) !== -1)
 			return true;
 	};
 

@@ -89,7 +89,7 @@ export default {
 				e.target.innerText = e.srcElement.innerText;
 			}
 		});
-		
+
 		const getContent = () => {
 			return {
 				name: contentName.value.innerText,
@@ -104,6 +104,7 @@ export default {
 
 <style lang='scss'>
 @use '../scss/colors';
+@use '../scss/media';
 
 $triangleSize: 1.5rem;
 
@@ -118,7 +119,11 @@ $triangleSize: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		word-wrap: break-word;
-		max-width: 50%;
+		max-width: 75%;
+
+		@include media.phone() {
+			max-width: 50%;
+		}
 
 		> *:focus-visible {
 			outline: none;

@@ -92,7 +92,7 @@ export default {
 
 		async function getQuotes() {
 			const response = await fetch(
-				`https://aarondiel.com/abi/api/quotes?offset=${3 * offset}&limit=3`,
+				`https://abi.aarondiel.com/api/quotes?offset=${3 * offset}&limit=3`,
 				{
 					method: 'GET',
 					mode: 'cors',
@@ -155,7 +155,7 @@ export default {
 				}
 			})
 
-			const response = await fetch('https://aarondiel.com/abi/api/quotes', {
+			const response = await fetch('https://abi.aarondiel.com/api/quotes', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
@@ -215,7 +215,7 @@ export default {
 	padding: 1rem;
 	box-sizing: border-box;
 
-	@include media.phone {
+	@include media.phone() {
 		> div:not(.submission) {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);

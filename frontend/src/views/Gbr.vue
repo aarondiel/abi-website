@@ -147,7 +147,7 @@ export default {
 
 			const code = this.$refs.codeInput.text;
 
-			const response = await fetch('http://aarondiel.com/abi/api/gbr', {
+			const response = await fetch('http://abi.aarondiel.com/api/gbr', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
@@ -244,7 +244,7 @@ export default {
 			}
 		}
 	}
-	
+
 	section.submit {
 		box-sizing: border-box;
 		width: 100%;
