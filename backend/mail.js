@@ -1,8 +1,8 @@
-const nodemailer = require('nodemailer');
-const config = require('./config');
-const fs = require('fs');
-const mongodb = require('./models/mongodb');
-const users = require('./models/user')
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import mongodb from './models/mongodb.js';
+import users from './models/user.js';
+import config from './config.js';
 
 const transport = nodemailer.createTransport({
 	host: config.mail.host,
@@ -30,15 +30,22 @@ function parseHtml(template, props) {
 }
 
 async function main() {
-	const template = fs.readFileSync('./mail.html', 'utf-8');
+	const template = fs.readFileSync('./mails/quotes.html', 'utf-8');
 
-	await mongodb.connect();
+	await mongodb();
 
-	const students = await users.find({
-		gbr: true
-	});
+	// // organisation team
+	// const students = await users.find({
+	// 	name: /aaron.*diel|mirjam|christine|daniel|elias|henrik|lucas kober|olga|philipp straßburger|phillip kleh|roman|tillmann/i
+	// });
 
-	for (student of students) {
+	// all students
+	const students = await users.find({ });
+	
+	// // just me
+	// const students = await users.find({ name: /aaron.*diel/i });
+	
+	for (const student of students) {
 		if (!student?.email)
 			continue;
 
