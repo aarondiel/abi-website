@@ -1,92 +1,104 @@
 import mongodb from './models/mongodb.js';
 import gbrVote from './models/gbr-vote.js';
+import quotes from './models/quotes.js';
 import util from 'util';
+
+async function getQuotes() {
+	const query = await quotes.aggregate([
+		{ $lookup: {
+			from: 'users',
+			localField: 'submittedBy',
+			foreignField: '_id',
+			as: 'submittedBy'
+		} },
+		{ $unwind: '$submittedBy' },
+		{ $project: {
+			_id: false,
+			messages: '$messages',
+			submittedBy: '$submittedBy.name'
+		} }
+	]);
+
+	return query
+}
 
 async function getGbrVotes() {
 	const query = await gbrVote.aggregate([
-		{
-			$lookup: {
-				from: 'users',
-				localField: 'user',
-				foreignField: '_id',
-				as: 'user'
-			}
-		},
+		{ $lookup: {
+			from: 'users',
+			localField: 'user',
+			foreignField: '_id',
+			as: 'user'
+		} },
 		{ $unwind: '$user' },
-		{
-			$project: {
-				_id: 0,
-				name: '$user.name',
-				submission: '$submission'
-			}
-		}
+		{ $project: {
+			_id: 0,
+			name: '$user.name',
+			submission: '$submission'
+		} }
 	]);
 
-	return query;
+	return query
 }
 
 async function getGbrPercent() {
 	const query = await gbrVote.aggregate([
-		{
-			$group: {
-				_id: false,
-				votes: { $sum: 1 },
+		{ $group: {
+			_id: false,
+			votes: { $sum: 1 },
 
-				hoodies: { $sum: { $toInt: '$submission.hoodiesName' } },
-				paper: { $sum: { $toInt: '$submission.paperName' } },
-				votings: { $sum: { $toInt: '$submission.votings' } },
-				organisation: { $sum: { $toInt: '$submission.organisation' } },
+			hoodies: { $sum: { $toInt: '$submission.hoodiesName' } },
+			paper: { $sum: { $toInt: '$submission.paperName' } },
+			votings: { $sum: { $toInt: '$submission.votings' } },
+			organisation: { $sum: { $toInt: '$submission.organisation' } },
 
-				promExclusion: { $sum: { $toInt: '$submission.exclusions.prom' } },
-				aftershowExclusion: { $sum: { $toInt: '$submission.exclusions.aftershow' } },
-				prankExclusion: { $sum: { $toInt: '$submission.exclusions.prank' } },
+			promExclusion: { $sum: { $toInt: '$submission.exclusions.prom' } },
+			aftershowExclusion: { $sum: { $toInt: '$submission.exclusions.aftershow' } },
+			prankExclusion: { $sum: { $toInt: '$submission.exclusions.prank' } },
 
-				hoodiesFee: { $sum: '$submission.fees.hoodies' },
-				hoodiesEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.hoodies', 0 ] } } },
-				ticketsFee: { $sum: '$submission.fees.tickets' },
+			hoodiesFee: { $sum: '$submission.fees.hoodies' },
+			hoodiesEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.hoodies', 0 ] } } },
+			ticketsFee: { $sum: '$submission.fees.tickets' },
 
-				ticketsEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.tickets', 0 ] } } },
-				paperFee: { $sum: '$submission.fees.paper' },
-				paperEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.paper', 0 ] } } },
-			}
-		},
-		{
-			$project: {
-				_id: false,
-				votes: '$votes',
+			ticketsEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.tickets', 0 ] } } },
+			paperFee: { $sum: '$submission.fees.paper' },
+			paperEmpty: { $sum: { $toInt: { $ne: [ '$submission.fees.paper', 0 ] } } },
+		} },
+		{ $project: {
+			_id: false,
+			votes: '$votes',
 
-				hoodies: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$hoodies', '$votes' ] }, 100 ] } } }, '%' ] }, 
-				paper: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$paper', '$votes' ] }, 100 ] } } }, '%' ] }, 
-				votings: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$votings', '$votes' ] }, 100 ] } } }, '%' ] }, 
-				organisation: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$organisation', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			hoodies: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$hoodies', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			paper: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$paper', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			votings: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$votings', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			organisation: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$organisation', '$votes' ] }, 100 ] } } }, '%' ] }, 
 
-				exclusions: {
-					prom: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$promExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
-					aftershow: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$aftershowExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
-					prank: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$prankExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			exclusions: {
+				prom: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$promExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
+				aftershow: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$aftershowExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
+				prank: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$prankExclusion', '$votes' ] }, 100 ] } } }, '%' ] }, 
+			},
+
+			fees: {
+				hoodies: {
+					average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$hoodiesFee' }, '$votes' ] } } }, '%' ] },
+					votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$hoodiesEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
 				},
 
-				fees: {
-					hoodies: {
-						average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$hoodiesFee' }, '$votes' ] } } }, '%' ] },
-						votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$hoodiesEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
-					},
+				tickets: {
+					average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$ticketsFee' }, '$votes' ] } } }, '%' ] },
+					votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$ticketsEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
+				},
 
-					tickets: {
-						average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$ticketsFee' }, '$votes' ] } } }, '%' ] },
-						votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$ticketsEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
-					},
-
-					paper: {
-						average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$paperFee' }, '$votes' ] } } }, '%' ] },
-						votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$paperEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
-					},
-				}
+				paper: {
+					average: { $concat: [ { $toString: { $round: { $divide: [ { $sum: '$paperFee' }, '$votes' ] } } }, '%' ] },
+					votes: { $concat: [ { $toString: { $round: { $multiply: [ { $divide: [ '$paperEmpty', '$votes' ] }, 100 ] } } }, '%' ] }
+				},
 			}
-		}
+		} }
 	])
 
-	return query;
+	return query
 }
 
 async function getGbrFucked() {
@@ -106,7 +118,7 @@ async function getGbrFucked() {
 		} }
 	]);
 
-	return query;
+	return query
 }
 
 async function main() {
@@ -126,6 +138,10 @@ async function main() {
 		case 'getGbrFucked':
 			query = await getGbrFucked();
 			break;
+
+		case 'getQuotes':
+			query = await getQuotes();
+			break
 	}
 
 	console.log(util.inspect(query, false, null, true));

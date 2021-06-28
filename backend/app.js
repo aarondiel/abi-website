@@ -11,11 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// endpoints
-if (process.env.NODE_ENV === 'production')
-	app.use('/abi', abi);
-else
-	app.use('/', abi);
+app.use('/', abi);
 
 mongodb().then(() => {
 	app.listen(config.port, () => {
