@@ -1,27 +1,29 @@
 <template>
-	<nav class='bar' ref='nav'>
-		<router-link to='/'>abi 2022</router-link>
-		<p ref='currentRoute'></p>
-		<img
-			src='./assets/menu.svg'
-			alt='menu button'
-			@click='toggleMenu'
-		/>
-	</nav>
+	<div class='app'>
+		<nav class='bar' ref='nav'>
+			<router-link to='/'>abi 2022</router-link>
+			<p ref='currentRoute'></p>
+			<img
+				src='./assets/menu.svg'
+				alt='menu button'
+				@click='toggleMenu'
+			/>
+		</nav>
 
-	<nav class='menu hidden' ref='menu'>
-		<img src='./assets/cross.svg' alt='close' @click='toggleMenu'/>
-		<router-link to='/gbr'>GbR Vertrag</router-link>
-		<router-link to='/quotes'>Zitate</router-link>
-	</nav>
+		<nav class='menu hidden' ref='menu'>
+			<img src='./assets/cross.svg' alt='close' @click='toggleMenu'/>
+			<router-link to='/gbr'>GbR Vertrag</router-link>
+			<router-link to='/quotes'>Zitate</router-link>
+		</nav>
 
-	<article>
-		<router-view/>
+		<article>
+			<router-view/>
 
-		<footer>
-			<p>a website designed and written by aaron diel</p>
-		</footer>
-	</article>
+			<footer>
+				<p>a website designed and written by aaron diel</p>
+			</footer>
+		</article>
+	</div>
 </template>
 
 <script>

@@ -1,7 +1,9 @@
 <template>
 	<div class='home'>
-		<h1>home: wip</h1>
-		<router-link to='/gbr'>GbR Vertrag</router-link>
+		<p>Wilkommen auf der Abi-Webseite, hier findest du verschiedene Abstimmungen, Infos zu Veranstaltungen und sonstiges betrefflich des Abis.</p>
+		<router-link to='/gbr'>GbR Vertrag Abstimmung</router-link>
+		<router-link to='/quotes'>Zitate</router-link>
+		<router-link to='/gbr'>Mottos Abstimmung</router-link>
 	</div>
 </template>
 
@@ -13,6 +15,11 @@ export default {
 
 <style lang='scss'>
 .home {
-	text-align: center;
+	width: 100%;
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	flex-direction: column;
+	padding: 1rem 1rem 0 1rem;
 }
 </style>
