@@ -101,7 +101,7 @@ export default {
 					method: 'GET',
 					mode: 'cors',
 					cache: 'no-cache',
-					credentials: 'omit',
+					credentials: 'same-origin',
 					headers: { 'Content-Type': 'application/json' },
 					redirect: 'follow',
 					referrerPolicy: 'no-referrer'

@@ -27,7 +27,7 @@ export default {
 			const code = codeInput.value.text
 
 			const response = await fetch(
-				'http://localhost:8229/api/auth',
+				'https://abi.aarondiel.com/api/auth',
 				{
 					method: 'POST',
 					mode: 'cors',
@@ -41,19 +41,20 @@ export default {
 			)
 
 			const body = await response.json()
-			if (body.authenticated)
+			if (body.authenticated) {
 				document.cookie = `code=${code};max-age=${30 * 24 * 60 * 60};samesite=strict`
-
-			isAuthorized.value = body.authenticated
+				isAuthorized.value = body.authenticated
+				console.log('is authorized')
+			}
 		}
 
 		fetch(
-			'http://localhost:8229/api/auth',
+			'https://abi.aarondiel.com/api/auth',
 			{
 				method: 'GET',
 				mode: 'cors',
 				cache: 'no-cache',
-				credentials: 'include',
+				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer'
