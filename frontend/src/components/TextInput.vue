@@ -122,5 +122,4 @@ export default {
 		bottom: 7px;
 	}
 }
-
 </style>

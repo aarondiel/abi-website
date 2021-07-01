@@ -13,14 +13,14 @@ function acceptsHeader(accept, acceptedHeaders) {
 	return false;
 }
 
-function isFileRequest(path) {
+export function isFileRequest(path) {
 	let search = path.split('/');
 	search = search[search.length -1];
 
 	return search.indexOf('.') !== -1;
 }
 
-export default function history(config) {
+export function history(config) {
 	config = {
 		index: 'index.html',
 		exclusions: [],

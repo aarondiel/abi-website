@@ -3,7 +3,9 @@ const router = Router();
 import slogan from './slogan/route.js';
 import gbr from './gbr/route.js';
 import quotes from './quotes/route.js';
+import auth from './auth/route.js';
 
+router.use('/auth', auth);
 router.use('/slogan', slogan);
 router.use('/gbr', gbr);
 router.use('/quotes', quotes);

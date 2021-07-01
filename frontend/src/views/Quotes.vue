@@ -1,60 +1,63 @@
 <template>
 	<div class='quotes'>
-		<div v-if='submission' class='submission'>
-			<blockquote>
-				<TextMessage
-					v-for='message in submissionBuffer'
-					:key='message.id'
-					:editable='true'
-					:closable='true'
-					:type='message.type'
-					:side='message.side'
-					:ref='el => { if (el) message.ref = el }'
-					@close='deleteMessage(message.id)'
-				/>
-			</blockquote>
+		<Auth>
+			<div v-if='submission' class='submission'>
+				<blockquote>
+					<TextMessage
+						v-for='message in submissionBuffer'
+						:key='message.id'
+						:editable='true'
+						:closable='true'
+						:type='message.type'
+						:side='message.side'
+						:ref='el => { if (el) message.ref = el }'
+						@close='deleteMessage(message.id)'
+					/>
+				</blockquote>
+
+				<span>
+					<TextMessage side='left' @click='addMessage("left")'>neue nachricht</TextMessage>
+					<TextMessage type='info' @click='addMessage("info")'>neue nachricht</TextMessage>
+					<TextMessage side='right' @click='addMessage("right")'>neue nachricht</TextMessage>
+				</span>
+
+				<section>
+					<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
+					<button @click='submitQuote'>zitat einreichen</button>
+					<p ref='submitResponse'></p>
+				</section>
+			</div>
+
+			<div v-else>
+				<blockquote v-for='quote in quotes' :key='quote._id'>
+					<TextMessage
+						v-for='message in quote.messages'
+						:key='message._id'
+						:type='message.type'
+						:side='message.side'
+						:name='message.name'
+					>
+						{{ message.text }}
+					</TextMessage>
+				</blockquote>
+			</div>
 
 			<span>
-				<TextMessage side='left' @click='addMessage("left")'>neue nachricht</TextMessage>
-				<TextMessage type='info' @click='addMessage("info")'>neue nachricht</TextMessage>
-				<TextMessage side='right' @click='addMessage("right")'>neue nachricht</TextMessage>
+				<a @click='navigatePage($router, -1)'>← vorherige seite</a>
+
+				<a v-if='submission' @click='navigatePage($router, 0)'>zu den zitaten</a>
+				<a v-else @click='navigatePage($router, "submit")'>zitat einreichen</a>
+
+				<a @click='navigatePage($router, 1)'>nächste seite →</a>
 			</span>
-
-			<section>
-				<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
-				<button @click='submitQuote'>zitat einreichen</button>
-				<p ref='submitResponse'></p>
-			</section>
-		</div>
-
-		<div v-else>
-			<blockquote v-for='quote in quotes' :key='quote._id'>
-				<TextMessage
-					v-for='message in quote.messages'
-					:key='message._id'
-					:type='message.type'
-					:side='message.side'
-					:name='message.name'
-				>
-					{{ message.text }}
-				</TextMessage>
-			</blockquote>
-		</div>
-
-		<span>
-			<a @click='navigatePage($router, -1)'>← vorherige seite</a>
-
-			<a v-if='submission' @click='navigatePage($router, 0)'>zu den zitaten</a>
-			<a v-else @click='navigatePage($router, "submit")'>zitat einreichen</a>
-
-			<a @click='navigatePage($router, 1)'>nächste seite →</a>
-		</span>
+		</Auth>
 	</div>
 </template>
 
 <script>
 import TextMessage from '../components/TextMessage.vue';
 import TextInput from '../components/TextInput.vue';
+import Auth from '../components/Auth.vue';
 import { ref } from 'vue';
 
 export default {
@@ -69,7 +72,8 @@ export default {
 
 	components: {
 		TextMessage,
-		TextInput
+		TextInput,
+		Auth
 	},
 
 	setup(props) {
@@ -216,7 +220,7 @@ export default {
 	box-sizing: border-box;
 
 	@include media.phone() {
-		> div:not(.submission) {
+		> div:not(.submission, .auth) {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
 			gap: 1rem;
