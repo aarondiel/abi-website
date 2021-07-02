@@ -85,7 +85,6 @@ export default {
 			container.value.classList.add(...classes);
 
 			contentName.value.onpaste = (e) => {
-				console.log(e)
 				e.target.innerText = e.srcElement.innerText;
 			}
 		});

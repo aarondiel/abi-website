@@ -1,6 +1,6 @@
 <template>
 	<div class='quotes'>
-		<Auth authentication@='getQuotes()'>
+		<Auth @authentication='getQuotes()'>
 			<div v-if='submission' class='submission'>
 				<blockquote>
 					<TextMessage
@@ -204,7 +204,8 @@ export default {
 			submissionBuffer,
 			deleteMessage,
 			addMessage,
-			submitQuote
+			submitQuote,
+			getQuotes
 		};
 	}
 };

@@ -48,7 +48,7 @@ export default {
 			if (body.authenticated) {
 				document.cookie = `code=${code};max-age=${30 * 24 * 60 * 60};samesite=strict`
 				isAuthorized.value = body.authenticated
-				emit('authentication')
+				emit('authentication', body)
 			}
 		}
 
@@ -65,8 +65,6 @@ export default {
 			}
 		).then(async response => {
 			const message = await response.json()
-			console.log(response)
-			console.log(message)
 			isAuthorized.value = message.authenticated
 		})
 

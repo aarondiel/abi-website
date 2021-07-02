@@ -3,7 +3,6 @@ import users from '../../../models/user.js'
 const router = Router();
 
 router.get('/', async (req, res) => {
-	console.log(req.cookies)
 	const user = await users.findOne({ code: req.cookies.code })
 	if (user)
 		return res.status(200).json({ authenticated: true })

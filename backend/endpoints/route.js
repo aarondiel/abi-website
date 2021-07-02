@@ -8,7 +8,6 @@ import { history, isFileRequest } from '../lib/html-history-fallback.js'
 const distPath = join(process.cwd(), '../frontend/dist')
 
 function hasBlacklistedPath(url) {
-	console.log(url)
 	for (const path of [ '/api/quotes' ])
 		if (url.startsWith(path))
 			return true
@@ -23,11 +22,7 @@ router.use(async (req, res, next) => {
 	if (!hasBlacklistedPath(req.url))
 		return next()
 
-	console.log("filter")
-	console.log(req.cookies)
-	console.log(req.cookies.code)
 	const user = await users.findOne({ code: req.cookies.code })
-	console.log(user)
 	if (user)
 		return next()
 
