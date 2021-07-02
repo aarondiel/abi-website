@@ -1,6 +1,6 @@
 <template>
 	<div class='quotes'>
-		<Auth>
+		<Auth authentication@='getQuotes()'>
 			<div v-if='submission' class='submission'>
 				<blockquote>
 					<TextMessage

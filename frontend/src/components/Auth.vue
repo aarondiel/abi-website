@@ -19,7 +19,11 @@ export default {
 		TextInput
 	},
 
-	setup() {
+	emits: [
+		'authentication'
+	],
+
+	setup(props, { emit }) {
 		const isAuthorized = ref(false)
 		const codeInput = ref(null)
 
@@ -44,7 +48,7 @@ export default {
 			if (body.authenticated) {
 				document.cookie = `code=${code};max-age=${30 * 24 * 60 * 60};samesite=strict`
 				isAuthorized.value = body.authenticated
-				console.log('is authorized')
+				emit('authentication')
 			}
 		}
 

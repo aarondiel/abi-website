@@ -28,9 +28,7 @@ export default {
 		// v-bind to get the text of the input
 		let text = props.defaultText ?? '';
 
-		return {
-			text
-		}
+		return { text }
 	},
 	methods: {
 		validate(event) {
