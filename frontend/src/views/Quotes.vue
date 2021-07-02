@@ -20,12 +20,6 @@
 					<TextMessage type='info' @click='addMessage("info")'>neue nachricht</TextMessage>
 					<TextMessage side='right' @click='addMessage("right")'>neue nachricht</TextMessage>
 				</span>
-
-				<section>
-					<TextInput ref='codeInput' :defaultText='$route.query.code'>zugangscode</TextInput>
-					<button @click='submitQuote'>zitat einreichen</button>
-					<p ref='submitResponse'></p>
-				</section>
 			</div>
 
 			<div v-else>
@@ -80,7 +74,6 @@ export default {
 		const quotes = ref([]);
 		const submission = ref(false);
 		const submissionBuffer = ref([]);
-		const codeInput = ref();
 		const submitResponse = ref();
 
 		let offset = props?.page ?? ':0';
@@ -148,8 +141,6 @@ export default {
 				message.name = content.name;
 			}
 
-			const code = codeInput.value.text;
-
 			const messages = submissionBuffer.value.map(v => {
 				return {
 					type: v.type,
@@ -163,11 +154,11 @@ export default {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
-				credentials: 'omit',
+				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({ code, messages })
+				body: JSON.stringify({ messages })
 			});
 
 			const message = await response.json();
@@ -199,7 +190,6 @@ export default {
 			quotes,
 			navigatePage,
 			submission,
-			codeInput,
 			submitResponse,
 			submissionBuffer,
 			deleteMessage,

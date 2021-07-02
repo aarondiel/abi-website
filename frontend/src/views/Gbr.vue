@@ -89,9 +89,10 @@
 
 		<section class='submit'>
 			<h2>Abstimmen:</h2>
-			<TextInput ref='codeInput' :defaultText='id'>Zugangscode</TextInput>
-			<button @click='submitVote'>Abstimmen!</button>
-			<span id='vote-response'></span>
+			<Auth>
+				<button @click='submitVote'>Abstimmen!</button>
+				<span id='vote-response'></span>
+			</Auth>
 		</section>
 	</div>
 </template>
@@ -100,6 +101,7 @@
 import FileMenu from '../components/FileMenu.vue';
 import TextInput from '../components/TextInput.vue';
 import Collapsible from '../components/Collapsible.vue';
+import Auth from '../components/Auth.vue'
 
 export default {
 	name: 'Gbr',
@@ -107,7 +109,8 @@ export default {
 	components: {
 		FileMenu,
 		TextInput,
-		Collapsible
+		Collapsible,
+		Auth
 	},
 
 	setup() {
@@ -145,17 +148,16 @@ export default {
 				fees
 			};
 
-			const code = this.$refs.codeInput.text;
 
 			const response = await fetch('http://abi.aarondiel.com/api/gbr', {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',
-				credentials: 'omit',
+				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
 				referrerPolicy: 'no-referrer',
-				body: JSON.stringify({ code, submission })
+				body: JSON.stringify({submission })
 			})
 
 			const voteResponse = document.getElementById('vote-response');

@@ -5,7 +5,7 @@ import users from '../../../models/user.js';
 
 router.post('/', async (req, res) => {
 	try {
-		const user = await users.findOne({ code: req.body.code });
+		const user = await users.findOne({ code: req.cookies.code });
 
 		if (!user)
 			throw 'code existiert nicht'
@@ -14,7 +14,6 @@ router.post('/', async (req, res) => {
 			throw 'du hast den gbr vertrag nicht unterschieben'
 
 		let data = { ...req.body };
-		delete data.code;
 
 		await gbrVote.updateOne(
 			{ user: user.id },

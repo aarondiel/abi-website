@@ -5,9 +5,7 @@ import users from '../../../models/user.js';
 
 router.post('/', (req, res) => {
 	// find the user with the corresponding code
-	users.findOne({
-		code: req.body.code
-	}).then(data => {
+	users.findOne({ code: req.cookies.code }).then(data => {
 		if(!data)
 			return res.status(400).json({
 				message: 'code does not exist'

@@ -6,13 +6,12 @@ import mongoose from 'mongoose';
 
 router.post('/', async (req, res, next) => {
 	try {
-		const user = await users.findOne({ code: req.body.code });
+		const user = await users.findOne({ code: req.cookies.code });
 
 		if (!user)
 			throw 'code existiert nicht';
 
 		const data = { ...req.body, submittedBy: user.id };
-		delete data.code;
 
 		await quotes.updateOne(
 			{ _id: new mongoose.Types.ObjectId() },
