@@ -20,6 +20,11 @@
 					<TextMessage type='info' @click='addMessage("info")'>neue nachricht</TextMessage>
 					<TextMessage side='right' @click='addMessage("right")'>neue nachricht</TextMessage>
 				</span>
+
+				<section>
+					<button @click='submitQuote'>zitat einreichen</button>
+					<p ref='submitResponse'></p>
+				</section>
 			</div>
 
 			<div v-else>
@@ -50,7 +55,6 @@
 
 <script>
 import TextMessage from '../components/TextMessage.vue';
-import TextInput from '../components/TextInput.vue';
 import Auth from '../components/Auth.vue';
 import { ref } from 'vue';
 
@@ -66,7 +70,6 @@ export default {
 
 	components: {
 		TextMessage,
-		TextInput,
 		Auth
 	},
 
