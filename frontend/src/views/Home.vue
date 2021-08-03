@@ -1,6 +1,6 @@
 <template>
 	<div class='home'>
-		<p>Wilkommen auf der Abi-Webseite, hier findest du verschiedene Abstimmungen, Infos zu Veranstaltungen und sonstiges betrefflich des Abis.</p>
+		<p>Willkommen auf der Abi-Webseite, hier findest du verschiedene Abstimmungen, Infos zu Veranstaltungen und Sonstiges betrefflich des Abis.</p>
 		<router-link to='/gbr'>GbR Vertrag Abstimmung</router-link>
 		<router-link to='/quotes'>Zitate</router-link>
 		<router-link to='/gbr'>Mottos Abstimmung</router-link>
