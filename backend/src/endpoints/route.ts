@@ -4,7 +4,7 @@ import { historyFallback, isFileRequest } from '../lib/html-history-fallback'
 import users from '../models/users'
 
 const router = Router();
-const distPath = join(process.cwd(), '../../frontend/dist')
+const distPath = join(process.cwd(), '../frontend/dist')
 
 function hasBlacklistedPath(url: string): Boolean {
 	for (const path of [ '/api/quotes' ])
@@ -28,9 +28,11 @@ router.use(async (req, res, next) => {
 
 	res.status(401).json({})
 })
+
 router.use('/', historyFallback({
 	exclusions: [ '/api' ]
 }))
+
 router.use('/', staticPath(distPath))
 
 export default router;

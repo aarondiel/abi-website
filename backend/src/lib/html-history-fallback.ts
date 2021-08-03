@@ -33,7 +33,7 @@ export function historyFallback(options?: fallback_options) {
 		...options
 	}
 
-	const middleware: express.RequestHandler = (req, res, next) => {
+	const middleware: express.RequestHandler = (req, _res, next) => {
 		if (req.method !== 'GET')
 			return next()
 
@@ -48,7 +48,7 @@ export function historyFallback(options?: fallback_options) {
 				return next()
 		};
 
-		res.redirect(`/${config.index}`)
+		req.url = `/${config.index}`
 		next()
 	}
 
