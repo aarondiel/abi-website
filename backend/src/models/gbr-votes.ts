@@ -1,4 +1,4 @@
-import { User } from './users'
+import type { User } from './users'
 import { Schema, model } from 'mongoose'
 
 function roundToTens(val: any) {
