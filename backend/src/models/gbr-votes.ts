@@ -20,13 +20,13 @@ function roundToTens(val: any) {
 	return num
 }
 
-interface Exclusions {
+export interface Exclusion {
 	prom: boolean,
 	aftershow: boolean,
 	prank: boolean
 }
 
-const exclusionsSchema = new Schema<Exclusions>({
+const exclusionsSchema = new Schema<Exclusion>({
 	_id: false,
 
 	prom: {
@@ -45,13 +45,13 @@ const exclusionsSchema = new Schema<Exclusions>({
 	}
 })
 
-interface Fees {
+export interface Fee {
 	hoodies: number,
 	tickets: number,
 	paper: number
 }
 
-const feesSchema = new Schema<Fees>({
+const feesSchema = new Schema<Fee>({
 	_id: false,
 
 	hoodies: {
@@ -84,8 +84,8 @@ interface Submission {
 	paperName: boolean,
 	votings: boolean,
 	organisation: boolean,
-	exclusions: Exclusions,
-	fees: Fees
+	exclusions: Exclusion,
+	fees: Fee
 }
 
 const submissionSchema = new Schema<Submission>({
@@ -116,12 +116,12 @@ const submissionSchema = new Schema<Submission>({
 	fees: feesSchema
 })
 
-interface VoteSchema {
+export interface Vote {
 	user: User,
 	submission: Submission
 }
 
-const gbrVoteSchema = new Schema<VoteSchema>({
+const gbrVotesSchema = new Schema<Vote>({
 	versionKey: false,
 
 	user: {
@@ -136,4 +136,4 @@ const gbrVoteSchema = new Schema<VoteSchema>({
 	}
 })
 
-export default model<VoteSchema>('gbr-votes', gbrVoteSchema)
+export default model<Vote>('gbr-votes', gbrVotesSchema)

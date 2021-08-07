@@ -1,21 +1,22 @@
-import { Router, static as staticPath } from 'express';
-import { join } from 'path';
+import { Router, static as staticPath } from 'express'
+import { join } from 'path'
 import { historyFallback, isFileRequest } from '../lib/html-history-fallback'
 import users from '../models/users'
-
-const router = Router();
-const distPath = join(process.cwd(), '../frontend/dist')
+import api from './api/route'
 
 function hasBlacklistedPath(url: string): Boolean {
-	for (const path of [ '/api/quotes' ])
+	for (const path of [ 'api/quotes' ])
 		if (url.startsWith(path))
 			return true
 
 	return false
 }
 
+const router = Router();
+const distPath = join(process.cwd(), '../frontend/dist')
+
 // block unauthorized requests
-router.use(async (req, res, next) => {
+router.use('/', async (req, res, next) => {
 	if (isFileRequest(req.url))
 		return next()
 
@@ -29,10 +30,12 @@ router.use(async (req, res, next) => {
 	res.status(401).json({})
 })
 
+router.use('/api', api)
+
 router.use('/', historyFallback({
 	exclusions: [ '/api' ]
 }))
 
 router.use('/', staticPath(distPath))
 
-export default router;
+export default router

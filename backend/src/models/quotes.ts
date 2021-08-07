@@ -1,4 +1,4 @@
-import { Schema, model, Types } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
 export interface Message {
 	type: 'message' | 'info',
@@ -58,14 +58,14 @@ const messageSchema = new Schema<Message>({
 })
 
 export interface Quote {
-	submittedBy: Types.ObjectId,
+	submittedBy: Schema.Types.ObjectId,
 	messages: Message[]
 }
 
 const quoteSchema = new Schema<Quote>(
 	{
 		submittedBy: {
-			type: Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: 'users',
 			required: true
 		},
