@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Model, model } from 'mongoose'
 
 export interface Message {
 	type: 'message' | 'info',
@@ -7,7 +7,7 @@ export interface Message {
 	text: string
 }
 
-const messageSchema = new Schema<Message>({
+const messageSchema = new Schema<Message, Model<Message>, Message>({
 	type: {
 		type: String,
 
@@ -32,8 +32,11 @@ const messageSchema = new Schema<Message>({
 		],
 
 		required: [
-			function() {
+			function () {
 				// only required if message type is 'message'
+				// @ts-ignore
+				console.log(this)
+				// @ts-ignore
 				return this.type === 'message'
 			},
 			'side was not specified'
@@ -45,6 +48,9 @@ const messageSchema = new Schema<Message>({
 
 		required: [ function() {
 				// only required if message type is 'message'
+				// @ts-ignore
+				console.log(this)
+				// @ts-ignore
 				return this.type === 'message'
 			},
 			'name was not specified'

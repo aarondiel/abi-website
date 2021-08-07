@@ -5,6 +5,7 @@ import users from '../../models/users'
 const router = Router()
 
 const checkAuth: RequestHandler = async (req, res, _next) => {
+	console.log(req.cookies)
 	const user = await users.findOne({ code: req.cookies.code })
 	if (user)
 		return res.status(200).json({ authenticated: true })
