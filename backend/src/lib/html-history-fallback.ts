@@ -1,6 +1,6 @@
 import express from 'express'
 
-interface fallback_config {
+interface FallbackConfig {
 	index: string,
 	exclusions: string[],
 	acceptedHeaders: string[],
@@ -8,11 +8,8 @@ interface fallback_config {
 }
 
 // this interface only exists so that tsserver doesn't yell at me
-interface fallback_options {
-	index?: string,
-	exclusions?: string[],
-	acceptedHeaders?: string[],
-	acceptFileRequests?: boolean
+type Optional<Type> = {
+	[Property in keyof Type]?: Type[Property]
 }
 
 export function isFileRequest(path: string) {
@@ -24,8 +21,8 @@ export function isFileRequest(path: string) {
 	return file.indexOf('.') !== -1
 }
 
-export function historyFallback(options?: fallback_options) {
-	const config: fallback_config = {
+export function historyFallback(options?: Optional<FallbackConfig>) {
+	const config: FallbackConfig = {
 		index: 'index.html',
 		exclusions: [],
 		acceptedHeaders: [ 'text/html', 'application/xhtml+xml' ],

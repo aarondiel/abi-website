@@ -12,6 +12,28 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/', endpoints)
 
+// error handling
+app.use('/', (err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	switch (typeof err) {
+		case 'string':
+			res.status(400).json({ message: err })
+			break
+
+		case 'object':
+			if (err.errors === undefined)
+				break
+
+			// collect every validation error
+			const errors = Object.values(err.errors as mongoose.CastError).map(v => v.message)
+			res.status(400).json({ message: errors[0] })
+			break
+
+		default:
+			res.status(500).json({ message: 'some error accrued' })
+			break
+	}
+})
+
 mongoose.set('runValidators', true)
 
 const mongodb_connect = new Promise<void>((res, rej) => {

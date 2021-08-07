@@ -12,7 +12,7 @@ const messageSchema = new Schema<Message>({
 		type: String,
 
 		validate: [
-			(v: any) => {
+			function (v: any) {
 				return ['message', 'info'].indexOf(v) !== -1
 			},
 			'not a valid message type'
@@ -25,7 +25,7 @@ const messageSchema = new Schema<Message>({
 		type: String,
 
 		validate: [
-			(v: any) => {
+			function (v: any) {
 				return ['left', 'right'].indexOf(v) !== -1
 			},
 			'not a valid side'
@@ -66,6 +66,7 @@ const quoteSchema = new Schema<Quote>(
 	{
 		submittedBy: {
 			type: Types.ObjectId,
+			ref: 'users',
 			required: true
 		},
 
@@ -73,7 +74,7 @@ const quoteSchema = new Schema<Quote>(
 			type: [ messageSchema ],
 			required: true,
 			validate: [
-				(v: any) => {
+				function (v: any) {
 					return v.length > 0
 				},
 				'gib mindestens ein zitat an'
