@@ -104,6 +104,7 @@ export default {
 <style lang='scss'>
 @use '../scss/colors';
 @use '../scss/media';
+@use 'sass:math';
 
 $triangleSize: 1.5rem;
 
@@ -150,7 +151,7 @@ $triangleSize: 1.5rem;
 	}
 
 	&.left {
-		padding-left: $triangleSize / 2;
+		padding-left: math.div($triangleSize, 2);
 
 		> div > p {
 			background-color: colors.$primary;
@@ -163,7 +164,7 @@ $triangleSize: 1.5rem;
 	}
 
 	&.right {
-		padding-right: $triangleSize / 2;
+		padding-right: math.div($triangleSize, 2);
 		flex-flow: row-reverse;
 
 		> div > p {

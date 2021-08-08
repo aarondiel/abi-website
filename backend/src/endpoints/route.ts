@@ -17,15 +17,12 @@ const distPath = join(process.cwd(), '../frontend/dist')
 
 // block unauthorized requests
 router.use('/', async (req, res, next) => {
-	console.log('filerequest?')
 	if (isFileRequest(req.url))
 		return next()
 
-	console.log(req.url)
 	if (!hasBlacklistedPath(req.url))
 		return next()
 
-	console.log(req.cookies)
 	const user = await users.findOne({ code: req.cookies.code })
 	if (user)
 		return next()

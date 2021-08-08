@@ -6,10 +6,10 @@ import config from './config'
 import endpoints from './endpoints/route'
 
 const app = express()
-app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
+app.use(cors())
 app.use('/', endpoints)
 
 // error handling
