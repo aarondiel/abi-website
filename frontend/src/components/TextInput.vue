@@ -1,5 +1,5 @@
 <template>
-	<form class='textInput'>
+	<form class='textInput' @submit.prevent='this.$emit("submit")'>
 		<input
 			type='text'
 			@input='validate($event)'
@@ -22,7 +22,7 @@ export default {
 		defaultText: String,
 		unit: String
 	},
-	emits: [ 'update:modelValue' ],
+	emits: [ 'update:modelValue', 'submit' ],
 	setup(props) {
 		// the text property is there if you don't want to use
 		// v-bind to get the text of the input

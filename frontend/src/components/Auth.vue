@@ -2,7 +2,7 @@
 	<slot v-if='isAuthorized'/>
 	<div class='auth' v-else>
 		<h2>Autorisierung benötigt</h2>
-		<TextInput ref='codeInput'>Zugangscode</TextInput>
+		<TextInput ref='codeInput' @submit='submitCode()'>Zugangscode</TextInput>
 		<button @click='submitCode()'>Log In</button>
 		<span id='server-response'/>
 	</div>
@@ -46,7 +46,8 @@ export default {
 
 			const body = await response.json()
 			if (body.authenticated) {
-				document.cookie = `code=${code};max-age=${30 * 24 * 60 * 60};samesite=strict`
+				// create a cookie that expires in 6 months
+				document.cookie = `code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
 				isAuthorized.value = body.authenticated
 				emit('authentication', body)
 			}
