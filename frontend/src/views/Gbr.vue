@@ -176,7 +176,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @use '../scss/fonts';
 @use '../scss/colors';
 @use '../scss/media';

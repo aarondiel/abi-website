@@ -18,6 +18,11 @@ const routes = [
 		props: true
 	},
 	{
+		path: '/gallery',
+		name: 'quotes',
+		component: () => import('@/views/Gallery.vue')
+	},
+	{
 		path: '/:path(.*)*',
 		name: 'notFound',
 		component: () => import('@/views/NotFound.vue')
