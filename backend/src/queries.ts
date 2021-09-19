@@ -23,6 +23,21 @@ const pool = new pg.Pool({
 	port: config.postgresql.port
 })
 
+async function make_user_table() {
+	const response = pool.query(`
+		CREATE TABLE users(
+			code varchar(10) PRIMARY KEY NOT NULL,
+			firstname varchar(20) NOT NULL,
+			middlename varchar(20),
+			lastname varchar(20) NOT NULL,
+			gbrsigned BOOLEAN DEFAULT false,
+			email varchar(50)
+		)
+	`)
+
+	return response
+}
+
 export async function get_all_users() {
 	const users = await pool.query('SELECT * FROM users')
 	return users.rows
@@ -49,8 +64,6 @@ export async function update_user(code: string, options: Optional<User>) {
 		return `${key} = ${options[key]}`
 	})
 
-	console.log(changes.join(' '))
-
 	const response = pool.query(
 		`UPDATE users SET ${changes.join(' ')} WHERE code = $1`,
 		[ code ]
@@ -68,4 +81,6 @@ export async function delete_user(code: string) {
 	return response
 }
 
-update_user('fAR4SCGaMB', { gbrsigned: false }).then(console.log)
+if (require.main === module) {
+	update_user('fAR4SCGaMB', { gbrsigned: true }).then(console.log)
+}
