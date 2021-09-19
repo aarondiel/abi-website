@@ -8,6 +8,7 @@
 	"author": "aaron diel",
 	"license": "MIT",
 	"devDependencies": {
+		"@types/body-parser": "^1.19.1",
 		"@types/cookie-parser": "^1.4.2",
 		"@types/cors": "^2.8.10",
 		"@types/express": "^4.17.13",
@@ -18,9 +19,11 @@
 		"typescript": "^4.3.5"
 	},
 	"dependencies": {
+		"body-parser": "^1.19.0",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
-		"mongoose": "^5.13.2"
+		"mongoose": "^5.13.2",
+		"pg": "^8.7.1"
 	}
 }
