@@ -1,6 +1,6 @@
 import type { User } from './users'
 import { Schema, model } from 'mongoose'
-import 'users'
+import './users'
 
 function roundToTens(val: any) {
 	if (typeof val === 'number')

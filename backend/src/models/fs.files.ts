@@ -1,17 +1,17 @@
-import { Schema, Model, model } from 'mongoose'
+import { Schema, Model, model, Types } from 'mongoose'
 
 export interface File {
-	id: Schema.Types.ObjectId,
+	_id: Types.ObjectId,
 	length: number,
 	chunkSize: number,
-	uploadDate: Schema.Types.Date,
+	uploadDate: Date,
 	filename: string,
 	md5: string,
 	metadata?: object
 }
 
 const file_schema = new Schema<File, Model<File>, File>({
-	id: {
+	_id: {
 		type: Schema.Types.ObjectId,
 		required: true
 	},
@@ -27,7 +27,7 @@ const file_schema = new Schema<File, Model<File>, File>({
 	},
 
 	uploadDate: {
-		type: Schema.Types.Date,
+		type: Date,
 		required: true
 	},
 

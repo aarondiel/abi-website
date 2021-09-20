@@ -1,13 +1,19 @@
-import { Schema, Model, model } from 'mongoose'
+import { Schema, Model, model, Types } from 'mongoose'
 import './fs.files'
 import './users'
 
 export interface GalleryImage {
-	image: Schema.Types.ObjectId,
-	submitted_by: Schema.Types.ObjectId
+	_id: Types.ObjectId,
+	image: Types.ObjectId,
+	submitted_by: Types.ObjectId
 }
 
 const gallery_schema = new Schema<GalleryImage, Model<GalleryImage>, GalleryImage>({
+	_id: {
+		type: Schema.Types.ObjectId,
+		required: true
+	},
+
 	image: {
 		type: Schema.Types.ObjectId,
 		ref: 'fs.files',

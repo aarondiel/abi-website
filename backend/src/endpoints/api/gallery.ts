@@ -29,15 +29,17 @@ router.post('/', async (req, res, _next) => {
 	req.pipe(busboy)
 })
 
-router.get('/', async (req, res, _next) => {
-	const query = await gallery.find()
-		.limit(10)
-		.populate('image')
-		.populate('submitted_by')
+router.get('/', async (_req, res, _next) => {
+	const query = await gallery.findOne().populate('image')
+	// @ts-ignore
+	const image_id = query.image._id
 
-	console.log(query)
+	if (query === null)
+		throw 'no images found'
 
-	res.status(200).send('cum')
+	const bucket = new mongo.GridFSBucket(connection.db)
+	const download_stream = bucket.openDownloadStream(image_id)
+	download_stream.pipe(res)
 })
 
 export default router
