@@ -1,4 +1,5 @@
 import { Schema, Model, model } from 'mongoose'
+import './users'
 
 export interface Message {
 	type: 'message' | 'info',
