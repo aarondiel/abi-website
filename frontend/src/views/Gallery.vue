@@ -18,8 +18,8 @@
 
 		<img
 			v-for='image in submitted_images'
-			:key='image.name'
-			:src='image.content'
+			:key='image'
+			:src='image'
 		/>
 	</div>
 </template>
@@ -34,21 +34,8 @@ export default {
 		const fileinput = ref()
 		let submitted_images = ref([])
 
-		function read_file(file) {
-			const reader = new FileReader()
-			reader.readAsDataURL(file)
-			reader.onload = () => {
-				submitted_images.value.push({
-					content: reader.result,
-					name: file.name,
-					type: file.type
-				})
-			}
-		}
-
 		function update_selected_files() {
-			submitted_images.value = []
-			fileinput.value.files.forEach(read_file)
+			submitted_images.value = [...fileinput.value.files].map(URL.createObjectURL)
 		}
 
 		function submit_files({ target }) {
