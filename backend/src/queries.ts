@@ -23,7 +23,7 @@ const pool = new pg.Pool({
 	port: config.postgresql.port
 })
 
-async function make_user_table() {
+export async function make_user_table() {
 	const response = pool.query(`
 		CREATE TABLE users(
 			code varchar(10) PRIMARY KEY NOT NULL,
@@ -79,6 +79,19 @@ export async function delete_user(code: string) {
 	)
 
 	return response
+}
+
+export async function make_gallery_table() {
+	const response = pool.query(`
+		CREATE TABLE gallery(
+			code varchar(10) PRIMARY KEY NOT NULL,
+			firstname varchar(20) NOT NULL,
+			middlename varchar(20),
+			lastname varchar(20) NOT NULL,
+			gbrsigned BOOLEAN DEFAULT false,
+			email varchar(50)
+		);
+	`)
 }
 
 if (require.main === module) {

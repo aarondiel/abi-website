@@ -1,11 +1,12 @@
 <template>
 	<div class='gallery'>
-		<form enctype='multipart/form-data' @submit.prevent='submit_files'>
+		<form id='testform' enctype='multipart/form-data' @submit.prevent='submit_files'>
 			<label>
 				dateien auswählen
 				<input
 					ref='fileinput'
 					type='file'
+					name='fileinput'
 					accept='image/*,video/*'
 					@input='update_selected_files'
 					multiple
@@ -17,14 +18,15 @@
 
 		<img
 			v-for='image in submitted_images'
-			:key='image'
-			:src='image'
+			:key='image.name'
+			:src='image.content'
 		/>
 	</div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import config from '@/config.js'
 
 export default {
 	name: 'Gbr',
@@ -32,11 +34,15 @@ export default {
 		const fileinput = ref()
 		let submitted_images = ref([])
 
-		function read_file(file) {
+		function read_file(file) {
 			const reader = new FileReader()
 			reader.readAsDataURL(file)
-			reader.onload = () => {
-				submitted_images.value = [ ...submitted_images.value, reader.result ]
+			reader.onload = () => {
+				submitted_images.value.push({
+					content: reader.result,
+					name: file.name,
+					type: file.type
+				})
 			}
 		}
 
@@ -45,9 +51,12 @@ export default {
 			fileinput.value.files.forEach(read_file)
 		}
 
-		function submit_files() {
-			// actually implement sending files here :)
-			console.log(submitted_images.value)
+		function submit_files({ target }) {
+			const data = new FormData(target)
+			fetch(`${config.server_url}/api/gallery`, {
+				method: 'POST',
+				body: data
+			}).then(console.log)
 		}
 
 		return { fileinput, update_selected_files, submit_files, submitted_images }
