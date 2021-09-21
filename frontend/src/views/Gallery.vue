@@ -1,5 +1,5 @@
 <template>
-	<div class='gallery'>
+	<div class='gallery' v-if='page === ":submit"'>
 		<form id='testform' enctype='multipart/form-data' @submit.prevent='submit_files'>
 			<label>
 				dateien auswählen
@@ -22,6 +22,14 @@
 			:src='image'
 		/>
 	</div>
+
+	<div class='gallery' v-else>
+		<img
+			v-for='image in queried_images.images'
+			:key='image'
+			:src='image'
+		/>
+	</div>
 </template>
 
 <script>
@@ -30,9 +38,15 @@ import config from '@/config.js'
 
 export default {
 	name: 'Gbr',
-	setup() {
+
+	props: {
+		page: { type: String }
+	},
+
+	setup(props) {
 		const fileinput = ref()
-		let submitted_images = ref([])
+		const submitted_images = ref([])
+		const queried_images = ref([])
 
 		function update_selected_files() {
 			submitted_images.value = [...fileinput.value.files].map(URL.createObjectURL)
@@ -43,10 +57,18 @@ export default {
 			fetch(`${config.server_url}/api/gallery`, {
 				method: 'POST',
 				body: data
-			}).then(console.log)
+			})
 		}
 
-		return { fileinput, update_selected_files, submit_files, submitted_images }
+		async function query_files() {
+			const request = await fetch(`${config.server_url}/api/gallery`)
+			queried_images.value = await request.json()
+		}
+
+		if (props.page !== ':submit')
+			query_files()
+
+		return { fileinput, update_selected_files, submit_files, submitted_images, queried_images }
 	}
 }
 </script>

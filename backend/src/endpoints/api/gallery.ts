@@ -33,8 +33,10 @@ router.get('/', async (_req, res, _next) => {
 	const query = await gallery.find()
 		.limit(10)
 
-	if (query === null)
-		throw 'no images found'
+	if (query === null) {
+		console.log('no images found')
+		return res.status(404).send('no images found')
+	}
 
 	const images = query.map(image => `${config.url}/api/gallery/${image.image}`)
 
@@ -42,11 +44,13 @@ router.get('/', async (_req, res, _next) => {
 })
 
 router.get('/:image', async (req, res, _next) => {
-	const query = await gallery.findById(req.params.image)
+	const query = await gallery.findOne({ image: req.params.image })
 		.populate('image')
 
-	if (query === null)
-		throw 'no image found'
+	if (query === null) {
+		console.log('no image found')
+		return res.status(404).send('no image found')
+	}
 
 	// @ts-ignore
 	const image_id = query.image._id
