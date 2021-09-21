@@ -57,6 +57,7 @@
 import TextMessage from '../components/TextMessage.vue';
 import Auth from '../components/Auth.vue';
 import { ref } from 'vue';
+import config from '@/config';
 
 export default {
 	name: 'Quotes',
@@ -92,7 +93,7 @@ export default {
 
 		async function getQuotes() {
 			const response = await fetch(
-				`https://abi.aarondiel.com/api/quotes?offset=${3 * offset}&limit=3`,
+				`${config.url}/api/quotes?offset=${3 * offset}&limit=3`,
 				{
 					method: 'GET',
 					mode: 'cors',
@@ -153,7 +154,7 @@ export default {
 				}
 			})
 
-			const response = await fetch('https://abi.aarondiel.com/api/quotes', {
+			const response = await fetch(`${config.url}/api/quotes`, {
 				method: 'POST',
 				mode: 'cors',
 				cache: 'no-cache',

@@ -54,14 +54,14 @@ export default {
 
 		function submit_files({ target }) {
 			const data = new FormData(target)
-			fetch(`${config.server_url}/api/gallery`, {
+			fetch(`${config.url}/api/gallery`, {
 				method: 'POST',
 				body: data
 			})
 		}
 
 		async function query_files() {
-			const request = await fetch(`${config.server_url}/api/gallery`)
+			const request = await fetch(`${config.url}/api/gallery`)
 			queried_images.value = await request.json()
 		}
 

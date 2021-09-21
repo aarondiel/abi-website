@@ -1,16 +1,18 @@
 <template>
-	<slot v-if='isAuthorized'/>
+	<slot v-if='is_authorized'/>
 	<div class='auth' v-else>
 		<h2>Autorisierung benötigt</h2>
-		<TextInput ref='codeInput' @submit='submitCode()'>Zugangscode</TextInput>
-		<button @click='submitCode()'>Log In</button>
+		<TextInput ref='code_input' @submit='submit_code()'>Zugangscode</TextInput>
+		<button @click='submit_code()'>Log In</button>
 		<span id='server-response'/>
 	</div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import TextInput from '../components/TextInput.vue'
+import TextInput from '@/components/TextInput.vue'
+import { useRoute } from 'vue-router'
+import config from '@/config'
 
 export default {
 	name: 'Auth',
@@ -23,53 +25,49 @@ export default {
 		'authentication'
 	],
 
-	setup(props, { emit }) {
-		const isAuthorized = ref(false)
-		const codeInput = ref(null)
+	setup(props, asdf) {
+		const is_authorized = ref(false)
+		const code_input = ref()
 
-		async function submitCode() {
-			const code = codeInput.value.text
-
-			const response = await fetch(
-				'https://abi.aarondiel.com/api/auth',
-				{
-					method: 'POST',
-					mode: 'cors',
-					cache: 'no-cache',
-					credentials: 'omit',
-					headers: { 'Content-Type': 'application/json' },
-					redirect: 'follow',
-					referrerPolicy: 'no-referrer',
-					body: JSON.stringify({ code })
-				}
-			)
+		async function test_code(code) {
+			const response = await fetch(`${config.url}/api/auth`, {
+				method: 'POST',
+				credentials: 'omit',
+				headers: { 'Content-Type': 'application/json' },
+				redirect: 'follow',
+				body: JSON.stringify({ code })
+			})
 
 			const body = await response.json()
 			if (body.authenticated) {
 				// create a cookie that expires in 6 months
 				document.cookie = `code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
-				isAuthorized.value = body.authenticated
-				emit('authentication', body)
+				is_authorized.value = body.authenticated
+				asdf.emit('authentication')
 			}
 		}
 
-		fetch(
-			'https://abi.aarondiel.com/api/auth',
-			{
+		async function get_user_priveleges() {
+			const response = await fetch(`${config.url}/api/auth`, {
 				method: 'GET',
-				mode: 'cors',
-				cache: 'no-cache',
 				credentials: 'same-origin',
 				headers: { 'Content-Type': 'application/json' },
 				redirect: 'follow',
-				referrerPolicy: 'no-referrer'
-			}
-		).then(async response => {
-			const message = await response.json()
-			isAuthorized.value = message.authenticated
-		})
+			})
 
-		return { codeInput, isAuthorized, submitCode }
+			const body = await response.json()
+			is_authorized.value = body.authenticated
+		}
+
+		const submit_code = () => test_code(code_input.value.text)
+
+		get_user_priveleges()
+
+		const router = useRoute()
+		if (router.query.code)
+			test_code(router.query.code)
+
+		return { code_input, is_authorized, submit_code }
 	}
 }
 </script>
