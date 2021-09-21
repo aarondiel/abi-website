@@ -11,11 +11,6 @@ export interface File {
 }
 
 const file_schema = new Schema<File, Model<File>, File>({
-	_id: {
-		type: Schema.Types.ObjectId,
-		required: true
-	},
-
 	length: {
 		type: Number,
 		required: true

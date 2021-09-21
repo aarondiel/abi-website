@@ -9,11 +9,6 @@ export interface GalleryImage {
 }
 
 const gallery_schema = new Schema<GalleryImage, Model<GalleryImage>, GalleryImage>({
-	_id: {
-		type: Schema.Types.ObjectId,
-		required: true
-	},
-
 	image: {
 		type: Schema.Types.ObjectId,
 		ref: 'fs.files',
