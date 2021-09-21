@@ -2,6 +2,7 @@ import { Router } from 'express'
 import Busboy from 'busboy'
 import { connection, mongo } from 'mongoose'
 import gallery from '../../models/gallery_images'
+import config from '../../config'
 
 const router = Router()
 
@@ -22,20 +23,30 @@ router.post('/', async (req, res, _next) => {
 	})
 
 	busboy.on('finish', () => {
-		console.log('finish')
 		res.status(200).send('thank you')
 	})
 
 	req.pipe(busboy)
 })
 
+router.get('/', async (_req, res, _next) => {
+	const query = await gallery.find()
+		.limit(10)
+
+	if (query === null)
+		throw 'no images found'
+
+	const images = query.map(image => `${config.url}/api/gallery/${image.image}`)
+
+	res.status(200).json({ images })
+})
+
 router.get('/:image', async (req, res, _next) => {
-	console.log(req.params.image)
-	const query = await gallery.findOne({ _id: req.params.image })
+	const query = await gallery.findById(req.params.image)
 		.populate('image')
 
 	if (query === null)
-		return 'no image found'
+		throw 'no image found'
 
 	// @ts-ignore
 	const image_id = query.image._id
