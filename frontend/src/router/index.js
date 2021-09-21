@@ -19,7 +19,7 @@ const routes = [
 	},
 	{
 		path: '/gallery:page?',
-		name: 'quotes',
+		name: 'gallery',
 		component: () => import('@/views/Gallery.vue'),
 		props: true
 	},
