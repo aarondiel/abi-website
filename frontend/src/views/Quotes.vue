@@ -80,24 +80,22 @@ export default {
 		const submissionBuffer = ref([]);
 		const submitResponse = ref();
 
-		let offset = props?.page ?? ':0';
+		let page = props?.page ?? ':0';
+		let offset = 0
 
-		if (offset === ':submit') {
+		if (page === ':submit') {
 			submission.value = true;
 			offset = 0;
 		} else {
-			offset = parseInt(offset.slice(1, offset.length));
+			offset = parseInt(page.slice(1, page.length));
 
 			offset = isNaN(offset) ? 0 : offset;
 		}
 
 		async function getQuotes() {
-			const response = await fetch(
-				`${config.url}/api/quotes?offset=${3 * offset}&limit=3`,
-				{
+			const response = await fetch(`${config.url}/api/quotes?offset=${3 * offset}&limit=3`, {
 					method: 'GET',
 					mode: 'cors',
-					cache: 'no-cache',
 					credentials: 'same-origin',
 					headers: { 'Content-Type': 'application/json' },
 					redirect: 'follow',

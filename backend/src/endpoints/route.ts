@@ -3,6 +3,7 @@ import { join } from 'path'
 import { historyFallback, isFileRequest } from '../lib/html-history-fallback'
 import users from '../models/users'
 import api from './api/route'
+import config from '../config'
 
 function hasBlacklistedPath(url: string): Boolean {
 	for (const path of [ '/api/quotes' ])
@@ -25,6 +26,9 @@ router.use('/', async (req, res, next) => {
 
 	const user = await users.findOne({ code: req.cookies.code })
 	if (user)
+		return next()
+
+	if (config.ignore_auth)
 		return next()
 
 	res.status(401).json({})

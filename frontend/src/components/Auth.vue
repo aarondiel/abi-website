@@ -25,7 +25,7 @@ export default {
 		'authentication'
 	],
 
-	setup(props, asdf) {
+	setup(_props, { emit }) {
 		const is_authorized = ref(false)
 		const code_input = ref()
 
@@ -39,11 +39,12 @@ export default {
 			})
 
 			const body = await response.json()
+
 			if (body.authenticated) {
 				// create a cookie that expires in 6 months
-				document.cookie = `code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
+				document.cookie = `domain=.app.localhost;code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
 				is_authorized.value = body.authenticated
-				asdf.emit('authentication')
+				emit('authentication')
 			}
 		}
 
@@ -64,7 +65,7 @@ export default {
 		get_user_priveleges()
 
 		const router = useRoute()
-		if (router.query.code)
+		if (router.query.code && !is_authorized.value)
 			test_code(router.query.code)
 
 		return { code_input, is_authorized, submit_code }
