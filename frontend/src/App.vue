@@ -12,6 +12,7 @@
 
 		<nav class='menu hidden' ref='menu'>
 			<img src='./assets/cross.svg' alt='close' @click='toggleMenu'/>
+			<router-link to='/gallery'>Abi Gallerie</router-link>
 			<router-link to='/gbr'>GbR Vertrag</router-link>
 			<router-link to='/quotes'>Zitate</router-link>
 		</nav>
