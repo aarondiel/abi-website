@@ -26,6 +26,8 @@
 				:key='image'
 				:src='image'
 			/>
+
+			<router-link class='submit' to='/gallery'>→ Zurück zu der Gallerie</router-link>
 		</Auth>
 	</div>
 
@@ -174,7 +176,6 @@ export default {
 	}
 
 	> a {
-		margin: 0 auto;
 		padding: 0.25em;
 		border-radius: 0.25em;
 		color: white;
@@ -183,6 +184,17 @@ export default {
 
 		@include media.phone() {
 			grid-column: 1 / span 3;
+		}
+
+		&.submit {
+			color: colors.$primary;
+			background-color: unset;
+			place-self: center start;
+
+			&:hover {
+				color: colors.$secondary;
+				background-color: unset;
+			}
 		}
 
 		&:hover {
