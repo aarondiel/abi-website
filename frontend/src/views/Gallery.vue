@@ -216,12 +216,14 @@ export default {
 
 	> form {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: 3rem;
 
 		@include media.phone() {
 			grid-column: 1 / span 3;
+			flex-direction: row;
 		}
 
 		> .loading {
