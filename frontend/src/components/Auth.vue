@@ -58,6 +58,8 @@ export default {
 
 			const body = await response.json()
 			is_authorized.value = body.authenticated
+			if (is_authorized.value)
+				emit('authentication')
 		}
 
 		const submit_code = () => test_code(code_input.value.text)
