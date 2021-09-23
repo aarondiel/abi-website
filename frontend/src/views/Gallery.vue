@@ -32,18 +32,20 @@
 	<div class='gallery' v-else>
 		<router-link to='/gallery:submit'>Bilder einsenden</router-link>
 
-		<Auth @authentication='query_files'>
+		<Auth @authentication='setup_intersection'>
 			<img
 				v-for='image in queried_images'
 				:key='image.src'
 				:src='image.src'
 			/>
 		</Auth>
+
 	</div>
+	<span ref='loading_trigger' class='loader'/>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import config from '@/config.js'
 import Auth from '@/components/Auth.vue'
 import Loading from '@/components/Loading.vue'
@@ -57,13 +59,15 @@ export default {
 		page: { type: String }
 	},
 
-	setup(props) {
+	setup() {
 		const fileinput = ref()
 		const submitted_images = ref([])
 		const queried_images = ref([])
 		const submit_response = ref('')
 		const response_loading = ref()
+		const loading_trigger = ref()
 		let offset = 0
+		let observer
 
 		function update_selected_files() {
 			submitted_images.value = [...fileinput.value.files].map(URL.createObjectURL)
@@ -96,9 +100,7 @@ export default {
 		}
 
 		async function query_files() {
-			const request = await fetch(
-				`${config.url}/api/gallery?offset=${9 * offset}&limit=9`
-			)
+			const request = await fetch(`${config.url}/api/gallery?offset=${9 * offset}&limit=9`)
 
 			if (request.ok)
 				offset++
@@ -108,22 +110,54 @@ export default {
 			queried_images.value = [ ...queried_images.value, ...body ]
 		}
 
+		async function handle_intersection(entry) {
+			if (entry.intersectionRatio > 0) {
+				query_files()
+			}
+		}
+
+		async function setup_intersection() {
+			if (observer !== undefined)
+				return
+
+			// this is really scuffed and is supposed to make sure that enough images
+			// are loaded in so that the user can scroll
+			await query_files()
+			await query_files()
+			await query_files()
+
+			observer = new IntersectionObserver(entries => {
+				entries.forEach(handle_intersection)
+			})
+
+			observer.observe(loading_trigger.value)
+		}
+
+		onUnmounted(() => {
+			if (observer === undefined)
+				return
+
+			observer.disconnect()
+		})
+
 		return {
 			fileinput,
 			update_selected_files,
 			submit_files,
 			submitted_images,
 			queried_images,
-			query_files,
 			response_loading,
-			submit_response
+			submit_response,
+			setup_intersection,
+			loading_trigger
 		}
 	}
 }
 </script>
 
 <style lang='scss'>
-@use '../scss/colors';
+@use '@/scss/colors';
+@use '@/scss/media';
 
 .gallery {
 	padding: 1rem;
@@ -131,16 +165,25 @@ export default {
 	width: 100%;
 	box-sizing: border-box;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
 	gap: 1rem;
+	grid-template-columns: repeat(1, 1fr);
+	grid-auto-rows: min-content;
+
+	@include media.phone() {
+		grid-template-columns: repeat(3, 1fr);
+	}
 
 	> a {
-		grid-column: 1 / span 3;
 		margin: 0 auto;
 		padding: 0.25em;
 		border-radius: 0.25em;
 		color: white;
 		background-color: colors.$primary;
+		place-self: center;
+
+		@include media.phone() {
+			grid-column: 1 / span 3;
+		}
 
 		&:hover {
 			background-color: colors.$secondary;
@@ -149,15 +192,25 @@ export default {
 	}
 
 	> .auth {
-		grid-column: 1 / span 3;
+		@include media.phone() {
+			grid-column: 1 / span 3;
+		}
+	}
+
+	> .loader {
+		width: 100%;
+		height: 2rem;
 	}
 
 	> form {
-		grid-column: 1 / span 3;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		gap: 3rem;
+
+		@include media.phone() {
+			grid-column: 1 / span 3;
+		}
 
 		> .loading {
 			display: flex;
