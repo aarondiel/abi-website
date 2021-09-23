@@ -20,6 +20,6 @@ const gallery_schema = new Schema<GalleryImage, Model<GalleryImage>, GalleryImag
 		ref: 'users',
 		required: true
 	}
-})
+}, { versionKey: false, timestamps: true })
 
 export default model<GalleryImage>('gallery_images', gallery_schema)

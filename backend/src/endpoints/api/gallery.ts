@@ -29,18 +29,25 @@ router.post('/', async (req, res, _next) => {
 	req.pipe(busboy)
 })
 
-router.get('/', async (_req, res, _next) => {
+router.get('/', async (req, res, _next) => {
+	const limit = parseInt(req.query?.limit?.toString() ?? '') ?? 10
+	const offset = parseInt(req.query?.offset?.toString() ?? '') ?? 0
+
 	const query = await gallery.find()
-		.limit(10)
+		.sort({ createdAt: -1 })
+		.skip(offset)
+		.limit(limit)
 
 	if (query === null) {
 		console.log('no images found')
-		return res.status(404).send('no images found')
+		return res.status(404).json({ message: 'no images found' })
 	}
 
-	const images = query.map(image => `${config.url}/api/gallery/${image.image}`)
+	const images = query.map(image => {
+		return { src: `${config.url}/api/gallery/${image.image}` }
+	})
 
-	res.status(200).json({ images })
+	res.status(200).json(images)
 })
 
 router.get('/:image', async (req, res, _next) => {
@@ -49,7 +56,7 @@ router.get('/:image', async (req, res, _next) => {
 
 	if (query === null) {
 		console.log('no image found')
-		return res.status(404).send('no image found')
+		return res.status(404).json({ message: 'no image found' })
 	}
 
 	// @ts-ignore

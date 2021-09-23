@@ -9,7 +9,8 @@ router.post('/', async (req, res, _next) => {
 	const user = await users.findOne({ code: req.cookies.code })
 
 	if (!user)
-		throw 'code existiert nicht'
+		// console.error('code existiert nicht')
+		return res.status(404).json({ message: 'user does not exist' })
 
 	const data = { ...req.body, submittedBy: user.id }
 

@@ -1,50 +1,57 @@
 <template>
 	<div class='gallery' v-if='page === ":submit"'>
-		<form enctype='multipart/form-data' @submit.prevent='submit_files'>
-			<label>
-				dateien auswählen
-				<input
-					ref='fileinput'
-					type='file'
-					name='fileinput'
-					accept='image/*,video/*'
-					@input='update_selected_files'
-					multiple
-				/>
-			</label>
+		<Auth>
+			<form enctype='multipart/form-data' @submit.prevent='submit_files'>
+				<label>
+					dateien auswählen
+					<input
+						ref='fileinput'
+						type='file'
+						name='fileinput'
+						accept='image/*,video/*'
+						@input='update_selected_files'
+						multiple
+					/>
+				</label>
 
-			<input v-if='submitted_images.length > 0' value='bilder einsenden' type='submit'>
+				<input v-if='submitted_images.length > 0' value='bilder einsenden' type='submit'>
 
-			<Loading ref='response_loading'>
-				<p class='response'>{{ submit_response }}</p>
-			</Loading>
-		</form>
+				<Loading ref='response_loading'>
+					<p class='response'>{{ submit_response }}</p>
+				</Loading>
+			</form>
 
-		<img
-			v-for='image in submitted_images'
-			:key='image'
-			:src='image'
-		/>
+			<img
+				v-for='image in submitted_images'
+				:key='image'
+				:src='image'
+			/>
+		</Auth>
 	</div>
 
 	<div class='gallery' v-else>
-		<img
-			v-for='image in queried_images.images'
-			:key='image'
-			:src='image'
-		/>
+		<router-link to='/gallery:submit'>Bilder einsenden</router-link>
+
+		<Auth @authentication='query_files'>
+			<img
+				v-for='image in queried_images'
+				:key='image.src'
+				:src='image.src'
+			/>
+		</Auth>
 	</div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import config from '@/config.js'
+import Auth from '@/components/Auth.vue'
 import Loading from '@/components/Loading.vue'
 
 export default {
-	name: 'Gbr',
+	name: 'Gallery',
 
-	components: { Loading },
+	components: { Auth, Loading },
 
 	props: {
 		page: { type: String }
@@ -56,6 +63,7 @@ export default {
 		const queried_images = ref([])
 		const submit_response = ref('')
 		const response_loading = ref()
+		let offset = 0
 
 		function update_selected_files() {
 			submitted_images.value = [...fileinput.value.files].map(URL.createObjectURL)
@@ -88,12 +96,17 @@ export default {
 		}
 
 		async function query_files() {
-			const request = await fetch(`${config.url}/api/gallery`)
-			queried_images.value = await request.json()
-		}
+			const request = await fetch(
+				`${config.url}/api/gallery?offset=${9 * offset}&limit=9`
+			)
 
-		if (props.page !== ':submit')
-			query_files()
+			if (request.ok)
+				offset++
+
+			const body = await request.json()
+
+			queried_images.value = [ ...queried_images.value, ...body ]
+		}
 
 		return {
 			fileinput,
@@ -101,6 +114,7 @@ export default {
 			submit_files,
 			submitted_images,
 			queried_images,
+			query_files,
 			response_loading,
 			submit_response
 		}
@@ -119,6 +133,24 @@ export default {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 1rem;
+
+	> a {
+		grid-column: 1 / span 3;
+		margin: 0 auto;
+		padding: 0.25em;
+		border-radius: 0.25em;
+		color: white;
+		background-color: colors.$primary;
+
+		&:hover {
+			background-color: colors.$secondary;
+			color: colors.$light-grey;
+		}
+	}
+
+	> .auth {
+		grid-column: 1 / span 3;
+	}
 
 	> form {
 		grid-column: 1 / span 3;

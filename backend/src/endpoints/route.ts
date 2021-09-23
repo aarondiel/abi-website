@@ -6,7 +6,7 @@ import api from './api/route'
 import config from '../config'
 
 function hasBlacklistedPath(url: string): Boolean {
-	for (const path of [ '/api/quotes' ])
+	for (const path of [ '/api/quotes', '/api/gallery' ])
 		if (url.startsWith(path))
 			return true
 
