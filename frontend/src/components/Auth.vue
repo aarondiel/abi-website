@@ -42,7 +42,7 @@ export default {
 
 			if (body.authenticated) {
 				// create a cookie that expires in 6 months
-				document.cookie = `domain=.app.localhost;code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
+				document.cookie = `code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
 				is_authorized.value = body.authenticated
 				emit('authentication')
 			}
