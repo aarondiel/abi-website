@@ -126,7 +126,6 @@ export default {
 			// are loaded in so that the user can scroll
 			await query_files()
 			await query_files()
-			await query_files()
 
 			observer = new IntersectionObserver(entries => {
 				entries.forEach(handle_intersection)
