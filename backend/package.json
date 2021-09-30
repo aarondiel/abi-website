@@ -8,6 +8,7 @@
 		"dev": "NODE_ENV=development sh -c 'tsc && npm run copy-files && node dist/app.js'",
 		"query": "tsc && npm run copy-files && node dist/queries.js",
 		"mail": "tsc && npm run copy-files && node dist/mail.js",
+		"query": "tsc && npm run copy-files && node dist/query.js",
 		"code": "tsc && npm run copy-files && node dist/code.js"
 	},
 	"author": "aaron diel",

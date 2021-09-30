@@ -8,10 +8,11 @@ router.post('/', async (req, res, _next) => {
 	const user = await users.findOne({ code: req.cookies.code })
 
 	if (!user)
-		throw 'code existiert nicht'
+		// throw 'code existiert nicht'
+		return res.status(400).json({ message: 'code existiert nicht' })
 
 	if (!user.gbr)
-		throw 'du hast den gbr vertrag nicht unterschieben'
+		return res.status(400).json({ message: 'du hast den gbr vertrag nicht unterschriben' })
 
 	await gbrVotes.updateOne(
 		{ user: user.id },

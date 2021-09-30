@@ -3,6 +3,8 @@ import users from './models/users'
 import config from './config'
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-='
 
+mongoose.set('runValidators', true)
+
 const mongodb_connect = new Promise<void>((res, rej) => {
 	mongoose.connection.once('error', rej)
 	mongoose.connection.once('open', res)

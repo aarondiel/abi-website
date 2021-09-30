@@ -2,11 +2,17 @@ import { Router } from 'express'
 import Busboy from 'busboy'
 import { connection, mongo } from 'mongoose'
 import gallery from '../../models/gallery_images'
+import users from '../../models/users'
 import config from '../../config'
 
 const router = Router()
 
 router.post('/', async (req, res, _next) => {
+	const user = await users.findOne({ code: req.cookies.code })
+
+	if (user === null)
+		return res.status(400).json({ message: 'invalid code' })
+
 	const busboy = new Busboy({
 		preservePath: true,
 		headers: req.headers,
@@ -18,7 +24,7 @@ router.post('/', async (req, res, _next) => {
 	busboy.on('file', (_fieldname, file, filename, _encoding, _mimetype) => {
 		const bucket = new mongo.GridFSBucket(connection.db)
 		const upload_stream = bucket.openUploadStream(filename, { metadata: { from: 'gallery' } })
-		gallery.create({ image: upload_stream.id, submitted_by: 'testuser1234' })
+		gallery.create({ image: upload_stream.id, submitted_by: user.id })
 		file.pipe(upload_stream)
 	})
 
