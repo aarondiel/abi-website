@@ -1,18 +1,19 @@
-import { Schema, Model, model, Types } from 'mongoose'
+import { Schema, model, Types, Document, PopulatedDoc } from 'mongoose'
+import type { File } from './fs.files'
+import type { User } from './users'
 import './fs.files'
 import './users'
 
-export interface GalleryImage {
-	_id: Types.ObjectId,
-	image: Types.ObjectId,
-	thumbnail300: Types.ObjectId,
-	thumbnail600: Types.ObjectId,
-	submitted_by: Types.ObjectId
+export interface GalleryImage extends Document {
+	image: PopulatedDoc<File & Document>,
+	thumbnail300: PopulatedDoc<File & Document>,
+	thumbnail600: PopulatedDoc<File & Document>,
+	submitted_by: PopulatedDoc<User & Document>
 	resolution?: number[]
 	type?: string
 }
 
-const gallery_schema = new Schema<GalleryImage, Model<GalleryImage>, GalleryImage>({
+const gallery_schema = new Schema<GalleryImage>({
 	image: {
 		type: Schema.Types.ObjectId,
 		ref: 'fs.files',

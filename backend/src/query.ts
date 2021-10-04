@@ -85,17 +85,16 @@ async function gallery_thumbnails() {
 			return
 
 		return new Promise<void>((res, rej) => {
-			// @ts-ignore
 			const download_stream = bucket.openDownloadStream(gallery_image.image._id)
 
 			ffmpeg(download_stream)
 				.on('error', rej)
 				.on('end', res)
 
-				.output('./output300.jpg')
+				.output(bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 300 } }))
 				.complexFilter('scale=300:-1')
 
-				.output('./output600.jpg')
+				.output(bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 600 } }))
 				.complexFilter('scale=600:-1')
 				.run()
 			})

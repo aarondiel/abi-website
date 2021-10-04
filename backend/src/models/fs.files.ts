@@ -1,7 +1,6 @@
-import { Schema, Model, model, Types } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
 
-export interface File {
-	_id: Types.ObjectId,
+export interface File extends Document {
 	length: number,
 	chunkSize: number,
 	uploadDate: Date,
@@ -10,7 +9,7 @@ export interface File {
 	metadata?: object
 }
 
-const file_schema = new Schema<File, Model<File>, File>({
+const file_schema = new Schema<File>({
 	length: {
 		type: Number,
 		required: true
