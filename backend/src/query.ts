@@ -101,7 +101,6 @@ async function gallery_thumbnails() {
 	})
 
 	console.log(await Promise.all(downloads))
-
 }
 
 async function main() {
