@@ -3,6 +3,7 @@ import config from './config'
 import gallery from './models/gallery_images'
 import { inspect } from 'util'
 import ffmpeg from 'fluent-ffmpeg'
+import type { GalleryImage } from './models/gallery_images'
 
 mongoose.set('runValidators', true)
 
@@ -53,8 +54,8 @@ async function gallery_resolution() {
 						rej(`unkown type: ${data.format.format_name}`)
 				}
 
-				res(await gallery.updateOne({
-					_id: gallery_image._id },
+				res(await gallery.updateOne(
+					{ _id: gallery_image._id },
 					{ $set: {
 						resolution: resolution,
 						type: format
@@ -67,9 +68,55 @@ async function gallery_resolution() {
 	return await Promise.all(downloads)
 }
 
+function scale_down_gallery_image(
+	gallery_image: GalleryImage,
+	bucket: any,
+	scale: 300 | 600
+) {
+	return new Promise((res, rej) => {
+		if (!(bucket instanceof mongoose.mongo.GridFSBucket))
+			rej('bucket is not valid')
+
+		if (scale === 300 && gallery_image?.thumbnail300 !== undefined)
+			res('scaled down image with width = 300 is already present')
+
+		if (scale === 600 && gallery_image?.thumbnail600 !== undefined)
+			res('scaled down image with width = 600 is already present')
+
+		const download_stream = bucket.openDownloadStream(gallery_image.image._id)
+		const upload_stream = bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 300 } })
+
+		ffmpeg(download_stream)
+			.on('error', err => {
+				console.error(err)
+				rej(err)
+			})
+			.on('end', async () => {
+				if (scale === 300) {
+					await gallery.updateOne(
+						{ _id: gallery_image._id },
+						{ $set: { thumbnail300: upload_stream.id } }
+					)
+					res('scaled image to width = 300')
+				}
+
+				if (scale === 600) {
+					await gallery.updateOne(
+						{ _id: gallery_image._id },
+						{ $set: { thumbnail600: upload_stream.id } }
+					)
+					res('scaled image to width = 600')
+				}
+			})
+
+			.complexFilter('scale=300:-1')
+			.format('mjpeg')
+			.pipe(upload_stream)
+	})
+}
+
 async function gallery_thumbnails() {
 	const images = await gallery.find()
-		.limit(1)
 		.populate('image')
 
 	if (images === null)
@@ -77,30 +124,12 @@ async function gallery_thumbnails() {
 
 	const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db)
 
-	const downloads = images.map(gallery_image => {
-		if (
-			gallery_image?.thumbnail300 !== undefined &&
-			gallery_image?.thumbnail600 !== undefined
-		)
-			return
+	const downloads = images.map(gallery_image => Promise.all([
+		scale_down_gallery_image(gallery_image, bucket, 300),
+		scale_down_gallery_image(gallery_image, bucket, 600)
+	]))
 
-		return new Promise<void>((res, rej) => {
-			const download_stream = bucket.openDownloadStream(gallery_image.image._id)
-
-			ffmpeg(download_stream)
-				.on('error', rej)
-				.on('end', res)
-
-				.output(bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 300 } }))
-				.complexFilter('scale=300:-1')
-
-				.output(bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 600 } }))
-				.complexFilter('scale=600:-1')
-				.run()
-			})
-	})
-
-	console.log(await Promise.all(downloads))
+	return await Promise.all(downloads)
 }
 
 async function main() {
