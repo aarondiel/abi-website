@@ -17,7 +17,7 @@ const mongodb_connect = new Promise<void>((res, rej) => {
 	)
 })
 
-async function gallery_resolution() {
+export async function gallery_resolution() {
 	const images = await gallery.find()
 
 	if (images === null)
@@ -84,7 +84,7 @@ function scale_down_gallery_image(
 			res('scaled down image with width = 600 is already present')
 
 		const download_stream = bucket.openDownloadStream(gallery_image.image._id)
-		const upload_stream = bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: 300 } })
+		const upload_stream = bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: scale } })
 
 		ffmpeg(download_stream)
 			.on('error', err => {
