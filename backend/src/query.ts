@@ -50,6 +50,10 @@ export async function gallery_resolution() {
 						format = 'image/jpeg'
 						break
 
+					case 'png_pipe':
+						format = 'image/png'
+						break
+
 					default:
 						rej(`unkown type: ${data.format.format_name}`)
 				}
@@ -156,4 +160,7 @@ async function main() {
 
 main()
 	.then(() => process.exit(0))
-	.catch(console.error)
+	.catch(err => {
+		console.error(err)
+		process.exit(0)
+	})
