@@ -25,7 +25,7 @@ export default {
 		'authentication'
 	],
 
-	setup(_props, { emit }) {
+	setup(props, { emit }) {
 		const is_authorized = ref(false)
 		const code_input = ref()
 
@@ -39,7 +39,6 @@ export default {
 			})
 
 			const body = await response.json()
-
 			if (body.authenticated) {
 				// create a cookie that expires in 6 months
 				document.cookie = `code=${code};max-age=${6 * 30 * 24 * 60 * 60};samesite=strict`
@@ -58,17 +57,15 @@ export default {
 
 			const body = await response.json()
 			is_authorized.value = body.authenticated
-			if (is_authorized.value)
-				emit('authentication')
 		}
 
 		const submit_code = () => test_code(code_input.value.text)
-
-		get_user_priveleges()
-
 		const router = useRoute()
-		if (router.query.code && !is_authorized.value)
-			test_code(router.query.code)
+
+		get_user_priveleges().then(() => {
+			if (router.query.code)
+				test_code(router.query.code)
+		})
 
 		return { code_input, is_authorized, submit_code }
 	}

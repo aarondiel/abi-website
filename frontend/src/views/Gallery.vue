@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, onMounted } from 'vue'
 import config from '@/config.js'
 import Auth from '@/components/Auth.vue'
 import Loading from '@/components/Loading.vue'
@@ -68,6 +68,7 @@ export default {
 		const submit_response = ref('')
 		const response_loading = ref()
 		const loading_trigger = ref()
+		let image_resolution = 600
 		let offset = 0
 		let observer
 
@@ -108,14 +109,17 @@ export default {
 				offset++
 
 			const body = await request.json()
+			const urls = body.map(url => {
+				url['src'] = `${url['src']}?resolution=${image_resolution}`
+				return url
+			})
 
-			queried_images.value = [ ...queried_images.value, ...body ]
+			queried_images.value = [ ...queried_images.value, ...urls ]
 		}
 
 		async function handle_intersection(entry) {
-			if (entry.intersectionRatio > 0) {
+			if (entry.intersectionRatio > 0)
 				query_files()
-			}
 		}
 
 		async function setup_intersection() {
@@ -133,6 +137,13 @@ export default {
 
 			observer.observe(loading_trigger.value)
 		}
+
+		onMounted(() => {
+			if (window.innerWidth >= 672)
+				image_resolution = 300
+			else
+				image_resolution = 600
+		})
 
 		onUnmounted(() => {
 			if (observer === undefined)
