@@ -124,12 +124,17 @@ async function gallery_thumbnails() {
 
 	const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db)
 
-	const downloads = images.map(gallery_image => Promise.all([
-		scale_down_gallery_image(gallery_image, bucket, 300),
-		scale_down_gallery_image(gallery_image, bucket, 600)
-	]))
+	for (const img of images) {
+		console.log(await scale_down_gallery_image(img, bucket, 300))
+		console.log(await scale_down_gallery_image(img, bucket, 600))
+	}
 
-	return await Promise.all(downloads)
+	// const downloads = images.map(gallery_image => Promise.all([
+	// 	scale_down_gallery_image(gallery_image, bucket, 300),
+	// 	scale_down_gallery_image(gallery_image, bucket, 600)
+	// ]))
+
+	// return await Promise.all(downloads)
 }
 
 async function main() {
