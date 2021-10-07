@@ -8,8 +8,8 @@ import type { GalleryImage } from './models/gallery_images'
 mongoose.set('runValidators', true)
 
 const mongodb_connect = new Promise<void>((res, rej) => {
-	mongoose.connection.once('open', res)
 	mongoose.connection.once('error', rej)
+	mongoose.connection.once('open', res)
 
 	mongoose.connect(
 		`${config.mongodb.url}:${config.mongodb.port}/abi`,
@@ -17,7 +17,7 @@ const mongodb_connect = new Promise<void>((res, rej) => {
 	)
 })
 
-async function gallery_resolution() {
+export async function gallery_resolution() {
 	const images = await gallery.find()
 
 	if (images === null)
@@ -25,9 +25,9 @@ async function gallery_resolution() {
 
 	const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db)
 
-	for (const img of images) {
-		console.log(await new Promise((res, rej) => {
-			const download_stream = bucket.openDownloadStream(img.image)
+	const downloads = images.map(gallery_image => {
+		return new Promise((res, rej) => {
+			const download_stream = bucket.openDownloadStream(gallery_image.image)
 
 			ffmpeg(download_stream).ffprobe(async (err, data) => {
 				if (err)
@@ -51,19 +51,21 @@ async function gallery_resolution() {
 						break
 
 					default:
-					rej(`unkown type: ${data.format.format_name}`)
+						rej(`unkown type: ${data.format.format_name}`)
 				}
 
 				res(await gallery.updateOne(
-					{ _id: img._id },
+					{ _id: gallery_image._id },
 					{ $set: {
 						resolution: resolution,
 						type: format
 					}
 				}))
 			})
-		}))
-	}
+		})
+	})
+
+	return await Promise.all(downloads)
 }
 
 function scale_down_gallery_image(
