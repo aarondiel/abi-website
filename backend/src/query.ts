@@ -3,7 +3,7 @@ import config from './config'
 import gallery from './models/gallery_images'
 import { inspect } from 'util'
 import ffmpeg from 'fluent-ffmpeg'
-import type { GalleryImage } from './models/gallery_images'
+import type { GalleryImage } from './models/gallery_images'
 
 mongoose.set('runValidators', true)
 
@@ -72,7 +72,7 @@ function scale_down_gallery_image(
 	gallery_image: GalleryImage,
 	bucket: any,
 	scale: 300 | 600
-) {
+) {
 	return new Promise((res, rej) => {
 		if (!(bucket instanceof mongoose.mongo.GridFSBucket))
 			rej('bucket is not valid')
@@ -84,18 +84,18 @@ function scale_down_gallery_image(
 			res('scaled down image with width = 600 is already present')
 
 		const download_stream = bucket.openDownloadStream(gallery_image.image._id)
-		const upload_stream = bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: scale } })
+		const upload_stream = bucket.openUploadStream(gallery_image.image.filename, { metadata: { from: 'gallery', scale: scale } })
 
 		ffmpeg(download_stream)
-			.on('error', err => {
+			.on('error', err => {
 				console.error(err)
 				rej(err)
 			})
-			.on('end', async () => {
+			.on('end', async () => {
 				if (scale === 300) {
 					await gallery.updateOne(
 						{ _id: gallery_image._id },
-						{ $set: { thumbnail300: upload_stream.id } }
+						{ $set: { thumbnail300: upload_stream.id } }
 					)
 					res('scaled image to width = 300')
 				}
@@ -103,7 +103,7 @@ function scale_down_gallery_image(
 				if (scale === 600) {
 					await gallery.updateOne(
 						{ _id: gallery_image._id },
-						{ $set: { thumbnail600: upload_stream.id } }
+						{ $set: { thumbnail600: upload_stream.id } }
 					)
 					res('scaled image to width = 600')
 				}
@@ -124,7 +124,7 @@ async function gallery_thumbnails() {
 
 	const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db)
 
-	for (const img of images) {
+	for (const img of images) {
 		console.log(await scale_down_gallery_image(img, bucket, 300))
 		console.log(await scale_down_gallery_image(img, bucket, 600))
 	}

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import Busboy from 'busboy'
-import { connection, mongo, Types } from 'mongoose'
+import { connection, mongo, Types } from 'mongoose'
 import gallery from '../../models/gallery_images'
 import users from '../../models/users'
 import config from '../../config'
@@ -19,8 +19,8 @@ function get_image_metadata(bucket: any, download_id: Types.ObjectId): Promise<i
 
 	const download_stream = bucket.openDownloadStream(download_id)
 
-	return new Promise((res, rej) => {
-		ffmpeg(download_stream).ffprobe(async (err, data) => {
+	return new Promise((res, rej) => {
+		ffmpeg(download_stream).ffprobe(async (err, data) => {
 			if (err)
 				return rej()
 
@@ -64,13 +64,13 @@ function create_image_thumbnail(
 
 	const download_stream = bucket.openDownloadStream(download_id)
 	const upload_stream = bucket.openUploadStream(name, {
-		metadata: { from: 'gallery', scale: scale }
+		metadata: { from: 'gallery', scale: scale }
 	})
 
-	return new Promise((res, rej) => {
+	return new Promise((res, rej) => {
 		ffmpeg(download_stream)
 			.on('error', rej)
-			.on('end', () => res(Types.ObjectId(upload_stream.id.toString())))
+			.on('end', () => res(Types.ObjectId(upload_stream.id.toString())))
 
 			.complexFilter(`scale=${scale}:-1`)
 			.format('mjpeg')
@@ -96,7 +96,7 @@ router.post('/', async (req, res, _next) => {
 		const bucket = new mongo.GridFSBucket(connection.db)
 		const upload_stream = bucket.openUploadStream(filename, { metadata: { from: 'gallery' } })
 
-		file.on('end', async () => {
+		file.on('end', async () => {
 			const image_metadata = await get_image_metadata(
 				bucket,
 				Types.ObjectId(upload_stream.id.toString())
@@ -174,7 +174,7 @@ router.get('/:image', async (req, res, _next) => {
 	}
 
 	let image_id: Types.ObjectId = query.image
-	switch (resolution) {
+	switch (resolution) {
 		case '300':
 			image_id = query.thumbnail300
 			break

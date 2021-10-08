@@ -24,6 +24,11 @@ const routes = [
 		props: true
 	},
 	{
+		path: '/rankings',
+		name: 'rankings',
+		component: () => import('@/views/Rankings.vue')
+	},
+	{
 		path: '/:path(.*)*',
 		name: 'notFound',
 		component: () => import('@/views/NotFound.vue')
