@@ -1,11 +1,13 @@
 <template>
 	<div class='rankings'>
 		<form @submit.prevent='submit_vote'>
-			
+			<input type='text' name='testfield'/>
 
-			<input value='abstimmen' type='submit'>
+			<div>
+				<input type='submit' value='abstimmen'/>
+			</div>
 
-			<Loading>
+			<Loading ref='loading'>
 				<p>{{ submit_response }}</p>
 			</Loading>
 		</form>
@@ -15,9 +17,13 @@
 <script>
 import config from '@/config.js'
 import { ref } from 'vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
 	name: 'Rankings',
+
+	components: { Loading },
+
 	setup() {
 		const loading = ref()
 		const submit_response = ref('') 
@@ -53,6 +59,7 @@ export default {
 
 		return {
 			submit_vote,
+			submit_response,
 			loading
 		}
 	}
