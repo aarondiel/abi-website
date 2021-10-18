@@ -1,4 +1,7 @@
 <script lang='ts'>
+import { ref } from 'vue'
+import type { Ref } from 'vue'
+
 function route_name(route: string): string {
 	switch(route) {
 		case 'quotes':
@@ -12,7 +15,34 @@ function route_name(route: string): string {
 
 export default {
 	setup() {
-		return { route_name }
+		const nav_bar: Ref<HTMLElement | undefined> = ref()
+		const nav_menu: Ref<HTMLElement | undefined> = ref()
+		let menu_active = false
+
+		function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {
+			if (nav_menu.value === undefined)
+				return
+
+			if (ev.x < (this.innerWidth - nav_menu.value.clientWidth))
+				toggle_menu()
+		}
+
+		function toggle_menu(): void {
+			if (nav_bar.value === undefined || nav_menu.value === undefined)
+				return
+
+			menu_active = !menu_active
+
+			nav_bar.value.classList.toggle('hidden')
+			nav_menu.value.classList.toggle('hidden')
+
+			if (menu_active)
+				window.addEventListener('click', out_of_menu_click)
+			else
+				window.removeEventListener('click', out_of_menu_click)
+		}
+
+		return { route_name, toggle_menu, nav_bar, nav_menu }
 	}
 }
 </script>
@@ -23,14 +53,12 @@ export default {
 			<Title>abi 2022</Title>
 		</Head>
 
-		<nav>
-			<router-link to='/'>
-				abi 2022
-			</router-link>
+		<nav class='bar' ref='nav_bar'>
+			<router-link to='/'>abi 2022</router-link>
 
 			<p>{{ route_name($route.name) }}</p>
 
-			<svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
+			<svg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' @click='toggle_menu'>
 				<path fill-rule='evenodd' clip-rule='evenodd' d='
 					M25 35.5
 					C25 34.1193 26.1193 33 27.5 33
@@ -61,6 +89,13 @@ export default {
 				'/>
 			</svg>
 		</nav>
+
+		<nav class='menu hidden' ref='nav_menu'>
+			<router-link to='/gallery'>Gallerie</router-link>
+			<router-link to='/quotes'>Zitate</router-link>
+			<router-link to='/rankings'>Rankings</router-link>
+		</nav>
+
 		<NuxtPage/>
 	</main>
 </template>
@@ -68,6 +103,9 @@ export default {
 <style lang='scss'>
 	@use '@/assets/scss/colors.scss';
 	@use '@/assets/scss/fonts.scss';
+	@use 'sass:color';
+
+	$navbar-height: 3.125rem;
 
 	html {
 		background-color: colors.$black;
@@ -79,10 +117,17 @@ export default {
 	}
 
 	.app {
-		> nav {
+		> nav.bar {
 			display: flex;
+			position: sticky;
+			top: 0;
+			height: $navbar-height;
+			padding: 0.8rem;
+			box-sizing: border-box;
+			transition: transform 0.5s ease-in-out;
 			justify-content: space-between;
 			align-items: center;
+			box-shadow: 0 0 2rem colors.$black;
 			background: linear-gradient(
 				90deg,
 				colors.$secondary 0%,
@@ -91,9 +136,9 @@ export default {
 				colors.$secondary 100%
 			);
 
-			height: 3.125rem;
-			padding: 0.8rem;
-			box-sizing: border-box;
+			&.hidden {
+				transform: translateY(-100%);
+			}
 
 			> a {
 				font-size: 1.25rem;
@@ -104,23 +149,82 @@ export default {
 
 				&:hover {
 					color: colors.$white;
-					text-shadow: 0 0 1em colors.$dark-grey;
+					text-shadow: 0 0 1em colors.$grey;
 				}
 			}
 
 			> p {
 				color: white;
+				font-family: fonts.$heading;
+				font-size: 1.2rem;
 			}
 
 			> svg {
+				cursor: pointer;
 				fill: colors.$light-grey;
+
 				filter: drop-shadow(0 0 1em colors.$black);
-				height: 3.125rem;
+				height: $navbar-height;
+				width: $navbar-height;
 
 				&:hover {
 					fill: colors.$white;
-					filter: drop-shadow(0 0 1em colors.$dark-grey);
+					filter: drop-shadow(0 0 1em colors.$grey);
 				}
+			}
+		}
+
+		> nav.menu {
+			position: fixed;
+			display: flex;
+			flex-direction: column;
+			padding: 1em;
+			gap: 1em;
+			top: 0;
+			right: 0;
+			width: 25ch;
+			height: 100vh;
+			background: linear-gradient(
+				90deg,
+				colors.$primary 0%,
+				colors.$secondary 100%
+			);
+			transition: transform 0.5s ease-in-out;
+			box-shadow: 0 0 5rem colors.$black;
+
+			&.hidden {
+				transform: translateX(100%);
+			}
+
+			> a {
+				text-decoration: none;
+				color: colors.$light-grey;
+				text-shadow: 0 0 1em colors.$black;
+				font-size: 1.25rem;
+
+				&:before {
+					content: '» ';
+					vertical-align: 0.125em;
+				}
+
+				&:hover {
+					color: colors.$white;
+					text-shadow: 0 0 1em colors.$grey;
+				}
+			}
+		}
+
+		> article {
+			background-color: #33281F;
+			max-width: 75ch;
+			min-height: 100vh;
+			margin: -$navbar-height auto 0 auto;
+			padding: calc($navbar-height + 1rem) 1rem 1rem 1rem;
+			box-shadow: 0 0 5rem color.scale(colors.$black, $lightness: 20%);
+			color: colors.$white;
+
+			> *:first-child {
+				margin-top: 0;
 			}
 		}
 	}
