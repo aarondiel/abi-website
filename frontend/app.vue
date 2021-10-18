@@ -113,7 +113,39 @@ export default {
 
 	body {
 		margin: 0;
+		color: colors.$white;
 		font-family: fonts.$text;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		background: linear-gradient(
+			90deg, 
+			colors.$primary 25%,
+			color.adjust(colors.$primary, $lightness: +15%) 50%,
+			colors.$primary 75%,
+		);
+		background-clip: text;
+		color: transparent;
+		font-family: fonts.$heading;
+		font-size: 2.5em;
+		text-align: center;
+	}
+
+	br {
+		display: block;
+		margin-top: 0.75em;
+	}
+
+	a {
+		color: colors.$light-grey;
+		font-family: fonts.$heading;
+		text-decoration: none;
+		text-shadow: 0 0 1em colors.$black;
+
+		&:hover {
+			color: colors.$white;
+			text-shadow: 0 0 1em colors.$grey;
+		}
 	}
 
 	.app {
@@ -142,19 +174,9 @@ export default {
 
 			> a {
 				font-size: 1.25rem;
-				color: colors.$light-grey;
-				font-family: fonts.$heading;
-				text-decoration: none;
-				text-shadow: 0 0 1em colors.$black;
-
-				&:hover {
-					color: colors.$white;
-					text-shadow: 0 0 1em colors.$grey;
-				}
 			}
 
 			> p {
-				color: white;
 				font-family: fonts.$heading;
 				font-size: 1.2rem;
 			}
@@ -197,31 +219,31 @@ export default {
 			}
 
 			> a {
-				text-decoration: none;
-				color: colors.$light-grey;
-				text-shadow: 0 0 1em colors.$black;
 				font-size: 1.25rem;
-
 				&:before {
 					content: '» ';
 					vertical-align: 0.125em;
-				}
-
-				&:hover {
-					color: colors.$white;
-					text-shadow: 0 0 1em colors.$grey;
 				}
 			}
 		}
 
 		> article {
-			background-color: #33281F;
+			background-color: colors.$dark-grey;
 			max-width: 75ch;
 			min-height: 100vh;
 			margin: -$navbar-height auto 0 auto;
 			padding: calc($navbar-height + 1rem) 1rem 1rem 1rem;
-			box-shadow: 0 0 5rem color.scale(colors.$black, $lightness: 20%);
-			color: colors.$white;
+			box-sizing: border-box;
+			box-shadow: 0 0 2.5rem color.scale(colors.$dark-grey, $lightness: +10%);
+			border-width: 2px;
+			border-style: none solid;
+			border-image-slice: 1;
+			border-image-source: linear-gradient(
+				180deg, 
+				colors.$secondary 0%,
+				colors.$primary 50%,
+				colors.$secondary 100%
+			);
 
 			> *:first-child {
 				margin-top: 0;
