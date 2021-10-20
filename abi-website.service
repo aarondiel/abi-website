@@ -4,8 +4,8 @@ After=network.target syslog.target mongodb.service nginx.service
 
 [Service]
 Restart=on-failure
-WorkingDirectory=/home/aaron/abi-website
-ExecStart=/usr/bin/npm run production
+WorkingDirectory=$HOME/abi-website
+ExecStart=npm run build && npm run start
 
 [Install]
 WantedBy=default.target

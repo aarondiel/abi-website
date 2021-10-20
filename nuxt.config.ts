@@ -1,4 +1,6 @@
 import { defineNuxtConfig } from 'nuxt3'
+import { setup } from './server/lib/mongodb'
+import backend from './server/app'
 
 export default defineNuxtConfig({
 	meta: {
@@ -19,5 +21,9 @@ export default defineNuxtConfig({
 				href: 'favicon.ico'
 			},
 		]
-	}
+	},
+
+	buildModules: [ setup ],
+
+	serverMiddleware: [ backend ]
 })

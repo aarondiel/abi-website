@@ -1,50 +1,37 @@
-<script lang='ts'>
-import { ref } from 'vue'
-import type { Ref } from 'vue'
+<script setup lang='ts'>
+	import { ref } from 'vue'
+	import type { Ref } from 'vue'
 
-function route_name(route: string): string {
-	switch(route) {
-		case 'quotes':
-			return 'Zitate'
-		case 'gallery':
-			return 'Gallerie'
-		default:
-			return ''
-	}
-}
+	const nav_menu: Ref<HTMLElement | undefined> = ref()
+	let menu_active: Ref<boolean> = ref(false)
 
-export default {
-	setup() {
-		const nav_bar: Ref<HTMLElement | undefined> = ref()
-		const nav_menu: Ref<HTMLElement | undefined> = ref()
-		let menu_active = false
-
-		function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {
-			if (nav_menu.value === undefined)
-				return
-
-			if (ev.x < (this.innerWidth - nav_menu.value.clientWidth))
-				toggle_menu()
+	function route_name(route: string): string {
+		switch(route) {
+			case 'quotes':
+				return 'Zitate'
+			case 'gallery':
+				return 'Gallerie'
+			default:
+				return ''
 		}
-
-		function toggle_menu(): void {
-			if (nav_bar.value === undefined || nav_menu.value === undefined)
-				return
-
-			menu_active = !menu_active
-
-			nav_bar.value.classList.toggle('hidden')
-			nav_menu.value.classList.toggle('hidden')
-
-			if (menu_active)
-				window.addEventListener('click', out_of_menu_click)
-			else
-				window.removeEventListener('click', out_of_menu_click)
-		}
-
-		return { route_name, toggle_menu, nav_bar, nav_menu }
 	}
-}
+
+	function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {
+		if (nav_menu.value === undefined)
+			return
+
+		if (ev.x < (this.innerWidth - nav_menu.value.clientWidth))
+			toggle_menu()
+	}
+
+	function toggle_menu(): void {
+		menu_active.value = !menu_active.value
+
+		if (menu_active.value)
+			window.addEventListener('click', out_of_menu_click)
+		else
+			window.removeEventListener('click', out_of_menu_click)
+	}
 </script>
 
 <template>
@@ -53,12 +40,12 @@ export default {
 			<Title>abi 2022</Title>
 		</Head>
 
-		<nav class='bar' ref='nav_bar'>
+		<nav class='bar' :class='{ hidden: menu_active }'>
 			<router-link to='/'>abi 2022</router-link>
 
 			<p>{{ route_name($route.name) }}</p>
 
-			<svg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg' @click='toggle_menu'>
+			<svg @click='toggle_menu' width='100' height='100' viewBox='0 0 100 100'>
 				<path fill-rule='evenodd' clip-rule='evenodd' d='
 					M25 35.5
 					C25 34.1193 26.1193 33 27.5 33
@@ -90,7 +77,7 @@ export default {
 			</svg>
 		</nav>
 
-		<nav class='menu hidden' ref='nav_menu'>
+		<nav class='menu' :class='{ hidden: !menu_active }' ref='nav_menu'>
 			<router-link to='/gallery'>Gallerie</router-link>
 			<router-link to='/quotes'>Zitate</router-link>
 			<router-link to='/rankings'>Rankings</router-link>
