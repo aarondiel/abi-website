@@ -1,11 +1,11 @@
 import express from 'express'
-import quotes from './api/quotes'
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/quotes', quotes)
+app.use('/users', require('./api/users'))
+app.use('/quotes', require('./api/quotes'))
 
 app.use((_req, res, _next) => {
 	res

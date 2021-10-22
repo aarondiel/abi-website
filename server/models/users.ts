@@ -30,7 +30,8 @@ const schema = new mongoose.Schema({
 
 	gbr: {
 		type: Boolean,
-		required: [ true, 'gbr not specified' ]
+		required: false,
+		default: false
 	}
 }, { _id: false })
 
