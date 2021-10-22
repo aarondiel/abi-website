@@ -24,6 +24,10 @@ router.post('/', async (req, res, _next) => {
 		email: req.body.email,
 		code: req.body.code
 	})
+
+	res
+		.status(200)
+		.json({ message: 'user created' })
 }, mongoose_error_handler)
 
 export default router
