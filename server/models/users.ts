@@ -1,5 +1,4 @@
-import { Schema, model } from 'mongoose'
-import type { Document } from 'mongoose'
+import mongoose from 'mongoose'
 
 interface UserInput {
 	name: string,
@@ -8,9 +7,9 @@ interface UserInput {
 	gbr: boolean
 }
 
-export type User = UserInput & Document
+export type User = UserInput & mongoose.Document
 
-const schema = new Schema({
+const schema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: [ true, 'name not specified' ]
@@ -23,13 +22,16 @@ const schema = new Schema({
 
 	code: {
 		type: String,
-		required: [ true, 'code not specified' ]
+		required: [ true, 'code not specified' ],
+		index: true,
+		unique: true,
+		alias: '_id'
 	},
 
 	gbr: {
 		type: Boolean,
 		required: [ true, 'gbr not specified' ]
 	}
-})
+}, { _id: false })
 
-export default model<User>('users', schema)
+export default mongoose.model<User>('users', schema)

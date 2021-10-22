@@ -1,47 +1,36 @@
-import { Schema, model } from 'mongoose'
-import type { Document, PopulatedDoc, Types } from 'mongoose'
-import type { User } from './users'
+import mongoose from 'mongoose'
 import users from './users'
+import type { User } from './users'
 
 interface MessageInput {
 	type: 'message' | 'info',
 	side?: 'left' | 'right',
-	name: string,
+	name?: string,
 	text: string
 }
 
-export type Message = MessageInput & Document
+export type Message = MessageInput & mongoose.Document
 
 interface QuoteInput {
 	messages: Message[],
-	submitted_by: PopulatedDoc<User>
+	submitted_by: mongoose.PopulatedDoc<User>
 }
 
-export type Quote = QuoteInput & Document
+export type Quote = QuoteInput & mongoose.Document
 
-const message_schema = new Schema({
+const message_schema = new mongoose.Schema({
 	type: {
 		type: String,
-		
-		validate: [
-			function(this: MessageInput, v: string) {
-				return [ 'message', 'info' ].includes(v)
-			},
-			'type not valid'
-		],
 
+		enum: [ [ 'message', 'info' ], 'type not valid' ],
+		
 		required: [ true, 'type not specified' ]
 	},
 
 	side: {
 		type: String,
 
-		validate: [
-			function(this: MessageInput, v: string) {
-				return [ 'left', 'right' ].includes(v)
-			},
-			'side not valid'
-		],
+		enum: [ [ 'left', 'right' ], 'side not valid' ],
 
 		required: [
 			function(this: MessageInput) {
@@ -67,7 +56,7 @@ const message_schema = new Schema({
 	}
 })
 
-const schema = new Schema({
+const schema = new mongoose.Schema({
 	messages: {
 		type: [ message_schema ],
 		validate: [
@@ -80,10 +69,10 @@ const schema = new Schema({
 	},
 
 	submitted_by: {
-		type: Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
 		validate: [
-			async function(this: QuoteInput,v: Types.ObjectId) {
+			async function(this: QuoteInput, v: mongoose.Types.ObjectId) {
 				const user = await users.findById(v)
 				return user !== null
 			},
@@ -93,4 +82,4 @@ const schema = new Schema({
 	}
 })
 
-export default model('quotes', schema)
+export default mongoose.model<Quote>('quotes', schema)
