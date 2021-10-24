@@ -1,15 +1,29 @@
 import mongoose from 'mongoose'
 
+export const privileges = [
+	'create_users'
+] as const
+
+export type Privilege = typeof privileges[number]
+
 interface UserInput {
 	name: string,
 	email: string,
 	code: string,
-	gbr: boolean
+	gbr: boolean,
+	privileges: Privilege[]
 }
 
 export type User = UserInput & mongoose.Document
 
 const schema = new mongoose.Schema({
+	code: {
+		type: String,
+		required: [ true, 'code not specified' ],
+		index: true,
+		unique: true
+	},
+
 	name: {
 		type: String,
 		required: [ true, 'name not specified' ]
@@ -17,22 +31,29 @@ const schema = new mongoose.Schema({
 
 	email: {
 		type: String,
+		validate: [
+			function(this: UserInput, v: string) {
+				return /^(?!\.)[a-zA-Z0-9!#$%&'*+\-/=?^_`{|}~.]{1,63}(?<!\.|.*\.\.)@[a-zA-Z0-9\-.]{1,63}$/.test(v)
+			},
+			'email not valid'
+		],
 		required: [ true, 'email not specified' ]
-	},
-
-	code: {
-		type: String,
-		required: [ true, 'code not specified' ],
-		index: true,
-		unique: true,
-		alias: '_id'
 	},
 
 	gbr: {
 		type: Boolean,
 		required: false,
 		default: false
+	},
+
+	privileges: {
+		type: [ {
+			type: String,
+			enum: privileges
+		} ],
+		required: false,
+		default: []
 	}
-}, { _id: false })
+}, { versionKey: false })
 
 export default mongoose.model<User>('users', schema)

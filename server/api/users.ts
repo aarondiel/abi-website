@@ -22,6 +22,7 @@ router.post('/', async (req, res, _next) => {
 	await users.create({
 		name: req.body.name,
 		email: req.body.email,
+		gbr: req.body.gbr,
 		code: req.body.code
 	})
 
