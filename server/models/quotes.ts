@@ -22,7 +22,7 @@ const message_schema = new mongoose.Schema({
 	type: {
 		type: String,
 
-		enum: [ [ 'message', 'info' ], 'type not valid' ],
+		enum: [ 'message', 'info' ],
 		
 		required: [ true, 'type not specified' ]
 	},
@@ -30,7 +30,7 @@ const message_schema = new mongoose.Schema({
 	side: {
 		type: String,
 
-		enum: [ [ 'left', 'right' ], 'side not valid' ],
+		enum: [ 'left', 'right' ],
 
 		required: [
 			function(this: MessageInput) {

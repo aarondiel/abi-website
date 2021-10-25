@@ -3,9 +3,9 @@ import users from '../models/users'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 
-const router = Router()
+const route = Router()
 
-router.post('/', async (req, res, _next) => {
+route.post('/', async (req, res, _next) => {
 	const user = await users.findOne(
 		{ code: req.body.code },
 		[ '-_id', 'name', 'privileges' ]
@@ -24,4 +24,4 @@ router.post('/', async (req, res, _next) => {
 		.send(token)
 })
 
-export default router
+export default route

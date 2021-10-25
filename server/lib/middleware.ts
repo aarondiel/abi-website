@@ -20,7 +20,7 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoos
 		.json(errors)
 }
 
-export const authenticate: express.RequestHandler = (req, res, next) => {
+const authenticate: express.RequestHandler = (req, res, next) => {
 	const token = req.headers?.authorization?.replace(/^Bearer /i, '')
 
 	if (token === undefined || token === null)
@@ -35,7 +35,10 @@ export const authenticate: express.RequestHandler = (req, res, next) => {
 	})
 }
 
-export function assert_privilege(privilege: Privilege) {
+export function assert_privilege(privilege?: Privilege) {
+	if (privilege === undefined)
+		return authenticate
+
 	if (!privileges.includes(privilege))
 		throw 'privilege not valid'
 

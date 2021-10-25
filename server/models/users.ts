@@ -3,7 +3,8 @@ import mongoose from 'mongoose'
 export const privileges = [
 	'admin',
 	'create_users',
-	'get_users'
+	'get_users',
+	'delete_quotes'
 ] as const
 
 export type Privilege = typeof privileges[number]
