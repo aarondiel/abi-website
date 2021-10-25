@@ -12,9 +12,7 @@ route.post('/', async (req, res, _next) => {
 	)
 
 	if (user === null)
-		return res
-			.status(401)
-			.json({ message: 'user not found' })
+		return res.sendStatus(401)
 
 
 	const token = jwt.sign(user.toJSON(), config.jwt.access_token)

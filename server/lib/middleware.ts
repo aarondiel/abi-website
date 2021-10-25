@@ -20,7 +20,7 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoos
 		.json(errors)
 }
 
-const authenticate: express.RequestHandler = (req, res, next) => {
+const authenticate: express.RequestHandler = function (req, res, next) {
 	const token = req.headers?.authorization?.replace(/^Bearer /i, '')
 
 	if (token === undefined || token === null)

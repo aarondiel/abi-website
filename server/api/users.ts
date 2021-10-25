@@ -22,7 +22,6 @@ route.get('/:code', assert_privilege('get_users'), async (_req, res, _next) => {
 		.json(res.locals.target_user)
 })
 
-// todo: admin middleware
 route.post('/', assert_privilege('create_users'), async (req, res, _next) => {
 	await users.create({
 		name: req.body.name,

@@ -22,7 +22,7 @@ route.param('qoute', async (_req, res, next, value) => {
 	next()
 })
 
-route.get('/:quote', assert_privilege(), (_req, res, _next) => {
+route.get('/:quote', (_req, res, _next) => {
 	res
 		.status(200)
 		.json(res.locals.quote)
