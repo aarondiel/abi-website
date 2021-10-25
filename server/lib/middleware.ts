@@ -1,15 +1,16 @@
 import express from 'express'
 import type mongoose from 'mongoose'
-import users, { privileges } from '../models/users'
-import type { Privilege } from '../models/users'
+import { privileges } from '../models/users'
+import type { Privilege, User } from '../models/users'
+import jwt from 'jsonwebtoken'
+import config from '../../config'
 
 export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoose.Error.ValidationError, _req, res, _next) => {
 	if (err.errors === undefined) {
 		console.error(err)
 
 		return res
-			.status(500)
-			.json({ message: 'something went wrong' })
+			.sendStatus(500)
 	}
 
 	const errors = Object.values(err.errors).map(v => v.message)
@@ -19,16 +20,37 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoos
 		.json(errors)
 }
 
-// todo: add jwt authentication
-export function assert_privilege(privilege: Privilege): express.RequestHandler {
-	if (privileges.includes(privilege))
+export const authenticate: express.RequestHandler = (req, res, next) => {
+	const token = req.headers?.authorization?.replace(/^Bearer /i, '')
+
+	if (token === undefined || token === null)
+		return res.sendStatus(401)
+
+	jwt.verify(token, config.jwt.access_token, (err, user) => {
+		if (err)
+			return res.sendStatus(403)
+
+		res.locals.user = user
+		next()
+	})
+}
+
+export function assert_privilege(privilege: Privilege) {
+	if (!privileges.includes(privilege))
 		throw 'privilege not valid'
 
-	return async (req, _res, next) => {
-		const code = req.cookies.code ?? req.headers.authorization
+	const check: express.RequestHandler = (_req, res: express.Response<any, Record<"user", User>>, next) => {
+		if (
+			res.locals.user.privileges.includes('admin') ||
+			res.locals.user.privileges.includes(privilege)
+		)
+			next()
 
-		await users.find({ code })
-
-		next()
+		res.sendStatus(403)
 	}
+
+	return [
+		authenticate,
+		check
+	]
 }

@@ -1,34 +1,49 @@
 import { Router } from 'express'
-import users from '../models/users'
-import { mongoose_error_handler } from '../lib/middleware'
+import users, { privileges } from '../models/users'
+import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
 
 const router = Router()
 
-router.get('/:code', async (req, res, _next) => {
-	const user = await users.findById(req.params.code)
+router.param('code', async (_req, res, next, value) => {
+	const user = await users.findOne({ code: value })
 
 	if (user === null)
 		return res
 			.status(404)
 			.json({ message: 'user not found' })
 
+	res.locals.target_user = user
+	next()
+})
+
+router.get('/:code', assert_privilege('get_users'), async (_req, res, _next) => {
 	res
 		.status(200)
-		.json(user)
+		.json(res.locals.target_user)
 })
 
 // todo: admin middleware
-router.post('/', async (req, res, _next) => {
+router.post('/', assert_privilege('create_users'), async (req, res, _next) => {
 	await users.create({
 		name: req.body.name,
 		email: req.body.email,
 		gbr: req.body.gbr,
-		code: req.body.code
+		code: req.body.code,
+		privileges: req.body.privileges
 	})
 
-	res
-		.status(200)
-		.json({ message: 'user created' })
+	res.sendStatus(200)
+}, mongoose_error_handler)
+
+router.post('/:code/add_privilege', assert_privilege('create_users'), async (req, res, _next) => {
+	if (!privileges.includes(req.body.privilege))
+		return res.status(400).send('privilege not valid')
+
+	await users.findByIdAndUpdate(res.locals.target_user, { $push: {
+		privileges: req.body.privilege
+	}})
+
+	res.sendStatus(200)
 }, mongoose_error_handler)
 
 export default router
