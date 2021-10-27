@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import config from '../../config'
 
 export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoose.Error.ValidationError, _req, res, _next) => {
+	// use instanceof
 	if (err.errors === undefined) {
 		console.error(err)
 
@@ -20,29 +21,36 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoos
 		.json(errors)
 }
 
-const authenticate: express.RequestHandler = function (req, res, next) {
-	const token = req.headers?.authorization?.replace(/^Bearer /i, '')
+// provide res.locals with the user by authorizing the jwt token
+export const authenticate: express.RequestHandler = async (req, res, next) => {
+	const token = req.headers?.authorization?.replace(/^Bearer /i, '') ??
+		req.cookies?.token
 
-	if (token === undefined || token === null)
-		return res.sendStatus(401)
+	if (token === undefined || token === null) {
+		res.locals.user.error_code = 401
+		next()
+	}
 
 	jwt.verify(token, config.jwt.access_token, (err, user) => {
-		if (err)
-			return res.sendStatus(403)
+		if (err) {
+			res.locals.user.error_code = 403
+			next()
+		}
 
 		res.locals.user = user
 		next()
 	})
 }
 
-export function assert_privilege(privilege?: Privilege) {
-	if (privilege === undefined)
-		return authenticate
-
-	if (!privileges.includes(privilege))
+export const assert_privilege = (privilege?: Privilege) => {
+	if (privilege !== undefined && !privileges.includes(privilege))
 		throw 'privilege not valid'
 
-	const check: express.RequestHandler = (_req, res: express.Response<any, Record<"user", User>>, next) => {
+	const check: express.RequestHandler = (_req, res, next) => {
+		if (privilege === undefined) {
+			res.sendStatus(res.locals?.user?.error_code ?? 401)
+		}
+
 		if (
 			res.locals.user.privileges.includes('admin') ||
 			res.locals.user.privileges.includes(privilege)
@@ -52,8 +60,5 @@ export function assert_privilege(privilege?: Privilege) {
 		res.sendStatus(403)
 	}
 
-	return [
-		authenticate,
-		check
-	]
+	return check
 }

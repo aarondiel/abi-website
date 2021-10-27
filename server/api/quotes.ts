@@ -61,7 +61,9 @@ route.get('/', async (req, res, _next) => {
 	if (query === null)
 		return res.sendStatus(500)
 
-	res.status(200).json(query)
+	res
+		.status(200)
+		.json(query)
 })
 
 route.post('/', async (req, res, _next) => {
