@@ -4,7 +4,8 @@ export const privileges = [
 	'admin',
 	'create_users',
 	'get_users',
-	'delete_quotes'
+	'delete_quotes',
+	'create_teachers'
 ] as const
 
 export type Privilege = typeof privileges[number]
@@ -59,4 +60,11 @@ const schema = new mongoose.Schema({
 	}
 }, { versionKey: false })
 
-export default mongoose.model<User>('users', schema)
+const users = mongoose.model<User>('users', schema)
+
+export async function validate_user(v: mongoose.Types.ObjectId) {
+	const user = await users.findById(v)
+	return user !== null
+}
+
+export default users

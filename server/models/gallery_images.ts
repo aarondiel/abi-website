@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import files from './fs.files'
+import { validate_file } from './fs.files'
 import type { File } from './fs.files'
-import users from './users'
+import { validate_user } from './users'
 import type { User } from './users'
 
 interface GalleryImageInput {
@@ -26,28 +26,16 @@ const schema = new mongoose.Schema({
 			console.log(this)
 			console.log(v)
 		},
-		validate: [
-			async function(this: GalleryImageInput, v: mongoose.Types.ObjectId) {
-				const file = await files.findById(v)
-				return file !== null
-			},
-			'image not valid'
-		],
+		validate: [ validate_file, 'image not valid' ],
 		required: [ true, 'image not specified' ]
 	},
 
 	submitted_by: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
-		validate: [
-			async function(this: GalleryImageInput, v: mongoose.Types.ObjectId) {
-				const user = await users.findById(v)
-				return user !== null
-			},
-			'submitted_by not valid'
-		],
+		validate: [ validate_user, 'submitted_by not valid' ],
 		required: [ true, 'user not specified' ]
 	}
-})
+}, { versionKey: false })
 
 export default mongoose.model<GalleryImage>('gallery_images', schema)

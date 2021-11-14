@@ -1,19 +1,18 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { privileges } from '../models/users'
-import type { Privilege, User } from '../models/users'
+import type { Privilege } from '../models/users'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 
 export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _req, res, _next) => {
-	if (err instanceof mongoose.Error.ValidationError) {
+	if (err.errors instanceof mongoose.Error.ValidationError) {
 		const errors = Object.values(err.errors).map(v => v.message)
 
 		return res
 			.status(400)
 			.json(errors)
 	}
-
 
 	console.error(err)
 
@@ -24,22 +23,23 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _r
 export const authenticate: express.RequestHandler = async (req, res, next) => {
 	const token = req.headers?.authorization?.replace(/^Bearer /i, '') ??
 		req.cookies?.token
-	
+
 	res.locals.user = {}
 
 	if (token === undefined || token === null) {
 		res.locals.user.error_code = 401
-		next()
+		return next()
 	}
 
 	jwt.verify(token, config.jwt.access_token, (err, user) => {
-		if (err) {
+		if (err !== undefined && err !== null) {
 			res.locals.user.error_code = 403
-			next()
+			return next()
 		}
 
 		res.locals.user = user
-		next()
+		res.locals.user.token = token
+		return next()
 	})
 }
 
@@ -48,15 +48,17 @@ export const assert_privilege = (privilege?: Privilege) => {
 		throw 'privilege not valid'
 
 	const check: express.RequestHandler = (_req, res, next) => {
-		if (privilege === undefined) {
+		if (privilege === undefined && res.locals?.user?.error_code === undefined)
+			return next()
+
+		if (privilege === undefined)
 			res.sendStatus(res.locals?.user?.error_code ?? 401)
-		}
 
 		if (
-			res.locals.user.privileges.includes('admin') ||
-			res.locals.user.privileges.includes(privilege)
+			res.locals?.user?.privileges?.includes('admin') ||
+			res.locals?.user?.privileges?.includes(privilege)
 		)
-			next()
+			return next()
 
 		res.sendStatus(403)
 	}

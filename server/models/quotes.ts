@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import users from './users'
+import { validate_user } from './users'
 import type { User } from './users'
 
 interface MessageInput {
@@ -54,7 +54,7 @@ const message_schema = new mongoose.Schema({
 		type: String,
 		required: [ true, 'no text specified' ]
 	}
-})
+}, { versionKey: false })
 
 const schema = new mongoose.Schema({
 	messages: {
@@ -71,15 +71,9 @@ const schema = new mongoose.Schema({
 	submitted_by: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',
-		validate: [
-			async function(this: QuoteInput, v: mongoose.Types.ObjectId) {
-				const user = await users.findById(v)
-				return user !== null
-			},
-			'submitted_by not valid'
-		],
+		validate: [ validate_user, 'submitted_by not valid' ],
 		required: [ true, 'submitted_by not specified' ]
 	}
-})
+}, { versionKey: false })
 
 export default mongoose.model<Quote>('quotes', schema)

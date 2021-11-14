@@ -13,17 +13,18 @@ app.use(
 	authenticate
 )
 
-app.use('/api/users', require('./api/users'))
-app.use('/api/quotes', require('./api/quotes'))
-app.use('/api/auth', require('./api/auth'))
+app.use('/users', require('./api/users'))
+app.use('/quotes', require('./api/quotes'))
+app.use('/teachers', require('./api/teachers'))
+app.use('/auth', require('./api/auth'))
 
-app.use('/api', (_req, res, _next) => {
+app.all('/', (_req, res, _next) => {
 	res
 		.status(404)
-		.json({ message: 'page not found' })
+		.send('page not found')
 })
 
 export default {
-	path: '/',
+	path: '/api',
 	handler: app
 }

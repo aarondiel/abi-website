@@ -1,4 +1,3 @@
-// import { Schema, model } from 'mongoose'
 import mongoose from 'mongoose'
 
 interface FileInput {
@@ -42,6 +41,13 @@ const schema = new mongoose.Schema({
 		type: Object,
 		required: false
 	}
-})
+}, { versionKey: false })
 
-export default mongoose.model<File>('fs.files', schema)
+const files = mongoose.model<File>('fs.files', schema)
+
+export async function validate_file(v: mongoose.Types.ObjectId) {
+		const file = await files.findById(v)
+		return file !== null
+	}
+
+export default files

@@ -10,10 +10,23 @@ route.param('code', async (_req, res, next, value) => {
 	if (user === null)
 		return res
 			.status(404)
-			.json({ message: 'user not found' })
+			.send('user not found')
 
 	res.locals.target_user = user
 	next()
+})
+
+route.get('', assert_privilege(), async (_req, res, _next) => {
+	const query = await users.find({}, [ 'name' ])
+
+	if (users === null)
+		res
+			.status(500)
+			.send('couldn\' get users')
+	
+	res
+		.status(200)
+		.json(query)
 })
 
 route.get('/:code', assert_privilege('get_users'), async (_req, res, _next) => {

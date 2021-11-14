@@ -15,31 +15,37 @@
 				return ''
 		}
 	})
-	const { data: user } = await useAsyncData('user', async () => {
+
+	// currently app.vue cannot be converted into a async component
+	// therefore, please switch this out to:
+	// const { data: user } = await useAsyncData('user', async () => {
+	// at some future point
+	const user = useAsyncData('user', async () => {
 		try {
+			const token = useNuxtApp().$token()
+
+			// cookies don't get forwarded from the server
+			// removing express might fix this crude workaround
 			const response = await $fetch(
 				'http://localhost:3000/api/auth',
-				{ headers: { credentials: 'include' } }
+				{ method: 'GET', headers: { authorization: `Bearer ${ token }` } }
 			)
 
 			return response.body
 		} catch (err) {
+			// this is really scuffed
+			// this should be updated once nuxt3 supports axios
 			const error_code = err.message.split(' ')[0]
 
-			return error_code
+			return { error_code }
 		}
 	})
 
-	console.log(user.value)
-
 	function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {
-		if (
-			!(nav_menu.value instanceof HTMLElement) ||
-			!(ev.target instanceof HTMLElement)
-		)
+		if (!(ev.target instanceof HTMLElement))
 			return
 
-		if (nav_menu.value.contains(ev.target))
+		if (!nav_menu.value?.contains(ev.target))
 			menu_active.value = false
 	}
 
@@ -49,6 +55,8 @@
 		else
 			window.removeEventListener('click', out_of_menu_click)
 	})
+
+	provide('user', user)
 </script>
 
 <template>

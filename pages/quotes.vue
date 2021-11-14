@@ -1,17 +1,20 @@
 <script setup lang='ts'>
+// const quotes = await useFetch('http://localhost:3000/api/quotes', { method: 'GET' } )
 
-const quotes = await useFetch('http://localhost:3000/api/quotes', { method: 'GET' } )
+const router = useRouter()
+const route = useRoute()
+const user = await inject('user')
+console.log(user.data.value)
 
-const error_code = quotes.error.value?.message?.split(' ')[0]
-
-console.log(error_code)
-console.log(useNuxtApp())
+async function redirect() {
+	await router.push({ name: 'login', query: { ...route.query, redirected_from: 'quotes' } })
+}
 </script>
 
 <template>
 	<article class='quotes'>
-		<Head>
-			<Title>abi zitate</Title>
-		</Head>
+		<p>zitate temporär geschlossen</p>
+
+		<button @click='redirect'>redirect</button>
 	</article>
 </template>

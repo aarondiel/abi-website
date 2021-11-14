@@ -1,9 +1,5 @@
 <template>
 	<article class='gallery'>
-		<Head>
-			<Title>abi gallerie</Title>
-		</Head>
-
-		<p>gallery</p>
+		<p>gallerie temporär geschlossen</p>
 	</article>
 </template>

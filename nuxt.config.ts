@@ -4,6 +4,7 @@ import backend from './server/app'
 
 export default defineNuxtConfig({
 	meta: {
+		title: 'abi website',
 		link: [
 			{
 				rel: 'icon',
