@@ -1,30 +1,31 @@
 import express from 'express'
-import type mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { privileges } from '../models/users'
 import type { Privilege, User } from '../models/users'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 
-export const mongoose_error_handler: express.ErrorRequestHandler = (err: mongoose.Error.ValidationError, _req, res, _next) => {
-	// use instanceof
-	if (err.errors === undefined) {
-		console.error(err)
+export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _req, res, _next) => {
+	if (err instanceof mongoose.Error.ValidationError) {
+		const errors = Object.values(err.errors).map(v => v.message)
 
 		return res
-			.sendStatus(500)
+			.status(400)
+			.json(errors)
 	}
 
-	const errors = Object.values(err.errors).map(v => v.message)
 
-	res
-		.status(400)
-		.json(errors)
+	console.error(err)
+
+	return res
+		.sendStatus(500)
 }
 
-// provide res.locals with the user by authorizing the jwt token
 export const authenticate: express.RequestHandler = async (req, res, next) => {
 	const token = req.headers?.authorization?.replace(/^Bearer /i, '') ??
 		req.cookies?.token
+	
+	res.locals.user = {}
 
 	if (token === undefined || token === null) {
 		res.locals.user.error_code = 401

@@ -1,8 +1,11 @@
 <script setup lang='ts'>
+
 const quotes = await useFetch('http://localhost:3000/api/quotes', { method: 'GET' } )
 
-// try to get error code out of this mess
-console.table(quotes.error.value.message)
+const error_code = quotes.error.value?.message?.split(' ')[0]
+
+console.log(error_code)
+console.log(useNuxtApp())
 </script>
 
 <template>

@@ -1,10 +1,12 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import { authenticate } from './lib/middleware'
 
 const app = express()
 
 app.use(
+	cors(),
 	express.json(),
 	express.urlencoded({ extended: false }),
 	cookieParser(),

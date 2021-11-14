@@ -1,51 +1,64 @@
 <script setup lang='ts'>
-	import { ref } from 'vue'
-	import type { Ref } from 'vue'
+	const nav_menu = ref<HTMLElement>()
+	const menu_active = ref<boolean>(false)
+	const route_name = computed<string>(() => {
+		const route = useRoute().name
 
-	const nav_menu: Ref<HTMLElement | undefined> = ref()
-	let menu_active: Ref<boolean> = ref(false)
-
-	function route_name(route: string): string {
-		switch(route) {
+		switch (route) {
 			case 'quotes':
 				return 'Zitate'
 			case 'gallery':
 				return 'Gallerie'
+			case 'rankings':
+				return 'Rankings'
 			default:
 				return ''
 		}
-	}
+	})
+	const { data: user } = await useAsyncData('user', async () => {
+		try {
+			const response = await $fetch(
+				'http://localhost:3000/api/auth',
+				{ headers: { credentials: 'include' } }
+			)
+
+			return response.body
+		} catch (err) {
+			const error_code = err.message.split(' ')[0]
+
+			return error_code
+		}
+	})
+
+	console.log(user.value)
 
 	function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {
-		if (nav_menu.value === undefined)
+		if (
+			!(nav_menu.value instanceof HTMLElement) ||
+			!(ev.target instanceof HTMLElement)
+		)
 			return
 
-		if (ev.x < (this.innerWidth - nav_menu.value.clientWidth))
-			toggle_menu()
+		if (nav_menu.value.contains(ev.target))
+			menu_active.value = false
 	}
 
-	function toggle_menu(): void {
-		menu_active.value = !menu_active.value
-
-		if (menu_active.value)
+	watch(menu_active, val => {
+		if (val)
 			window.addEventListener('click', out_of_menu_click)
 		else
 			window.removeEventListener('click', out_of_menu_click)
-	}
+	})
 </script>
 
 <template>
 	<main class='app'>
-		<Head>
-			<Title>abi 2022</Title>
-		</Head>
-
 		<nav class='bar' :class='{ hidden: menu_active }'>
-			<router-link to='/'>abi 2022</router-link>
+			<NuxtLink @click='menu_active = false' to='/'>abi 2022</NuxtLink>
 
-			<p>{{ route_name($route.name) }}</p>
+			<p>{{ route_name }}</p>
 
-			<svg @click='toggle_menu' width='100' height='100' viewBox='0 0 100 100'>
+			<svg @click='menu_active = true' width='100' height='100' viewBox='0 0 100 100'>
 				<path fill-rule='evenodd' clip-rule='evenodd' d='
 					M25 35.5
 					C25 34.1193 26.1193 33 27.5 33
@@ -78,9 +91,9 @@
 		</nav>
 
 		<nav class='menu' :class='{ hidden: !menu_active }' ref='nav_menu'>
-			<router-link to='/gallery'>Gallerie</router-link>
-			<router-link to='/quotes'>Zitate</router-link>
-			<router-link to='/rankings'>Rankings</router-link>
+			<NuxtLink @click='menu_active = false' to='/gallery'>Gallerie</NuxtLink>
+			<NuxtLink @click='menu_active = false' to='/quotes'>Zitate</NuxtLink>
+			<NuxtLink @click='menu_active = false' to='/rankings'>Rankings</NuxtLink>
 		</nav>
 
 		<NuxtPage/>
