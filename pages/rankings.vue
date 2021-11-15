@@ -4,11 +4,22 @@ import Dropdown from '@/components/dropdown.vue'
 
 const user = await inject('user')
 const selection = ref({})
-const users = await useFetch(
+
+const { data: users } = await useFetch(
 	'http://localhost:3000/api/users',
-	{ headers: { authorization: useNuxtApp().$token() ?? '' } }
-)
-const items = users.data.value ?? []
+	{ headers: { credentails: 'include', authorization: user?.data?.value?.token } }
+).catch(error => error.value)
+
+const { data: teachers } = await useFetch(
+	'http://localhost:3000/api/teachers',
+	{ headers: { credentails: 'include', authorization: user?.data?.value?.token } }
+).catch(error => error.value)
+
+console.log(teachers)
+
+users.value ??= []
+teachers.value ??= []
+const items = [ ...users.value, ...teachers.value ]
 
 function callback() {
 }

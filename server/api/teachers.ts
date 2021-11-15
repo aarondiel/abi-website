@@ -16,6 +16,19 @@ route.param('id', async (_req, res, next, value) => {
 	next()
 })
 
+route.get('/', async (_req, res, _next) => {
+	const query = await teachers.find({}, [ 'name' ])
+
+	if (query === null)
+		res
+			.status(500)
+			.send('couldn\' get users')
+	
+	res
+		.status(200)
+		.json(query)
+})
+
 route.get('/:id', async (_req, res, _next) => {
 	res
 		.status(200)

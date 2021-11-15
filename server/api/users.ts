@@ -16,10 +16,10 @@ route.param('code', async (_req, res, next, value) => {
 	next()
 })
 
-route.get('', assert_privilege(), async (_req, res, _next) => {
+route.get('/', assert_privilege(), async (_req, res, _next) => {
 	const query = await users.find({}, [ 'name' ])
 
-	if (users === null)
+	if (query === null)
 		res
 			.status(500)
 			.send('couldn\' get users')

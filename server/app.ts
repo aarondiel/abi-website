@@ -16,6 +16,7 @@ app.use(
 app.use('/users', require('./api/users'))
 app.use('/quotes', require('./api/quotes'))
 app.use('/teachers', require('./api/teachers'))
+app.use('/rankings', require('./api/rankings'))
 app.use('/auth', require('./api/auth'))
 
 app.all('/', (_req, res, _next) => {

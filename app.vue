@@ -31,7 +31,7 @@
 				{ method: 'GET', headers: { authorization: `Bearer ${ token }` } }
 			)
 
-			return response.body
+			return response
 		} catch (err) {
 			// this is really scuffed
 			// this should be updated once nuxt3 supports axios
