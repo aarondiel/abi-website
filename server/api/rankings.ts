@@ -6,13 +6,19 @@ import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
 const route = Router()
 
 route.get('/', async (_req, res, _next) => {
-	const query = await rankings.find({})
+	let query = await rankings.find({}, [ '-votes' ])
+		.populate('suggestions._id', [ 'name' ])
 
 	if (query === null)
 		return res.sendStatus(404)
 
+	// query.suggestions contains objects with a single _id key,
+	// trying to remove it using a .map() function also deletes the name
+	// please fix this
+
 	res
-		.status(200) .send()
+		.status(200)
+		.json(query)
 })
 
 route.post('/', assert_privilege('admin'), async (req, res, _next) => {

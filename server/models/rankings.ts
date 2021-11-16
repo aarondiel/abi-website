@@ -24,34 +24,39 @@ interface UserTeacherInput {
 	ref: 'users' | 'teachers'
 }
 
-const user_teacher_schema = new mongoose.Schema({
-	_id: {
-		type: mongoose.Schema.Types.ObjectId,
-		refPath: 'ref',
-		validate: [
-			async function(this: UserTeacherInput, v: mongoose.Types.ObjectId) {
-				if (this.ref === 'users')
-					return validate_user(v)
+function user_teacher_schema(stored_at?: string) {
+	const ref_path = stored_at === undefined ?
+		'ref' : `${ stored_at }.ref`
 
-				if (this.ref === 'teachers')
-					return validate_teacher(v)
+	return new mongoose.Schema({
+		_id: {
+			type: mongoose.Schema.Types.ObjectId,
+			refPath: ref_path,
+			validate: [
+				async function(this: UserTeacherInput, v: mongoose.Types.ObjectId) {
+					if (this.ref === 'users')
+						return validate_user(v)
 
-				return false
-			},
-			'_id not valid'
-		]
-	},
+					if (this.ref === 'teachers')
+						return validate_teacher(v)
 
-	ref: {
-		type: String,
-		enum: [ 'users', 'teachers' ],
-		required: [ true, 'ref not specified' ]
-	}
-}, { versionKey: false })
+					return false
+				},
+				'_id not valid'
+			]
+		},
+
+		ref: {
+			type: String,
+			enum: [ 'users', 'teachers' ],
+			required: [ true, 'ref not specified' ]
+		}
+	}, { versionKey: false })
+}
 
 const votes_schema = new mongoose.Schema({
 	vote: {
-		type: user_teacher_schema,
+		type: user_teacher_schema('votes.vote'),
 		required: [ true, 'vote not specified' ]
 	},
 
@@ -70,7 +75,7 @@ const schema = new mongoose.Schema({
 	},
 
 	suggestions: {
-		type: [ user_teacher_schema ],
+		type: [ user_teacher_schema('suggestions') ],
 		default: [],
 		required: false
 	},

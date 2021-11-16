@@ -8,7 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const suggestion = ref({})
 const server_response = ref('')
-const submission = ref({ question: 'test', suggestions: new Set()})
+const submission = ref({ question: '', suggestions: new Set() })
 
 if (user.value.error_code !== undefined)
 	await router.push({
@@ -63,7 +63,7 @@ async function submit() {
 </script>
 
 <template>
-	<article class='rankings'>
+	<article class='rankings-submit'>
 		<form @submit.prevent='submit'>
 			<fieldset>
 				<Textinput v-model='submission.question' placeholder='question' required/>
@@ -90,17 +90,13 @@ async function submit() {
 @use '@/assets/scss/mixins.scss';
 @use '@/assets/scss/colors.scss';
 
-.rankings {
+.rankings-submit {
 	> form {
 		> fieldset {
 			margin: 1rem 0;
 			border-width: 3px 0;
 			border-style: double;
 			border-color: colors.$secondary;
-		
-			> h2 {
-				margin: 0 0 0.5em 0;
-			}
 
 			> .textinput {
 				margin: 1rem auto;

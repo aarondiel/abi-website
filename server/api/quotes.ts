@@ -45,7 +45,6 @@ route.get('/', async (req, res, _next) => {
 			.send('end of quotes')
 
 	let query
-
 	if (res.locals.user.privileges.includes('admin'))
 		query = await quotes.find({})
 			.sort({ createdAt: -1 })
