@@ -4,7 +4,7 @@ import Submitbutton from '@/components/submitbutton.vue'
 
 const route = useRoute()
 const router = useRouter()
-const user = await inject('user')
+const user = inject('user')
 const code = ref('')
 
 async function redirect() {
@@ -25,14 +25,14 @@ async function authenticate() {
 			{ method: 'GET', headers: { authorization: `Bearer ${ token }` } }
 		)
 
-		user.data.value = response
+		user.value = response
 		redirect()	
 	} catch {
 		console.log('failed')
 	}
 }
 
-if (user?.data?.value?.error_code === undefined)
+if (user?.value?.error_code === undefined)
 	await redirect()
 </script>
 

@@ -33,7 +33,7 @@ watch(menu_hidden, val => {
 		<label>
 			<img alt='arrow' src='@/assets/arrow.svg'/>
 
-			<slot v-if='props.modelValue === undefined'/>
+			<slot v-if='!props.items.includes(props.modelValue)'/>
 			<template v-else>{{ props.modelValue[props.keys] }}</template>
 
 			<input type='checkbox' v-model='menu_hidden'/>

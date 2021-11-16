@@ -20,7 +20,7 @@
 	// therefore, please switch this out to:
 	// const { data: user } = await useAsyncData('user', async () => {
 	// at some future point
-	const user = useAsyncData('user', async () => {
+	const { data: user } = useAsyncData('user', async () => {
 		try {
 			const token = useNuxtApp().$token()
 
@@ -28,7 +28,7 @@
 			// removing express might fix this crude workaround
 			const response = await $fetch(
 				'http://localhost:3000/api/auth',
-				{ method: 'GET', headers: { authorization: `Bearer ${ token }` } }
+				{ method: 'GET', headers: { credentials: 'include', authorization: token ?? '' } }
 			)
 
 			return response
@@ -160,6 +160,7 @@
 		> nav.bar {
 			display: flex;
 			position: sticky;
+			z-index: 420;
 			top: 0;
 			height: $navbar-height;
 			padding: 0.8rem;
@@ -206,6 +207,7 @@
 
 		> nav.menu {
 			position: fixed;
+			z-index: 420;
 			display: flex;
 			flex-direction: column;
 			padding: 1em;

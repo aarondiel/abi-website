@@ -13,7 +13,7 @@ const submission = ref({ question: 'test', suggestions: new Set()})
 if (user.value.error_code !== undefined)
 	await router.push({
 		name:	'login',
-		query: { ...route.query, redirected_from: 'rankings' }
+		query: { ...route.query, redirected_from: 'rankings/submit' }
 	})
 
 const { data: users } = await useFetch(

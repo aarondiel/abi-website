@@ -24,6 +24,12 @@ export const authenticate: express.RequestHandler = async (req, res, next) => {
 	const token = req.headers?.authorization?.replace(/^Bearer /i, '') ??
 		req.cookies?.token
 
+	// console.log({
+	// 	header: req.headers?.authorization?.replace(/^Bearer /i, ''),
+	// 	cookies: req.cookies?.token,
+	// 	token: token
+	// })
+
 	res.locals.user = {}
 
 	if (token === undefined || token === null) {

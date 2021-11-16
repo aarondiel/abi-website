@@ -3,6 +3,17 @@ import users, { privileges } from '../models/users'
 import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
 
 const route = Router()
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-='
+
+function generate_code() {
+	let code = ''
+	for (let i = 0; i < 10; i++) {
+		const randint = Math.floor(chars.length * Math.random())
+		code += chars[randint]
+	}
+
+	return code
+}
 
 route.param('code', async (_req, res, next, value) => {
 	const user = await users.findOne({ code: value })
@@ -36,6 +47,10 @@ route.get('/:code', assert_privilege('get_users'), async (_req, res, _next) => {
 })
 
 route.post('/', assert_privilege('create_users'), async (req, res, _next) => {
+	req.body.code ??= generate_code()
+	req.body.gbr ??= false
+	req.body.privileges ??= []
+
 	await users.create({
 		name: req.body.name,
 		email: req.body.email,

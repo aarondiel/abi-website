@@ -20,6 +20,7 @@ function out_of_menu_click(this: Window, ev: MouseEvent) {
 }
 
 function set_selection(selection) {
+	textinput.value = selection[props.keys]
 	emit('update:modelValue', selection)
 	textfocused.value = !textfocused.value
 }

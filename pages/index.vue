@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-const user = await inject('user')
 </script>
 
 <template>

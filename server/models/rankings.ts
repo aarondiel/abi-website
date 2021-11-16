@@ -3,7 +3,10 @@ import { validate_user } from './users'
 import { validate_teacher } from './teachers'
 import type { User } from './users'
 
-async function validate_vote(v: mongoose.Types.ObjectId) {
+async function validate_vote(v) {
+	if (!(v instanceof mongoose.Types.ObjectId))
+		return false
+
 	return validate_user(v) || validate_teacher(v)
 }
 

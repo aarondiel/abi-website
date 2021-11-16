@@ -3,8 +3,8 @@
 
 const router = useRouter()
 const route = useRoute()
-const user = await inject('user')
-console.log(user.data.value)
+const user = inject('user')
+console.log(user.value)
 
 async function redirect() {
 	await router.push({ name: 'login', query: { ...route.query, redirected_from: 'quotes' } })
