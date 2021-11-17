@@ -5,23 +5,32 @@ import rankings from '../models/rankings'
 import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
 const route = Router()
 
-route.get('/', async (_req, res, _next) => {
+route.get('/', assert_privilege(), async (_req, res, _next) => {
 	let query = await rankings.find({}, [ '-votes' ])
 		.populate('suggestions._id', [ 'name' ])
-
+	
 	if (query === null)
 		return res.sendStatus(404)
 
-	// query.suggestions contains objects with a single _id key,
-	// trying to remove it using a .map() function also deletes the name
-	// please fix this
+	// this is probably a very inefficient solution
+	query = query.map(ranking => {
+		return {
+			_id: ranking._id,
+			question: ranking.question,
+			suggestions: ranking.suggestions.map(v => v._id)
+		}
+	})
 
 	res
 		.status(200)
 		.json(query)
 })
 
-route.post('/', assert_privilege('admin'), async (req, res, _next) => {
+route.post('/', assert_privilege(), async (req, res, _next) => {
+	res.sendStatus(200)
+})
+
+route.post('/submit', assert_privilege('admin'), async (req, res, _next) => {
 	const suggestions = await Promise.all(req.body?.suggestions?.map(async val => {
 		const user_query = await users.findById(val)
 

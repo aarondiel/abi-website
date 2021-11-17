@@ -38,7 +38,7 @@ async function submit() {
 	let response
 
 	try {
-		response = await $fetch('http://localhost:3000/api/rankings', {
+		response = await $fetch('http://localhost:3000/api/rankings/submit', {
 			method: 'POST',
 			body: {
 				question: submission.value.question,
