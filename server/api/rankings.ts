@@ -2,6 +2,7 @@ import { Router } from 'express'
 import users from '../models/users'
 import teachers from '../models/teachers'
 import rankings from '../models/rankings'
+import mongoose from 'mongoose'
 import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
 const route = Router()
 
@@ -12,21 +13,30 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 	if (query === null)
 		return res.sendStatus(404)
 
-	// this is probably a very inefficient solution
-	query = query.map(ranking => {
-		return {
-			_id: ranking._id,
-			question: ranking.question,
-			suggestions: ranking.suggestions.map(v => v._id)
-		}
-	})
-
 	res
 		.status(200)
 		.json(query)
 })
 
 route.post('/', assert_privilege(), async (req, res, _next) => {
+	await Promise.all(Object.keys(req.body.votes).map(async key => {
+		await rankings.findByIdAndUpdate(
+			new mongoose.Types.ObjectId(key),
+			{ $pull: { votes: { submitted_by: new mongoose.Types.ObjectId(res.locals.user._id) } } }
+		)
+
+		await rankings.findByIdAndUpdate(
+			new mongoose.Types.ObjectId(key),
+			{ $push: { votes: {
+				vote: {
+					_id: new mongoose.Types.ObjectId(req.body.votes[key]._id),
+					ref: req.body.votes[key].ref
+				},
+				submitted_by: new mongoose.Types.ObjectId(res.locals.user._id)
+			} } }
+		)
+	}))
+
 	res.sendStatus(200)
 })
 

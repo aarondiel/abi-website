@@ -10,6 +10,16 @@ const emit = defineEmits([ 'update:modelValue' ])
 const menu_hidden = ref<Boolean>(true)
 const menu = ref<HTMLDivElement>()
 
+function traverse_path(target: object, path: string[]) {
+	const new_target = target[path.shift()]
+
+	if (path.length === 0)
+		return new_target
+
+	return traverse_path(new_target, path)
+}
+
+
 function set_selection(selection: object) {
 	menu_hidden.value = !menu_hidden.value
 	emit('update:modelValue', selection)
@@ -34,7 +44,7 @@ watch(menu_hidden, val => {
 			<img alt='arrow' src='@/assets/arrow.svg'/>
 
 			<slot v-if='!props.items.includes(props.modelValue)'/>
-			<template v-else>{{ props.modelValue[props.keys] }}</template>
+			<template v-else>{{ traverse_path(props.modelValue, props.keys.split('.')) }}</template>
 
 			<input type='checkbox' v-model='menu_hidden'/>
 		</label>
@@ -44,7 +54,7 @@ watch(menu_hidden, val => {
 				:key='item'
 				@click='set_selection(item)'
 			>
-				{{ item[props.keys] }}
+				{{ traverse_path(item, props.keys.split('.')) }}
 			</li>
 		</ul>
 	</div>

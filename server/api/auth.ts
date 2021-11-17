@@ -18,7 +18,7 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 route.post('/', async (req, res, _next) => {
 	const user = await users.findOne(
 		{ code: req.body.code },
-		[ '-_id', 'name', 'privileges' ]
+		[ 'name', 'privileges' ]
 	)
 
 	if (user === null)

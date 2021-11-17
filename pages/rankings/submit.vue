@@ -48,16 +48,12 @@ async function submit() {
 		})
 
 		server_response.value = 'accepted'
-		window.setTimeout(() => {
-			server_response.value = ''
-		}, 5000)
+		window.setTimeout(() => { server_response.value = '' }, 5000)
 		submission.value.suggestions.clear()
 	} catch  {
 		console.error(response)
 		server_response.value = 'error'
-		window.setTimeout(() => {
-			server_response.value = ''
-		}, 5000)
+		window.setTimeout(() => { server_response.value = '' }, 5000)
 	}
 }
 </script>

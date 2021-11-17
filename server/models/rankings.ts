@@ -66,7 +66,7 @@ const votes_schema = new mongoose.Schema({
 		validate: [ validate_user, 'submitted_by not valid' ],
 		required: [ true, 'submitted_by not specified' ]
 	}
-}, { versionKey: false })
+}, { _id: false, versionKey: false })
 
 const schema = new mongoose.Schema({
 	question: {

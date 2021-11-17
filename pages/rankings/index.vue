@@ -6,6 +6,7 @@ const user = inject('user')
 const route = useRoute()
 const router = useRouter()
 const submission = ref({})
+const server_response = ref('')
 
 if (user.value.error_code !== undefined)
 	await router.push({
@@ -19,7 +20,30 @@ const { data: questions } = await useFetch(
 )
 
 async function submit() {
-	console.log(submission.value)
+	let response
+
+	try {
+		const body = {}
+		Object.keys(submission.value).map(key => {
+			body[key] = {
+				_id: submission.value[key]._id._id,
+				ref: submission.value[key].ref
+			}
+		})
+
+		response = await $fetch('http://localhost:3000/api/rankings', {
+			method: 'POST',
+			body: { votes: body },
+			headers: { credentails: 'include', authorization: user?.value?.token }
+		})
+
+		server_response.value = 'accepted'
+		window.setTimeout(() => { server_response.value = '' }, 5000)
+	} catch {
+		console.error(response)
+		server_response.value = 'error'
+		window.setTimeout(() => { server_response.value = '' }, 5000)
+	}
 }
 </script>
 
@@ -30,13 +54,14 @@ async function submit() {
 		<form @submit.prevent='submit'>
 			<fieldset v-for='question in questions' :key='question._id'>
 			 <h2>{{ question.question }}</h2>
-			 <Dropdown v-model='submission[question._id]' :items='question.suggestions' keys='name'>Antwort auswählen</Dropdown>
+			 <Dropdown v-model='submission[question._id]' :items='question.suggestions' keys='_id.name'>Antwort auswählen</Dropdown>
 			</fieldset>
 
 			<Submitbutton value='Abstimmung einsenden'/>
 		</form>
 
 		<p>{{ submission }}</p>
+		<p>{{ server_response }}</p>
 	</article>
 </template>
 
