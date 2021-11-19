@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import Loading from '@/components/loading.vue'
 import Dropdown from '@/components/dropdown.vue'
 import Submitbutton from '@/components/submitbutton.vue'
 
@@ -7,6 +8,7 @@ const route = useRoute()
 const router = useRouter()
 const submission = ref({})
 const server_response = ref('')
+const is_loading = ref(false)
 
 if (user.value.error_code !== undefined)
 	await router.push({
@@ -21,6 +23,7 @@ const { data: questions } = await useFetch(
 
 async function submit() {
 	let response
+	is_loading.value = true
 
 	try {
 		const body = {}
@@ -44,6 +47,7 @@ async function submit() {
 		server_response.value = 'error'
 		window.setTimeout(() => { server_response.value = '' }, 5000)
 	}
+	is_loading.value = false
 }
 </script>
 
@@ -60,8 +64,9 @@ async function submit() {
 			<Submitbutton value='Abstimmung einsenden'/>
 		</form>
 
-		<p>{{ submission }}</p>
-		<p>{{ server_response }}</p>
+		<Loading :loading='is_loading'>
+			<p>{{ server_response }}</p>
+		</Loading>
 	</article>
 </template>
 
