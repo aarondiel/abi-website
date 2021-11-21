@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import users from '@/models/users'
 import teachers from '@/models/teachers'
 import rankings from '@/models/rankings'
@@ -18,7 +19,7 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 		.json(query)
 })
 
-route.post('/', assert_privilege(), async (req, res, _next) => {
+route.post('/', assert_privilege(), async (req: Request, res: Response, _next: NextFunction) => {
 	await Promise.all(Object.keys(req.body).map(async key => {
 		await rankings.findByIdAndUpdate(
 			new mongoose.Types.ObjectId(key),
@@ -40,8 +41,8 @@ route.post('/', assert_privilege(), async (req, res, _next) => {
 	res.sendStatus(200)
 }, mongoose_error_handler)
 
-route.post('/submit', assert_privilege('admin'), async (req, res, _next) => {
-	const suggestions = await Promise.all(req.body?.suggestions?.map(async val => {
+route.post('/submit', assert_privilege('admin'), async (req: Request, res: Response, _next: NextFunction) => {
+	const suggestions = await Promise.all(req.body?.suggestions?.map(async (val: string) => {
 		const user_query = await users.findById(val)
 
 		if (user_query !== null)

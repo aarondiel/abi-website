@@ -1,11 +1,17 @@
 <script setup lang='ts'>
-	import type { Ref } from 'vue'
+const props = defineProps<{
+	modelValue?: string
+}>()
 
-	const props = defineProps<{
-		modelValue?: Ref<string>
-	}>()
+const emit = defineEmits([ 'update:modelValue' ])
 
-	const emit = defineEmits([ 'update:modelValue' ])
+// this function only exists to make the typescript compiler happy
+function update (event: Event) {
+	if (!(event.target instanceof HTMLInputElement))
+		return
+
+	emit('update:modelValue', event.target.value)
+}
 </script>
 
 <template>
@@ -13,7 +19,7 @@
 		<input
 			type='text'
 			v-bind='$attrs'
-			@input='emit("update:modelValue", $event.target.value)'
+			@input='update'
 		/>
 	</span>
 </template>

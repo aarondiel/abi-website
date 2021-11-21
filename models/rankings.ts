@@ -3,25 +3,34 @@ import { validate_user } from './users'
 import { validate_teacher } from './teachers'
 import type { User } from './users'
 
-async function validate_vote(v) {
-	if (!(v instanceof mongoose.Types.ObjectId))
-		return false
+interface UserTeacherInput {
+	_id: mongoose.Types.ObjectId,
+	ref: 'users' | 'teachers'
+}
 
-	return validate_user(v) || validate_teacher(v)
+interface VoteInput {
+	vote: UserTeacherInput,
+	submitted_by: mongoose.Types.ObjectId
 }
 
 export interface Ranking extends mongoose.Document {
 	question: string,
 	suggestions: mongoose.PopulatedDoc<User>[],
 	votes: {
-		vote: mongoose.PopulatedDoc<User>,
+		vote: mongoose.PopulatedDoc<UserTeacherInput>,
 		submitted_by: mongoose.PopulatedDoc<User>
 	}[]
 }
 
-interface UserTeacherInput {
-	_id: mongoose.Types.ObjectId,
-	ref: 'users' | 'teachers'
+async function validate_vote(this: VoteInput, v: any) {
+	if (!(v._id instanceof mongoose.Types.ObjectId))
+		return false
+	
+	if (v.ref === 'user')
+		return validate_user(v._id)
+	
+	if (v.ref === 'teacher')
+		return validate_teacher(v._id)
 }
 
 function user_teacher_schema(stored_at?: string) {
@@ -57,6 +66,7 @@ function user_teacher_schema(stored_at?: string) {
 const votes_schema = new mongoose.Schema({
 	vote: {
 		type: user_teacher_schema('votes.vote'),
+		validate: [ validate_vote, 'vote not valid' ],
 		required: [ true, 'vote not specified' ]
 	},
 

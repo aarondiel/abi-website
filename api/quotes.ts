@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import quotes from '@/models/quotes'
 import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
@@ -65,7 +66,7 @@ route.get('/', async (req, res, _next) => {
 		.json(query)
 })
 
-route.post('/', async (req, res, _next) => {
+route.post('/', async (req: Request, res: Response, _next: NextFunction) => {
 	await quotes.create({
 		messages: req.body.messages,
 		submitted_by: res.locals.user.id
@@ -74,7 +75,7 @@ route.post('/', async (req, res, _next) => {
 	res.sendStatus(200)
 }, mongoose_error_handler)
 
-route.delete('/:quote', assert_privilege('delete_quotes'), async (req, res, next) => {
+route.delete('/:quote', assert_privilege('delete_quotes'), async (_req: Request, res: Response, _next: NextFunction) => {
 	await quotes.findByIdAndDelete(res.locals.quote.id)
 
 	res.sendStatus(204)

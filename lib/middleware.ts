@@ -8,7 +8,7 @@ import config from '@/config'
 export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _req, res, _next) => {
 	if (err.errors instanceof mongoose.Error.ValidationError) {
 		const errors = Object.values(err.errors)
-			.map(v => v.message)
+			.map((v:any) => v.message)
 
 		return res
 			.status(400)
@@ -38,7 +38,7 @@ export const authenticate: express.RequestHandler = async (req, res, next) => {
 		return next()
 	}
 
-	jwt.verify(token, config.jwt.access_token, (err, user) => {
+	jwt.verify(token, config.jwt.access_token, (err: any, user: any) => {
 		if (err !== undefined && err !== null) {
 			res.locals.user.error_code = 403
 			return next()

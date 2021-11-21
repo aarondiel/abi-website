@@ -4,8 +4,17 @@ import { frontend_config as config } from '@/config'
 import SubmitButton from '@/components/submitbutton.vue'
 import Dropdown from '@/components/dropdown.vue'
 
-const rankings = ref({})
-const submission = ref({})
+interface Ranking {
+	_id: string,
+	question: string,
+	suggestions: {
+		_id: string,
+		ref: 'users' | 'teachers'
+	}[]
+}
+
+const rankings = ref<Ranking[]>([])
+const submission = ref<Record<string, any>>({})
 
 async function get_rankings() {
 	const response = await fetch(`${ config.url }/api/rankings`, {

@@ -2,9 +2,11 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import mix from 'vite-plugin-mix'
 import { resolve } from 'path'
-import { port } from './config'
+import { port, frontend_config } from './config'
 
 export default defineConfig({
+	base: `${ frontend_config.url }/`,
+
 	server: {
 		port: port
 	},

@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import teachers from '@/models/teachers'
 import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
@@ -37,7 +38,7 @@ route.get('/:id', async (_req, res, _next) => {
 
 route.post('/',
 	assert_privilege('create_teachers'),
-	async (req, res, _next) => {
+	async (req: Request, res: Response, _next: NextFunction) => {
 		await teachers.create({
 			name: req.body.name,
 			email: req.body.email,

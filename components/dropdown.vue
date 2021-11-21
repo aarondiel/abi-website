@@ -1,29 +1,32 @@
 <script setup lang='ts'>
 import { ref, watch } from 'vue'
-import type { Ref } from 'vue'
+import hash from 'object-hash'
 
 const props = defineProps<{
 	items: object[],
 	keys: string,
-	modelValue?: Ref<object>
+	modelValue?: object
 }>()
 
 const emit = defineEmits([ 'update:modelValue' ])
 const menu_hidden = ref(true)
 const menu = ref<HTMLDivElement>()
+const selection = ref({})
 
-function traverse_path(target: object, path: string[]) {
-	const new_target = target[path.shift()]
+function traverse_path(target: Record<string, any>, path: string[]): string {
+	const key: string = path.shift() ?? ''
+	const new_target: Record<string, any> | string = target[key]
 
-	if (path.length === 0)
+	if (typeof new_target === 'string')
 		return new_target
 
 	return traverse_path(new_target, path)
 }
 
-function set_selection(selection: object) {
+function set_selection(selected: object) {
 	menu_hidden.value = !menu_hidden.value
-	emit('update:modelValue', selection)
+	selection.value = selected
+	emit('update:modelValue', selected)
 }
 
 function out_of_menu_click(this: Window, ev: MouseEvent) {
@@ -47,15 +50,15 @@ watch(menu_hidden, val => {
 		<label>
 			<img alt='arrow' src='@/assets/arrow.svg'/>
 
-			<slot v-if='!props.items.includes(props.modelValue)'/>
-			<template v-else>{{ traverse_path(props.modelValue, props.keys.split('.')) }}</template>
+			<slot v-if='!props.items.includes(selection)'/>
+			<template v-else>{{ traverse_path(selection, props.keys.split('.')) }}</template>
 
 			<input type='checkbox' v-model='menu_hidden'/>
 		</label>
 		<ul :class='{ hidden: menu_hidden }'>
 			<li
 				v-for='item in props.items'
-				:key='item'
+				:key='hash(item)'
 				@click='set_selection(item)'
 			>
 				{{ traverse_path(item, props.keys.split('.')) }}

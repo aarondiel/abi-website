@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import type { Request, Response, NextFunction } from 'express'
 import users, { privileges } from '@/models/users'
 import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
@@ -54,7 +55,7 @@ route.get('/:code',
 
 route.post('/',
 	assert_privilege('create_users'),
-	async (req, res, _next) => {
+	async (req: Request, res: Response, _next: NextFunction) => {
 		req.body.code ??= generate_code()
 		req.body.gbr ??= false
 		req.body.privileges ??= []
@@ -74,7 +75,7 @@ route.post('/',
 
 route.post('/:code/add_privilege',
 	assert_privilege('create_users'),
-	async (req, res, _next) => {
+	async (req: Request, res: Response, _next: NextFunction) => {
 		if (!privileges.includes(req.body.privilege))
 			return res.status(400).send('privilege not valid')
 
