@@ -1,12 +1,12 @@
 import { connection, connect, set } from 'mongoose'
-import config from '../../config'
+import config from '@/config'
 
 export async function setup() {
 	await new Promise<void>((res, rej) => {
 		connection.once('error', rej)
 		connection.once('open', res)
 
-		connect(`${config.mongodb.url}:${config.mongodb.port}/abi`)
+		connect(`${ config.mongodb.url }:${ config.mongodb.port }/abi`)
 	})
 
 	set('runValidators', true)

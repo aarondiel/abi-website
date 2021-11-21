@@ -1,4 +1,17 @@
-@use '@/assets/scss/colors';
+@use './colors.scss';
+@use './fonts.scss';
+
+@mixin link {
+	color: colors.$light-grey;
+	font-family: fonts.$heading;
+	text-decoration: none;
+	text-shadow: 0 0 1em colors.$black;
+
+	&:hover {
+		color: colors.$white;
+		text-shadow: 0 0 1em colors.$grey;
+	}
+}
 
 @mixin gold_border {
 	position: relative;

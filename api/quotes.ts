@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import quotes from '../models/quotes'
-import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
+import quotes from '@/models/quotes'
+import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
 const route = Router()
 

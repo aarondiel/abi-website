@@ -1,72 +1,58 @@
 <script setup lang='ts'>
-import Loading from '@/components/loading.vue'
+import { ref } from 'vue'
+import { frontend_config as config } from '@/config'
+import SubmitButton from '@/components/submitbutton.vue'
 import Dropdown from '@/components/dropdown.vue'
-import Submitbutton from '@/components/submitbutton.vue'
 
-const user = inject('user')
-const route = useRoute()
-const router = useRouter()
+const rankings = ref({})
 const submission = ref({})
-const server_response = ref('')
-const is_loading = ref(false)
 
-if (user.value.error_code !== undefined)
-	await router.push({
-		name:	'login',
-		query: { ...route.query, redirected_from: 'rankings' }
+async function get_rankings() {
+	const response = await fetch(`${ config.url }/api/rankings`, {
+		credentials: 'include'
 	})
 
-const { data: questions } = await useFetch(
-	'http://localhost:3000/api/rankings',
-	{ headers: { credentails: 'include', authorization: user?.value?.token } }
-)
+	if (!response.ok)
+		return
+	
+	const data = await response.json()
+
+	rankings.value = data
+}
 
 async function submit() {
-	let response
-	is_loading.value = true
+	const response = await fetch(`${ config.url }/api/rankings`, {
+		method: 'POST',
+		credentials: 'include',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(submission.value)
+	})
 
-	try {
-		const body = {}
-		Object.keys(submission.value).map(key => {
-			body[key] = {
-				_id: submission.value[key]._id._id,
-				ref: submission.value[key].ref
-			}
-		})
-
-		response = await $fetch('http://localhost:3000/api/rankings', {
-			method: 'POST',
-			body: { votes: body },
-			headers: { credentails: 'include', authorization: user?.value?.token }
-		})
-
-		server_response.value = 'accepted'
-		window.setTimeout(() => { server_response.value = '' }, 5000)
-	} catch {
-		console.error(response)
-		server_response.value = 'error'
-		window.setTimeout(() => { server_response.value = '' }, 5000)
-	}
-	is_loading.value = false
+	if (!response.ok)
+		return
+	
+	console.log(response)
 }
+
+get_rankings()
 </script>
 
 <template>
 	<article class='rankings'>
-		<h1>Abi-Rankings</h1>
-
 		<form @submit.prevent='submit'>
-			<fieldset v-for='question in questions' :key='question._id'>
-			 <h2>{{ question.question }}</h2>
-			 <Dropdown v-model='submission[question._id]' :items='question.suggestions' keys='_id.name'>Antwort auswählen</Dropdown>
+			<fieldset v-for='ranking in rankings' :key='ranking._id'>
+				<h2>{{ ranking.question }}</h2>
+				<Dropdown
+					:items='ranking.suggestions'
+					v-model='submission[ranking._id]'
+					keys='_id.name'
+				>
+					Antwort auswählen
+				</Dropdown>
 			</fieldset>
 
-			<Submitbutton value='Abstimmung einsenden'/>
+			<SubmitButton value='Abstimmung einsenden'/>
 		</form>
-
-		<Loading :loading='is_loading'>
-			<p>{{ server_response }}</p>
-		</Loading>
 	</article>
 </template>
 
@@ -75,6 +61,10 @@ async function submit() {
 
 .rankings {
 	> form {
+		> .submitbutton {
+			margin: 2rem auto 0 auto;
+		}
+
 		> fieldset {
 			border-width: 3px 0;
 			border-style: double;
@@ -89,12 +79,8 @@ async function submit() {
 			}
 
 			> h2 {
-				font-size: 1.75rem;
+				font-size: 1.75em;
 			}
-		}
-
-		> .submitbutton {
-			margin: 1rem auto 0 auto;
 		}
 	}
 }

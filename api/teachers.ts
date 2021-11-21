@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import teachers from '../models/teachers'
-import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
+import teachers from '@/models/teachers'
+import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
 const route = Router()
 
@@ -22,7 +22,7 @@ route.get('/', async (_req, res, _next) => {
 	if (query === null)
 		res
 			.status(500)
-			.send('couldn\' get users')
+			.send('couldn\'t get teachers')
 	
 	res
 		.status(200)
@@ -35,14 +35,18 @@ route.get('/:id', async (_req, res, _next) => {
 		.json(res.locals.target_teacher)
 })
 
-route.post('/', assert_privilege('create_teachers'), async (req, res, _next) => {
-	await teachers.create({
-		name: req.body.name,
-		email: req.body.email,
-		subjects: req.body.subjects
-	})
+route.post('/',
+	assert_privilege('create_teachers'),
+	async (req, res, _next) => {
+		await teachers.create({
+			name: req.body.name,
+			email: req.body.email,
+			subjects: req.body.subjects
+		})
 
-	res.sendStatus(200)
-}, mongoose_error_handler)
+		res.sendStatus(200)
+	},
+	mongoose_error_handler
+)
 
 export default route

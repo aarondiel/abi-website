@@ -1,13 +1,13 @@
 import { Router } from 'express'
-import users from '../models/users'
-import { assert_privilege } from '../lib/middleware'
 import jwt from 'jsonwebtoken'
-import config from '../../config'
+import users from '@/models/users'
+import { assert_privilege } from '@/lib/middleware'
+import config from '@/config'
 
 const route = Router()
 
 route.get('/', assert_privilege(), async (_req, res, _next) => {
-	res
+	return res
 		.cookie('token', res.locals.user.token, {
 			expires: new Date(Date.now() + 60 * 24 * 60 * 60),
 			sameSite: 'strict'
@@ -29,7 +29,7 @@ route.post('/', async (req, res, _next) => {
 		config.jwt.access_token
 	)
 
-	res
+	return res
 		.status(200)
 		.cookie('token', token, {
 			expires: new Date(Date.now() + 60 * 24 * 60 * 60),

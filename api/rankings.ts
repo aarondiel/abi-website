@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import users from '../models/users'
-import teachers from '../models/teachers'
-import rankings from '../models/rankings'
+import users from '@/models/users'
+import teachers from '@/models/teachers'
+import rankings from '@/models/rankings'
 import mongoose from 'mongoose'
-import { assert_privilege, mongoose_error_handler } from '../lib/middleware'
+import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 const route = Router()
 
 route.get('/', assert_privilege(), async (_req, res, _next) => {
@@ -19,7 +19,7 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 })
 
 route.post('/', assert_privilege(), async (req, res, _next) => {
-	await Promise.all(Object.keys(req.body.votes).map(async key => {
+	await Promise.all(Object.keys(req.body).map(async key => {
 		await rankings.findByIdAndUpdate(
 			new mongoose.Types.ObjectId(key),
 			{ $pull: { votes: { submitted_by: new mongoose.Types.ObjectId(res.locals.user._id) } } }
@@ -29,8 +29,8 @@ route.post('/', assert_privilege(), async (req, res, _next) => {
 			new mongoose.Types.ObjectId(key),
 			{ $push: { votes: {
 				vote: {
-					_id: new mongoose.Types.ObjectId(req.body.votes[key]._id),
-					ref: req.body.votes[key].ref
+					_id: new mongoose.Types.ObjectId(req.body[key]._id._id),
+					ref: req.body[key].ref
 				},
 				submitted_by: new mongoose.Types.ObjectId(res.locals.user._id)
 			} } }
@@ -38,7 +38,7 @@ route.post('/', assert_privilege(), async (req, res, _next) => {
 	}))
 
 	res.sendStatus(200)
-})
+}, mongoose_error_handler)
 
 route.post('/submit', assert_privilege('admin'), async (req, res, _next) => {
 	const suggestions = await Promise.all(req.body?.suggestions?.map(async val => {

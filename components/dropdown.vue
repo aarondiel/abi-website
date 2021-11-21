@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { ref, watch } from 'vue'
 import type { Ref } from 'vue'
 
 const props = defineProps<{
@@ -6,8 +7,9 @@ const props = defineProps<{
 	keys: string,
 	modelValue?: Ref<object>
 }>()
+
 const emit = defineEmits([ 'update:modelValue' ])
-const menu_hidden = ref<Boolean>(true)
+const menu_hidden = ref(true)
 const menu = ref<HTMLDivElement>()
 
 function traverse_path(target: object, path: string[]) {
@@ -19,14 +21,16 @@ function traverse_path(target: object, path: string[]) {
 	return traverse_path(new_target, path)
 }
 
-
 function set_selection(selection: object) {
 	menu_hidden.value = !menu_hidden.value
 	emit('update:modelValue', selection)
 }
 
 function out_of_menu_click(this: Window, ev: MouseEvent) {
-	if(!menu.value?.contains(ev.target))
+	if (!( ev.target instanceof HTMLElement))
+		return
+
+	if (!menu.value?.contains(ev.target))
 		menu_hidden.value = !menu_hidden.value
 }
 

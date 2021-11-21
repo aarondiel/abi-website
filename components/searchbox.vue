@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { defineProps, defineEmits, ref, watch } from 'vue'
 import type { Ref } from 'vue'
 import Fuse from 'fuse.js'
 
@@ -15,6 +16,9 @@ const menu = ref<HTMLDivElement>()
 const fuzzy = new Fuse(props.items, { keys: [ props.keys ?? '' ] })
 
 function out_of_menu_click(this: Window, ev: MouseEvent) {
+	if (!(ev.target instanceof HTMLElement))
+		return
+
 	if(!menu.value?.contains(ev.target))
 		textfocused.value = !textfocused.value
 }

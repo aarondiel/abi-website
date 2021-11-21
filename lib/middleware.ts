@@ -1,13 +1,14 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { privileges } from '../models/users'
-import type { Privilege } from '../models/users'
+import type { Privilege } from '@/models/users'
 import jwt from 'jsonwebtoken'
-import config from '../../config'
+import config from '@/config'
 
 export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _req, res, _next) => {
 	if (err.errors instanceof mongoose.Error.ValidationError) {
-		const errors = Object.values(err.errors).map(v => v.message)
+		const errors = Object.values(err.errors)
+			.map(v => v.message)
 
 		return res
 			.status(400)
@@ -25,7 +26,7 @@ export const authenticate: express.RequestHandler = async (req, res, next) => {
 		req.cookies?.token
 
 	// console.log({
-	// 	header: req.headers?.authorization?.replace(/^Bearer /i, ''),
+	// 	authorization:  req.headers?.authorization?.replace(/^Bearer /i, ''),
 	// 	cookies: req.cookies?.token,
 	// 	token: token
 	// })
@@ -58,7 +59,7 @@ export const assert_privilege = (privilege?: Privilege) => {
 			return next()
 
 		if (privilege === undefined)
-			res.sendStatus(res.locals?.user?.error_code ?? 401)
+			return res.sendStatus(res.locals?.user?.error_code ?? 401)
 
 		if (
 			res.locals?.user?.privileges?.includes('admin') ||
@@ -66,7 +67,7 @@ export const assert_privilege = (privilege?: Privilege) => {
 		)
 			return next()
 
-		res.sendStatus(403)
+		return res.sendStatus(403)
 	}
 
 	return check

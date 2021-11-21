@@ -1,7 +1,3 @@
 node_modules
-test.sh
-*.log
-.nuxt
-nuxt.d.ts
 config.ts
-.output
+test.sh
