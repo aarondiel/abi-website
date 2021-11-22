@@ -7,6 +7,7 @@ import config from '@/config'
 import users from '@/models/users'
 
 const transport = nodemailer.createTransport({
+	pool: true,
 	host: config.mail.host,
 	port: 587,
 	secure: false,
