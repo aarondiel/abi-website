@@ -1,11 +1,12 @@
 <script setup lang='ts'>
 import { ref, provide } from 'vue'
+import { useRoute } from 'vue-router'
 import { frontend_config as config } from '@/config'
 import Textinput from '@/components/textinput.vue'
 import Submitbutton from '@/components/submitbutton.vue'
 
 const is_authenticated = ref(false)
-const code = ref('')
+const code = ref(useRoute().query.code)
 const user = ref({})
 provide('user', user)
 
@@ -37,6 +38,9 @@ async function authenticate() {
 }
 
 get_authentication()
+
+if (code.value !== '' && !is_authenticated.value)
+	authenticate()
 </script>
 
 <template>

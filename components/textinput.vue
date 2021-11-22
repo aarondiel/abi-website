@@ -19,6 +19,7 @@ function update (event: Event) {
 		<input
 			type='text'
 			v-bind='$attrs'
+			:value='props.modelValue'
 			@input='update'
 		/>
 	</span>
