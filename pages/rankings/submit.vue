@@ -2,6 +2,7 @@
 import Searchbox from '@/components/searchbox.vue'
 import Textinput from '@/components/textinput.vue'
 import Submitbutton from '@/components/submitbutton.vue'
+import Loading from '@/components/loading.vue'
 import { ref, inject } from 'vue'
 import { frontend_config as config } from '@/config'
 
@@ -51,11 +52,16 @@ async function get_suggestions() {
 }
 
 async function submit() {
+	server_response.value = 'loading'
+
 	const response = await fetch(`${ config.url }/api/rankings/submit`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(submission.value)
+		body: JSON.stringify({
+			question: submission.value.question,
+			suggestions: [ ...submission.value.suggestions ].map((v: any) => v._id)
+		})
 	})
 
 	server_response.value = response.ok ? 'accepted' : 'error'
@@ -93,12 +99,14 @@ get_suggestions()
 		</form>
 
 		<p>{{ submission }}</p>
-		<p
-			class='server_response'
-			:class='{ accepted: server_response === "accepted" }'
-		>
-			{{ server_response }}
-		</p>
+		<Loading :loading='server_response === "loading"'>
+			<p
+				class='server_response'
+				:class='{ accepted: server_response === "accepted" }'
+			>
+				{{ server_response }}
+			</p>
+		</Loading>
 	</article>
 
 	<article v-else>
@@ -152,6 +160,7 @@ get_suggestions()
 
 	> .server_response {
 		color: colors.$red;
+
 		&.accepted {
 			color: colors.$green;
 		}

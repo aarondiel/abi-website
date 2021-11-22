@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { frontend_config as config } from '@/config'
 import SubmitButton from '@/components/submitbutton.vue'
 import Dropdown from '@/components/dropdown.vue'
+import Loading from '@/components/loading.vue'
 
 interface Ranking {
 	_id: string,
@@ -15,6 +16,7 @@ interface Ranking {
 
 const rankings = ref<Ranking[]>([])
 const submission = ref<Record<string, any>>({})
+const server_response = ref('')
 
 async function get_rankings() {
 	const response = await fetch(`${ config.url }/api/rankings`, {
@@ -30,20 +32,17 @@ async function get_rankings() {
 }
 
 async function submit() {
+	server_response.value = 'loading'
+
 	const response = await fetch(`${ config.url }/api/rankings`, {
 		method: 'POST',
 		credentials: 'include',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			question: submission.value.question,
-			suggestions: [ ...submission.value.suggestions ].map(v => v._id)
-		})
+		body: JSON.stringify(submission.value)
 	})
 
-	if (!response.ok)
-		return
-	
-	console.log(response)
+	server_response.value = response.ok ? 'Danke fürs Abstimmen シ' : 'error'
+	window.setTimeout(() => { server_response.value = '' }, 5000)
 }
 
 get_rankings()
@@ -65,6 +64,15 @@ get_rankings()
 
 			<SubmitButton value='Abstimmung einsenden'/>
 		</form>
+
+		<Loading :loading='server_response === "loading"'>
+			<p
+				class='server_response'
+				:class='{ accepted: server_response !== "error" }'
+			>
+				{{ server_response }}
+			</p>
+		</Loading>
 	</article>
 </template>
 
@@ -93,6 +101,15 @@ get_rankings()
 			> h2 {
 				font-size: 1.75em;
 			}
+		}
+	}
+
+	> .server_response {
+		color: colors.$red;
+		text-align: center;
+
+		&.accepted {
+			color: colors.$green;
 		}
 	}
 }
