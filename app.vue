@@ -98,6 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 		colors.$primary 75%,
 	);
 	background-clip: text;
+	-webkit-background-clip: text;
 	color: transparent;
 	font-family: fonts.$heading;
 	text-align: center;
