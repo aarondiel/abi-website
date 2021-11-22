@@ -15,14 +15,21 @@ app.use(
 
 import teachers from '@/api/teachers'
 app.use('/api/teachers', teachers)
+
 import users from '@/api/users'
 app.use('/api/users', users)
+
 import quotes from '@/api/quotes'
 app.use('/api/quotes', quotes)
+
 import rankings from '@/api/rankings'
 app.use('/api/rankings', rankings)
+
 import auth from '@/api/auth'
 app.use('/api/auth', auth)
+
+import mail from '@/api/mail'
+app.use('/api/mail', mail)
 
 app.all('/api', (_req, res, _next) => {
 	res

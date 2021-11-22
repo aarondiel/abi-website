@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "fuse.js": "^6.4.6",
+    "nodemailer": "^6.7.1",
     "object-hash": "^2.2.0",
     "sass": "^1.43.4",
     "vue": "^3.2.16",
@@ -17,6 +18,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.6",
+    "@types/nodemailer": "^6.4.4",
     "@types/object-hash": "^2.2.1",
     "@vitejs/plugin-vue": "^1.9.3",
     "cookie-parser": "^1.4.6",
