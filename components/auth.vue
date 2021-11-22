@@ -6,7 +6,7 @@ import Textinput from '@/components/textinput.vue'
 import Submitbutton from '@/components/submitbutton.vue'
 
 const is_authenticated = ref(false)
-const code = ref(useRoute().query.code)
+const code = ref(useRoute().query.code?.toString())
 const user = ref({})
 provide('user', user)
 
