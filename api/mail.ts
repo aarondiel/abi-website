@@ -88,7 +88,6 @@ route.post('/', assert_privilege('admin'), async (req, res, _next) => {
 			html: parseHtml(template, props)
 		})
 
-		console.log(info)
 
 		if (info.accepted)
 			res.write(`successfully sent mail to ${student.name}\n`)
