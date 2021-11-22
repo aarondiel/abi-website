@@ -21,9 +21,20 @@ const current_route = computed<string>(() => {
 })
 
 const requires_authentication = computed<boolean>(() => {
-	return [ 'rankings', 'quotes', 'gallery' ].includes(
-		useRoute().name?.toString() ?? ''
-	)
+	const route_name = useRoute().name?.toString() ?? ''
+
+	const auth_routes = [
+		'rankings',
+		'quotes',
+		'gallery'
+	]
+
+	for (const route of auth_routes) {
+		if (route_name.startsWith(route))
+			return true
+	}
+
+	return false
 })
 
 function out_of_menu_click(this: Window, ev: WindowEventMap['click']) {

@@ -34,7 +34,10 @@ async function submit() {
 		method: 'POST',
 		credentials: 'include',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(submission.value)
+		body: JSON.stringify({
+			question: submission.value.question,
+			suggestions: [ ...submission.value.suggestions ].map(v => v._id)
+		})
 	})
 
 	if (!response.ok)

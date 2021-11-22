@@ -1,19 +1,29 @@
 <script setup lang='ts'>
-import { defineProps, defineEmits, ref, watch } from 'vue'
-import type { Ref } from 'vue'
+import { ref, watch } from 'vue'
 import Fuse from 'fuse.js'
+import hash from 'object-hash'
 
 const props = defineProps<{
 	items: object[]
 	keys: string,
-	modelValue?: Ref<object>
+	modelValue?: object
 }>()
 const emit = defineEmits([ 'update:modelValue' ])
 const suggestions = ref(props.items)
 const textinput = ref('')
 const textfocused = ref(false)
 const menu = ref<HTMLDivElement>()
-const fuzzy = new Fuse(props.items, { keys: [ props.keys ?? '' ] })
+const fuzzy = new Fuse(props.items, { keys: [ props.keys ] })
+
+function traverse_path(target: Record<string, any>, path: string[]): string {
+	const key: string = path.shift() ?? ''
+	const new_target: Record<string, any> | string = target[key]
+
+	if (typeof new_target === 'string')
+		return new_target
+
+	return traverse_path(new_target, path)
+}
 
 function out_of_menu_click(this: Window, ev: MouseEvent) {
 	if (!(ev.target instanceof HTMLElement))
@@ -23,8 +33,8 @@ function out_of_menu_click(this: Window, ev: MouseEvent) {
 		textfocused.value = !textfocused.value
 }
 
-function set_selection(selection) {
-	textinput.value = selection[props.keys]
+function set_selection(selection: object) {
+	textinput.value = traverse_path(selection, props.keys.split('.'))
 	emit('update:modelValue', selection)
 	textfocused.value = !textfocused.value
 }
@@ -49,6 +59,7 @@ watch(textfocused, val => {
 	>
 		<input
 			type='text'
+			v-bind='$attrs'
 			v-model='textinput'
 			@focus='textfocused = true'
 		/>
@@ -56,10 +67,10 @@ watch(textfocused, val => {
 		<ul :class='{ active: textfocused }'>
 			<li
 				v-for='suggestion in suggestions'
-				:key='suggestion'
+				:key='hash(suggestion)'
 				@click='set_selection(suggestion)'
 			>
-				{{ suggestion[props.keys] }}
+				{{ traverse_path(suggestion, props.keys.split('.')) }}
 			</li>
 		</ul>
 	</div>
