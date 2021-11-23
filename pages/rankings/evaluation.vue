@@ -2,8 +2,8 @@
 import { ref, inject } from 'vue'
 import { frontend_config as config } from '@/config'
 
-const rankings = ref({})
-const user = inject('user')
+const rankings: any = ref({})
+const user: any = inject('user')
 
 function ordered(votes: string[]) {
 	const count = new Map()
@@ -43,7 +43,7 @@ get_rankings()
 				<h3>{{ ranking.question }}</h3>
 
 				<ol>
-					<li v-for='student in ordered(ranking.votes.map(v => v.vote))' :key='student.name'>
+					<li v-for='student in ordered(ranking.votes.map((v: any) => v.vote))' :key='student.name'>
 						{{ student.num }}: {{ student.name }}
 					</li>
 				</ol>
