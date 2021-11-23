@@ -2,15 +2,16 @@ import mongoose from 'mongoose'
 import { validate_user } from './users'
 import { validate_teacher } from './teachers'
 import type { User } from './users'
+import type { Teacher } from './teachers'
 
 interface UserTeacherInput {
-	_id: mongoose.Types.ObjectId,
+	_id: mongoose.PopulatedDoc<User | Teacher>,
 	ref: 'users' | 'teachers'
 }
 
 interface VoteInput {
 	vote: UserTeacherInput,
-	submitted_by: mongoose.Types.ObjectId
+	submitted_by: mongoose.PopulatedDoc<User>
 }
 
 export interface Ranking extends mongoose.Document {

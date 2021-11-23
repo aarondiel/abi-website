@@ -19,6 +19,23 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 		.json(query)
 })
 
+route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
+	let query = await rankings.find({}, [ '-_id', 'question', 'votes' ])
+		.populate('votes.vote._id', [ '_id', 'name' ])
+	
+	if (query === null)
+		return res.sendStatus(404)
+
+	res
+		.status(200)
+		.json(query.map(v => {
+			return {
+				question: v.question,
+				votes: v.votes.map(vote => vote.vote._id.name)
+			}
+		}))
+})
+
 route.post('/', assert_privilege(), async (req: Request, res: Response, _next: NextFunction) => {
 	await Promise.all(Object.keys(req.body).map(async key => {
 		await rankings.findByIdAndUpdate(
