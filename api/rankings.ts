@@ -20,7 +20,30 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 })
 
 route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
-	let query = await rankings.find({}, [ '-_id', 'question', 'votes' ])
+	if (res.locals.user.privileges.includes('admin')) {
+		const query = await rankings.find({}, [ '-_id', 'question', 'votes' ])
+			.populate('votes.vote._id', [ '_id', 'name' ])
+			.populate('votes.submitted_by', [ '_id', 'name' ])
+		
+		if (query === null)
+			return res.sendStatus(404)
+
+		return res
+			.status(200)
+			.json(query.map(ranking => {
+				return {
+					question: ranking.question,
+					votes: ranking.votes.map(vote => {
+						return {
+							vote: vote.vote._id.name,
+							submitted_by: vote.submitted_by.name
+						}
+					})
+				}
+			}))
+	}
+
+	const query = await rankings.find({}, [ '-_id', 'question', 'votes' ])
 		.populate('votes.vote._id', [ '_id', 'name' ])
 	
 	if (query === null)
