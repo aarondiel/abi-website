@@ -17,7 +17,7 @@ function ordered(votes: string[]) {
 			name: v,
 			num: count.get(v)
 		}
-	}).sort((a, b) => a.num - b.num)
+	}).sort((a, b) => b.num - a.num)
 }
 
 async function get_rankings() {
