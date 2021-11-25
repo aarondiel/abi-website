@@ -1,10 +1,11 @@
 <script setup lang='ts'>
-import { ref, inject } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, inject, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { frontend_config as config } from '@/config'
 import Loading from '@/components/loading.vue'
 import Textmessage from '@/components/textmessage.vue'
 
+const router = useRouter()
 const query = useRoute().query
 const quotes = ref<Record<string, any>>({})
 const count = ref(0)
@@ -57,6 +58,13 @@ async function navigate(direction: 1 | -1) {
 	page.value += direction
 	getQuotes()
 }
+
+watch(page, val => {
+	router.push({
+		name: 'quotes',
+		query: { page: val }
+	})
+})
 
 getQuotes()
 </script>
