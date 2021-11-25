@@ -3,7 +3,7 @@ import { ref, inject, onMounted, onUnmounted } from 'vue'
 import { frontend_config as config } from '@/config'
 import Loading from '@/components/loading.vue'
 
-const images = ref(new Set())
+const images = ref(new Set<any>())
 const loading = ref(false)
 const limit = ref(3 * 10)
 const page = ref(-1)
