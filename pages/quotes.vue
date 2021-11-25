@@ -6,10 +6,10 @@ import Loading from '@/components/loading.vue'
 import Textmessage from '@/components/textmessage.vue'
 
 const query = useRoute().query
-const quotes = ref({})
+const quotes = ref<Record<string, any>>({})
 const count = ref(0)
 const loading = ref(true)
-const user = inject('user')
+const user: any = inject('user')
 
 const page = ref<number>(
 	isNaN(parseInt(query.page?.toString() ?? '')) ?

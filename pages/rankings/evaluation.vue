@@ -58,7 +58,7 @@ get_rankings()
 						<span>{{ vote.vote }}</span>
 					</p>
 				</li>
-			</ul
+			</ul>
 		</Loading>
 	</article>
 	<article class='rankings-evaluation' v-else>
