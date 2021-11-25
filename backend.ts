@@ -31,6 +31,9 @@ app.use('/api/auth', auth)
 import mail from '@/api/mail'
 app.use('/api/mail', mail)
 
+import gallery from '@/api/gallery'
+app.use('/api/gallery', gallery)
+
 app.all('/api', (_req, res, _next) => {
 	res
 		.status(404)

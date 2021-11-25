@@ -16,6 +16,11 @@ const router = createRouter({
 			component: () => import('@/pages/quotes.vue')
 		},
 		{
+			path: '/gallery',
+			name: 'gallery',
+			component: () => import('@/pages/gallery.vue')
+		},
+		{
 			path: '/rankings',
 			name: 'rankings',
 			component: () => import('@/pages/rankings/index.vue')

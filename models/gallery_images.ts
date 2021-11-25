@@ -30,6 +30,20 @@ const schema = new mongoose.Schema({
 		required: [ true, 'image not specified' ]
 	},
 
+	thumbnail300: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'fs.files',
+		immutable: true,
+		required: false
+	},
+
+	thumbnail600: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'fs.files',
+		immutable: true,
+		required: false
+	},
+
 	submitted_by: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',

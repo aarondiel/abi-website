@@ -17,7 +17,7 @@ route.param('qoute', async (_req, res, next, value) => {
 		quote = await quotes.findById(value, [ '-submitted_by' ])
 
 	if (quote === null)
-		res.sendStatus(404)
+		return res.sendStatus(404)
 
 	res.locals.quote = quote
 	next()

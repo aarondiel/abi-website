@@ -54,7 +54,7 @@ const props = defineProps<{
 
 		> svg {
 			fill: colors.$primary;
-			rotate: 180deg;
+			transform: rotate(180deg) translateX(calc(-100% + 0.45em));
 			bottom: 0;
 		}
 	}
@@ -91,7 +91,7 @@ const props = defineProps<{
 		fill: colors.$secondary;
 		position: absolute;
 		width: 1.5em;
-		transform: translateX(calc(-100% + 0.4em));
+		transform: translateX(calc(-100% + 0.45em));
 	}
 }
 </style>
