@@ -23,8 +23,16 @@ route.param('qoute', async (_req, res, next, value) => {
 	next()
 })
 
+route.get('/count', assert_privilege(), async (_req, res, _next) => {
+	const count = await quotes.count()
+
+	return res
+		.status(200)
+		.send(count)
+})
+
 route.get('/:quote', (_req, res, _next) => {
-	res
+	return res
 		.status(200)
 		.json(res.locals.quote)
 })
@@ -38,20 +46,18 @@ route.get('/', async (req, res, _next) => {
 			.status(400)
 			.send('limit not valid')
 
-	const max_quotes = await quotes.count()
-
-	if (offset > max_quotes || isNaN(offset))
+	if (isNaN(offset))
 		return res
 			.status(404)
-			.send('end of quotes')
+			.send('offset not valid')
 
 	let query
 	if (res.locals.user.privileges.includes('admin'))
-		query = await quotes.find({})
+		query = await quotes.find({}, [ 'messages', 'submitted_by' ])
 			.sort({ createdAt: -1 })
 			.skip(offset)
 			.limit(limit)
-			.populate('submitted_by')
+			.populate('submitted_by', [ 'name' ])
 	else
 		query = await quotes.find({}, [ '-submitted_by' ])
 			.sort({ createdAt: -1 })
@@ -61,7 +67,16 @@ route.get('/', async (req, res, _next) => {
 	if (query === null)
 		return res.sendStatus(500)
 
-	res
+	if (res.locals.user.privileges.includes('admin'))
+		query = query.map(v => {
+			return {
+				_id: v._id,
+				messages: v.messages,
+				submitted_by: v.submitted_by.name
+			}
+		})
+
+	return res
 		.status(200)
 		.json(query)
 })
@@ -72,13 +87,13 @@ route.post('/', async (req: Request, res: Response, _next: NextFunction) => {
 		submitted_by: res.locals.user.id
 	})
 
-	res.sendStatus(200)
+	return res.sendStatus(200)
 }, mongoose_error_handler)
 
 route.delete('/:quote', assert_privilege('delete_quotes'), async (_req: Request, res: Response, _next: NextFunction) => {
 	await quotes.findByIdAndDelete(res.locals.quote.id)
 
-	res.sendStatus(204)
+	return res.sendStatus(204)
 }, mongoose_error_handler)
 
 export default route

@@ -1,9 +1,11 @@
 <script setup lang='ts'>
 const props = defineProps<{
-	modelValue?: string
+	modelValue?: string,
+	type?: string
 }>()
 
 const emit = defineEmits([ 'update:modelValue' ])
+const type = props.type ?? 'text'
 
 // this function only exists to make the typescript compiler happy
 function update (event: Event) {
@@ -17,7 +19,7 @@ function update (event: Event) {
 <template>
 	<span class='textinput'>
 		<input
-			type='text'
+			:type='type'
 			v-bind='$attrs'
 			:value='props.modelValue'
 			@input='update'

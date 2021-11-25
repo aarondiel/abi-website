@@ -9,7 +9,7 @@ const route = Router()
 route.get('/', assert_privilege(), async (_req, res, _next) => {
 	return res
 		.cookie('token', res.locals.user.token, {
-			expires: new Date(Date.now() + 60 * 24 * 60 * 60),
+			expires: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
 			sameSite: 'strict'
 		})
 		.json(res.locals.user)
@@ -32,7 +32,7 @@ route.post('/', async (req, res, _next) => {
 	return res
 		.status(200)
 		.cookie('token', token, {
-			expires: new Date(Date.now() + 60 * 24 * 60 * 60),
+			expires: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
 			sameSite: 'strict'
 		})
 		.send(token)

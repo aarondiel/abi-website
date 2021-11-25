@@ -64,6 +64,7 @@ watch(menu_active, val => {
 	</nav>
 
 	<nav class='menu' ref='nav_menu' :class='{ hidden: !menu_active }'>
+		<router-link to='/quotes' @click='menu_active = false'>Zitate</router-link>
 		<router-link to='/rankings' @click='menu_active = false'>Rankings</router-link>
 	</nav>
 

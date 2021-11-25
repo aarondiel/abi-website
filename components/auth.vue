@@ -47,7 +47,7 @@ if (code.value !== '' && !is_authenticated.value)
 	<slot v-if='is_authenticated'/>
 	<article class='auth' v-else>
 		<h1>Authorisierung benötigt</h1>
-		<Textinput v-model='code' placeholder='Code eingeben' required/>
+		<Textinput v-model='code' type='password' placeholder='Code eingeben' required/>
 		<Submitbutton @click='authenticate' value='Einloggen'/>
 	</article>
 </template>
