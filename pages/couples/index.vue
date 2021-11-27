@@ -1,44 +1,14 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
 import { frontend_config as config } from '@/config'
+import { ref } from 'vue'
 import Loading from '@/components/loading.vue'
 import Dropdown from '@/components/dropdown.vue'
 import Submitbutton from '@/components/submitbutton.vue'
 
 const loading = ref(true)
-const couples = ref<any[]>([])
+const questions = ref<Record<string, any>[]>([])
 const submission = ref<Record<string, any>>({})
 const server_response = ref('')
-
-async function get_couples() {
-	loading.value = true
-
-	const response = await fetch(`${ config.url }/api/couples`, {
-		credentials: 'include'
-	})
-
-	if (!response.ok)
-		return
-
-	const data = await response.json()
-
-	couples.value = data.map((question: any) => {
-		return {
-			_id: question._id,
-			question: question.question,
-			suggestions: question.suggestions.map((v: any) => {
-				return {
-					person1: v.person1,
-					person2: v.person2,
-
-					name: `${ v.person1._id.name } & ${ v.person2._id.name }`
-				}
-			})
-		}
-	})
-
-	loading.value = false
-}
 
 async function submit() {
 	server_response.value = 'loading'
@@ -47,29 +17,58 @@ async function submit() {
 		method: 'POST',
 		credentials: 'include',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(Object.keys(submission.value))
+		body: JSON.stringify(Object.keys(submission.value).map(v => {
+			return {
+				question: v,
+				vote: submission.value[v]._id
+			}
+		}))
 	})
-	
+		
 	server_response.value = response.ok ? 'Danke fürs Abstimmen シ' : 'error'
 	window.setTimeout(() => { server_response.value = '' }, 5000)
 }
 
-get_couples()
+async function get_questions() {
+	const response = await fetch(`${ config.url }/api/couples`, {
+		credentials: 'include'
+	})
+
+	if (!response.ok)
+		return
+
+	const data: any[] = await response.json()
+
+	questions.value = data.map(question => {
+		return {
+			...question,
+			suggestions: question.suggestions.map((suggestion: any) => {
+				return {
+					...suggestion,
+					name: `${ suggestion.person1._id.name } & ${ suggestion.person2._id.name }`
+				}
+			})
+		}
+	})
+
+	loading.value = false
+}
+
+get_questions()
 </script>
 
 <template>
 	<article class='couples'>
 		<Loading :loading='loading'>
 			<form @submit.prevent='submit'>
-				<fieldset v-for='question in couples' :key='question._id'>
+				<fieldset v-for='question in questions' :key='question._id'>
 					<h3>{{ question.question }}</h3>
 					<Dropdown :items='question.suggestions' keys='name' v-model='submission[question._id]'>
-						Antwort auswählen
+						Antwort auswählen:
 					</Dropdown>
 				</fieldset>
 
 				<Submitbutton value='Abstimmung einsenden'/>
-
 
 				<Loading :loading='server_response === "loading"'>
 					<p
@@ -86,7 +85,6 @@ get_couples()
 
 <style lang='scss'>
 @use '@/assets/scss/colors.scss';
-@use '@/assets/scss/mixins.scss';
 
 .couples {
 	> form {
@@ -95,22 +93,14 @@ get_couples()
 			border-style: double;
 			border-color: colors.$secondary;
 
-			+ * {
-				margin-top: 5rem;
-			}
-
 			> .dropdown {
 				max-width: 80%;
-				margin: 1rem auto 0 auto
+				margin: 1rem auto 0 auto;
 			}
 		}
-
+		
 		> .submitbutton {
 			margin: 1rem auto 0 auto;
-		}
-
-		> .server_response {
-			@include mixins.server_response;
 		}
 	}
 }

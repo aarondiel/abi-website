@@ -1,16 +1,22 @@
 import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
-import { couples, couples_votes as votes } from '@/models/couples'
+import { couples, couple_questions, couple_votes } from '@/models/couples'
 import { Types } from 'mongoose'
 import { mongoose_error_handler } from '@/lib/middleware'
 import { assert_privilege } from '@/lib/middleware'
 
 const route = Router()
 
+route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
+	return res.sendStatus(200)
+})
+
 route.get('/', assert_privilege(), async (_req, res, _next) => {
-	const query = await couples.find()
-		.populate('suggestions.person1._id', [ 'name' ])
-		.populate('suggestions.person2._id', [ 'name' ])
+	const query = await couple_questions.find()
+		.populate({
+			path: 'suggestions',
+			populate: { path: 'person1._id person2._id', select: 'name' }
+		})
 	
 	return res
 		.status(200)
@@ -20,22 +26,34 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 route.post('/submit',
 	assert_privilege('admin'),
 	async (req: Request, res: Response, _next: NextFunction) => {
-		await couples.create({
+		if (!(req.body.suggestions instanceof Array))
+			throw('suggestions is not an array')
+
+		const suggestions = await Promise.all(req.body.suggestions.map(async (suggestion: any) => {
+			const data = {
+				person1: {
+					_id: new Types.ObjectId(suggestion.person1._id),
+					ref: suggestion.person1.ref
+				},
+
+				person2: {
+					_id: new Types.ObjectId(suggestion.person2._id),
+					ref: suggestion.person2.ref
+				}
+			}
+
+			let couple = await couples.findOne(data)
+
+			if (couple === null)
+				couple = await couples.create(data)
+
+			return couple._id
+		}))
+
+		await couple_questions.create({
 			question: req.body.question,
 
-			suggestions: req.body.suggestions.map((couple: any) => {
-				return {
-					person1: {
-						_id: new Types.ObjectId(couple.person1._id),
-						ref: couple.person1.ref
-					},
-
-					person2: {
-						_id: new Types.ObjectId(couple.person2._id),
-						ref: couple.person2.ref
-					}
-				}
-			})
+			suggestions: suggestions
 		})
 
 		return res.sendStatus(200)
@@ -46,19 +64,13 @@ route.post('/submit',
 route.post('/',
 	assert_privilege(),
 	async (req: Request, res: Response, _next: NextFunction) => {
-		if (!(req.body instanceof Array))
-			throw('invalid vote')
+		const submitted_by = new Types.ObjectId(res.locals.user._id)
 
-		await votes.create({
-			vote: req.body.map((v: any) => {
-				if (typeof v !== 'string')
-					throw('invalid vote')
+		await couple_votes.updateOne({ submitted_by }, {
+			votes: req.body,
 
-				return new Types.ObjectId(v)
-			}),
-
-			submitted_by: new Types.ObjectId(res.locals.user._id)
-		})
+			submitted_by
+		}, { upsert: true })
 
 		return res.sendStatus(200)
 	},
