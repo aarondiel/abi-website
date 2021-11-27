@@ -14,7 +14,7 @@ route.get('/', assert_privilege(), async (_req, res, _next) => {
 	if (query === null)
 		return res.sendStatus(404)
 
-	res
+	return res
 		.status(200)
 		.json(query)
 })
@@ -49,7 +49,7 @@ route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
 	if (query === null)
 		return res.sendStatus(404)
 
-	res
+	return res
 		.status(200)
 		.json(query.map(v => {
 			return {
@@ -78,7 +78,7 @@ route.post('/', assert_privilege(), async (req: Request, res: Response, _next: N
 		)
 	}))
 
-	res.sendStatus(200)
+	return res.sendStatus(200)
 }, mongoose_error_handler)
 
 route.post('/submit', assert_privilege('admin'), async (req: Request, res: Response, _next: NextFunction) => {

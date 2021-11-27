@@ -13,6 +13,16 @@
 	}
 }
 
+@mixin server_response {
+	margin: 1rem 0 0 0;
+	color: colors.$red;
+	text-align: center;
+
+	&.accepted {
+		color: colors.$green;
+	}
+}
+
 @mixin gold_border {
 	position: relative;
 	z-index: 0;

@@ -15,10 +15,14 @@ export const mongoose_error_handler: express.ErrorRequestHandler = (err: any, _r
 			.json(errors)
 	}
 
+	if (typeof err === 'string')
+		return res
+			.status(400)
+			.send(err)
+
 	console.error(err)
 
-	return res
-		.sendStatus(500)
+	return res.sendStatus(500)
 }
 
 export const authenticate: express.RequestHandler = async (req, res, next) => {

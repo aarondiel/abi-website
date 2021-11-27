@@ -78,6 +78,7 @@ get_rankings()
 
 <style lang='scss'>
 @use '@/assets/scss/colors.scss';
+@use '@/assets/scss/mixins.scss';
 
 .rankings {
 	> form {
@@ -105,12 +106,7 @@ get_rankings()
 	}
 
 	> .server_response {
-		color: colors.$red;
-		text-align: center;
-
-		&.accepted {
-			color: colors.$green;
-		}
+		@include mixins.server_response;
 	}
 }
 </style>

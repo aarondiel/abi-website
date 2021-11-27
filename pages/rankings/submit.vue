@@ -85,7 +85,7 @@ get_suggestions()
 					v-model='suggestion'
 					v-if='items.length > 0'
 				>
-					schüler auswählen:
+					person auswählen:
 				</Searchbox>
 				<button
 					type='button'
@@ -117,6 +117,7 @@ get_suggestions()
 <style lang='scss'>
 @use '@/assets/scss/mixins.scss';
 @use '@/assets/scss/colors.scss';
+
 .rankings-submit {
 	> form {
 		> .textinput {
@@ -129,12 +130,12 @@ get_suggestions()
 			gap: 1rem;
 
 			> button {
+				@include mixins.gold_border;
+
 				display: block;
 				color: colors.$white;
 				border: none;
 				cursor: pointer;
-
-				@include mixins.gold_border;
 			}
 
 			> * {
@@ -148,6 +149,7 @@ get_suggestions()
 
 		> button {
 			@include mixins.gold_border;
+
 			display: block;
 			color: colors.$white;
 			width: 20rem;

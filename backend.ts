@@ -31,6 +31,9 @@ app.use('/api/auth', auth)
 import mail from '@/api/mail'
 app.use('/api/mail', mail)
 
+import couples from '@/api/couples'
+app.use('/api/couples', couples)
+
 import gallery from '@/api/gallery'
 app.use('/api/gallery', gallery)
 

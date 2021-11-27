@@ -25,6 +25,7 @@ const requires_authentication = computed<boolean>(() => {
 
 	const auth_routes = [
 		'rankings',
+		'couples',
 		'quotes',
 		'gallery'
 	]
