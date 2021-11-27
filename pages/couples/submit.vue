@@ -106,7 +106,7 @@ get_suggestions()
 				person auswählen:
 			</Searchbox>
 		</span>
-		<Submitbutton value='add' @click='submission.couples.add(couple)'/>
+		<Submitbutton value='add' @click='submission.couples.add([ ...couple ])'/>
 
 		<Submitbutton value='send' @click='submit'/>
 
