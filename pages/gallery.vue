@@ -64,7 +64,11 @@ onUnmounted(() => {
 <template>
 	<article class='gallery'>
 		<div v-for='image in images' :key='image._id'>
-			<img :src='url(image.thumbnail300)'/>
+			<span><img :srcset='`
+				${ url(image.thumbnail300) } 300w,
+				${ url(image.thumbnail600) } 600w,
+				${ url(image.image) }
+			`'/></span>
 			<p v-if='user.privileges.includes("admin")'>- {{ image.submitted_by }}</p>
 		</div>
 
@@ -74,15 +78,35 @@ onUnmounted(() => {
 </template>
 
 <style lang='scss'>
+@use '@/assets/scss/colors.scss';
+@use '@/assets/scss/mixins.scss';
+@use '@/assets/scss/media.scss';
+
 .gallery {
 	width: 100%;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-auto-rows: min-content;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 1rem;
+	justify-items: center;
+
+	@include media.phone() {
+		grid-template-columns: repeat(3, 1fr);
+	}
 
 	> div {
-		> img {
+		> span {
+			@include mixins.gold_border;
+
+			display: block;
 			max-width: 100%;
+			box-shadow: 0 0.25rem 0.5rem colors.$black;
+
+			> img {
+				display: block;
+				max-width: calc(100% - 4px);
+				border-radius: inherit;
+				padding: 2px;
+			}
 		}
 
 		> p {

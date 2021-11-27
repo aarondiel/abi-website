@@ -15,7 +15,7 @@ type Teacher = User
 
 const items = ref<any[]>([])
 const couple = ref<any[]>([ {}, {} ])
-const submission = ref({ question: '', couples: new Set<any>() })
+const submission = ref({ question: '', suggestions: new Set<any>() })
 const server_response = ref('')
 
 async function get_suggestions() {
@@ -48,7 +48,7 @@ async function get_suggestions() {
 async function submit() {
 	server_response.value = 'loading'
 
-	const suggestions = [ ...submission.value.couples ].map(couple => {
+	const suggestions = [ ...submission.value.suggestions ].map(couple => {
 		return {
 			person1: {
 				_id: couple[0]._id._id,
@@ -72,6 +72,7 @@ async function submit() {
 		})
 	})
 
+	submission.value.suggestions.clear()
 	server_response.value = response.ok ? 'accepted' : 'error'
 	window.setTimeout(() => { server_response.value = '' }, 5000)
 }
@@ -106,7 +107,7 @@ get_suggestions()
 				person auswählen:
 			</Searchbox>
 		</span>
-		<Submitbutton value='add' @click='submission.couples.add([ ...couple ])'/>
+		<Submitbutton value='add' @click='submission.suggestions.add([ ...couple ])'/>
 
 		<Submitbutton value='send' @click='submit'/>
 
