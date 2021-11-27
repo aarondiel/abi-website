@@ -40,10 +40,12 @@ route.get('/', assert_privilege(), async (req, res, _next) => {
 
 	let query: any = res.locals.user.privileges.includes('admin') ?
 		await gallery.find({}, [ 'image', 'thumbnail300', 'thumbnail600', 'submitted_by' ])
+			.sort({ createdAt: -1 })
 			.skip(offset)
 			.limit(limit)
 			.populate('submitted_by', [ 'name' ]) :
 		await gallery.find({}, [ 'image', 'thumbnail300', 'thumbnail600', 'submitted_by' ])
+			.sort({ createdAt: -1 })
 			.skip(offset)
 			.limit(limit)
 

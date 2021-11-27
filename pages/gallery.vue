@@ -89,5 +89,9 @@ onUnmounted(() => {
 			text-align: right;
 		}
 	}
+
+	> span {
+		height: 2.5rem;
+	}
 }
 </style>
