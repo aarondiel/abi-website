@@ -68,6 +68,7 @@ watch(menu_active, val => {
 		<router-link to='/quotes' @click='menu_active = false'>Zitate</router-link>
 		<router-link to='/gallery' @click='menu_active = false'>Gallerie</router-link>
 		<router-link to='/rankings' @click='menu_active = false'>Rankings</router-link>
+		<router-link to='/couples' @click='menu_active = false'>Pärchen Rankings</router-link>
 	</nav>
 
 	<Auth v-if='requires_authentication'>

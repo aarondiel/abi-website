@@ -40,11 +40,16 @@ const router = createRouter({
 			name: 'couples',
 			component: () => import('@/pages/couples/index.vue')
 		},
-{
+		{
 			path: '/couples/submit',
 			name: 'couples/submit',
 			component: () => import('@/pages/couples/submit.vue')
 		},
+		{
+			path: '/couples/evaluation',
+			name: 'couples/evaluation',
+			component: () => import('@/pages/couples/evaluation.vue')
+		}
 	]
 })
 
