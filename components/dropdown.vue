@@ -4,8 +4,7 @@ import hash from 'object-hash'
 
 const props = defineProps<{
 	items: object[],
-	keys: string,
-	modelValue?: object
+	keys: string
 }>()
 
 const emit = defineEmits([ 'update:modelValue' ])

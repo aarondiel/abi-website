@@ -7,6 +7,9 @@ import { assert_privilege } from '@/lib/middleware'
 const route = Router()
 
 route.param('image', async (_req, res, next, value) => {
+	if (typeof value !== 'string' || value.length > 24 || value.length < 12)
+		return res.sendStatus(400)
+
 	const query = await files.findById(value)
 
 	if (query === null)

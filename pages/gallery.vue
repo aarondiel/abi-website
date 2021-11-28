@@ -2,12 +2,20 @@
 import { ref, inject, onMounted, onUnmounted } from 'vue'
 import { frontend_config as config } from '@/config'
 import Loading from '@/components/loading.vue'
+import Modal from '@/components/modal.vue'
+
+interface Image {
+	image: string,
+	thumbnail300: string,
+	thumbnail600: string,
+}
 
 const images = ref(new Set<any>())
 const loading = ref(false)
 const limit = ref(3 * 10)
 const page = ref(-1)
 const loader = ref<HTMLSpanElement>()
+const popup_image = ref({ active: false, image: {} as Image })
 const user: any = inject('user')
 let observer: IntersectionObserver
 
@@ -63,14 +71,37 @@ onUnmounted(() => {
 
 <template>
 	<article class='gallery'>
-		<div v-for='image in images' :key='image._id'>
-			<span><img :srcset='`
-				${ url(image.thumbnail300) } 300w,
-				${ url(image.thumbnail600) } 600w,
-				${ url(image.image) }
-			`'/></span>
-			<p v-if='user.privileges.includes("admin")'>- {{ image.submitted_by }}</p>
+		<div class='image' v-for='image in images' :key='image._id'>
+			<span>
+				<img
+					:srcset='`
+						${ url(image.thumbnail300) } 300w,
+						${ url(image.thumbnail600) } 600w,
+						${ url(image.image) }
+					`'
+					alt='gallery_image'
+					@click='popup_image = { active: true, image: image }'
+				/>
+			</span>
+
+			<p v-if='user.privileges.includes("admin")'>
+				- {{ image.submitted_by }}
+			</p>
 		</div>
+
+		<Modal
+			v-model:active='popup_image.active'
+			type='popup'
+		>
+			<img
+				:srcset='`
+					${ url(popup_image.image.thumbnail300) } 300w,
+					${ url(popup_image.image.thumbnail600) } 600w,
+					${ url(popup_image.image.image) }
+				`'
+				alt='gallery_image'
+				/>
+		</Modal>
 
 		<Loading :loading='loading'/>
 		<span ref='loader'/>
@@ -93,7 +124,7 @@ onUnmounted(() => {
 		grid-template-columns: repeat(3, 1fr);
 	}
 
-	> div {
+	> .image {
 		> span {
 			@include mixins.gold_border;
 
@@ -112,6 +143,12 @@ onUnmounted(() => {
 		> p {
 			text-align: right;
 		}
+	}
+
+	> .modal img[alt='gallery_image'] {
+		display: block;
+		max-width: 80vw;
+		max-height: 80vh;
 	}
 
 	> span {
