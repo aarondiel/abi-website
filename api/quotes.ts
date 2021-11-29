@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
+import { Types } from 'mongoose'
 import quotes from '@/models/quotes'
 import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
 
@@ -81,10 +82,10 @@ route.get('/', async (req, res, _next) => {
 		.json(query)
 })
 
-route.post('/', async (req: Request, res: Response, _next: NextFunction) => {
+route.post('/', assert_privilege(), async (req: Request, res: Response, _next: NextFunction) => {
 	await quotes.create({
-		messages: req.body.messages,
-		submitted_by: res.locals.user.id
+		messages: req.body,
+		submitted_by: new Types.ObjectId(res.locals.user._id)
 	})
 
 	return res.sendStatus(200)

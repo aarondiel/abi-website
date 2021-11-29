@@ -74,6 +74,6 @@ const schema = new mongoose.Schema({
 		validate: [ validate_user, 'submitted_by not valid' ],
 		required: [ true, 'submitted_by not specified' ]
 	}
-}, { versionKey: false })
+}, { versionKey: false, timestamps: true })
 
 export default mongoose.model<Quote>('quotes', schema)

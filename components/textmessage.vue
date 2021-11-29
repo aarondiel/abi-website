@@ -2,8 +2,27 @@
 const props = defineProps<{
 	type: 'message' | 'info',
 	name?: string,
-	side?: 'left' | 'right'
+	side?: 'left' | 'right',
+	text: string,
+	editable?: boolean
 }>()
+
+// these variables exist to medigate cursor hoppen when
+// data changes get emitted
+const name = props.name
+const text = props.text
+
+const emit = defineEmits([
+	'update:name',
+	'update:text'
+])
+
+function update(type: 'name' | 'text', target: EventTarget | null) {
+	if (!(target instanceof HTMLElement))
+		return
+	
+	emit(`update:${ type }`, target.textContent)
+}
 </script>
 
 <template>
@@ -11,11 +30,20 @@ const props = defineProps<{
 		class='textmessage'
 		:class='{ right: props.side === "right", center: props.type === "info" }'
 	>
-		<p class='name'>
-			{{ props.name }}
+		<p
+			:contenteditable='props.editable'
+			class='name'
+			:class='{ editable: props.editable }'
+			@input='update("name", $event.target)'
+		>
+			{{ name }}
 		</p>
-		<p class='content'>
-			<slot/>
+		<p
+			:contenteditable='props.editable'
+			class='content'
+			@input='update("text", $event.target)'
+		>
+			{{ text }}
 		</p>
 		<svg
 			viewBox='0 0 100 100'
@@ -61,6 +89,7 @@ const props = defineProps<{
 
 	&.center {
 		justify-content: center;
+		text-align: center;
 
 		> .content {
 			background-color: color.adjust(
@@ -71,11 +100,18 @@ const props = defineProps<{
 	}
 
 	> .name {
-		top: 0;
+		top: -2px;
 		transform: translateY(-100%);
 		position: absolute;
 		font-size: 0.8em;
 		min-width: 10ch;
+		outline: none;
+
+		&.editable {
+			border-width: 0 0 2px 0;
+			border-color: colors.$grey;
+			border-style: dashed;
+		}
 	}
 
 	> .content {
@@ -85,6 +121,9 @@ const props = defineProps<{
 		padding: 0.5em;
 		border-radius: 0.5em;
 		max-width: 60%;
+		min-width: 10ch;
+		min-height: 1rem;
+		outline: none;
 	}
 
 	> svg {

@@ -30,7 +30,7 @@ get_votes()
 					<h3>{{ vote.question }}</h3>
 
 					<ol>
-						<li v-for='suggestion in Object.keys(vote.votes)' :key='suggestion'>
+						<li v-for='suggestion in Object.keys(vote.votes).sort()' :key='suggestion'>
 							{{ vote.votes[suggestion] }}: {{ suggestion }}
 						</li>
 					</ol>

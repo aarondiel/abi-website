@@ -13,7 +13,12 @@ const router = createRouter({
 		{
 			path: '/quotes',
 			name: 'quotes',
-			component: () => import('@/pages/quotes.vue')
+			component: () => import('@/pages/quotes/index.vue')
+		},
+		{
+			path: '/quotes/submit',
+			name: 'quotes/submit',
+			component: () => import('@/pages/quotes/submit.vue')
 		},
 		{
 			path: '/gallery',

@@ -7,13 +7,6 @@ import { assert_privilege } from '@/lib/middleware'
 
 const route = Router()
 
-function sort_object(obj: Record<string, any>) {
-	return Object.keys(obj).sort().reduce(function (result: Record<string, any>, key) {
-		result[key] = obj[key];
-		return result;
-	}, {});
-}
-
 route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
 	const query = await couple_votes.find({})
 		.populate('submitted_by', 'name')
@@ -42,10 +35,10 @@ route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
 
 			questions.set(id, {
 				question: question.question,
-				votes: sort_object({
+				votes: {
 					...question.votes,
 					[ vote_name ]: (question.votes[vote_name] ?? 0) + 1
-				}),
+				},
 				submitted_by: {
 					...question.submitted_by,
 					[ vote.submitted_by.name ]: vote_name

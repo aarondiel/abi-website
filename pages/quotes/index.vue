@@ -72,6 +72,8 @@ getQuotes()
 <template>
 	<article class='quotes'>
 		<Loading :loading='loading'>
+			<router-link to='/quotes/submit'>→ Zitat einreichen</router-link>
+
 			<section v-for='quote in quotes' :key='quote._id'>
 				<Textmessage
 					v-for='message in quote.messages'
@@ -79,9 +81,8 @@ getQuotes()
 					:type='message.type'
 					:side='message.side'
 					:name='message.name'
-				>
-					{{ message.text }}
-				</Textmessage>
+					:text='message.text'
+				/>
 				<p v-if='user.privileges.includes("admin")'>- {{ quote.submitted_by }}</p>
 			</section>
 			
@@ -102,6 +103,12 @@ getQuotes()
 @use 'sass:color';
 
 .quotes {
+	> a {
+		color: inherit;
+		text-align: right;
+		display: block;
+	}
+
 	> section {
 		background-color: color.adjust(colors.$dark-grey, $lightness: +5%);
 		border-radius: 0.5em;
