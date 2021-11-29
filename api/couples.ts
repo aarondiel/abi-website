@@ -30,7 +30,7 @@ route.get('/evaluation', assert_privilege(), async (_req, res, _next) => {
 
 	query.forEach(vote => {
 		vote.votes.forEach((v: any) => {
-			const id = v._id.toString()
+			const id = v.question._id.toString()
 			const vote_name = `${ v.vote.person1._id.name } & ${ v.vote.person2._id.name }`
 
 			const question = questions.get(id) ??

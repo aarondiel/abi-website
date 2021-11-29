@@ -1,9 +1,10 @@
 <script setup lang='ts'>
 import Loading from '@/components/loading.vue'
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { frontend_config as config } from '@/config'
 
 const loading = ref(true)
+const user: any = inject('user')
 const votes = ref<Record<string, any>>([])
 
 async function get_votes() {
@@ -34,7 +35,11 @@ get_votes()
 						</li>
 					</ol>
 
-					<p v-for='submission in Object.keys(vote.submitted_by)' :key='submission'>
+					<p
+						v-for='submission in Object.keys(vote.submitted_by)'
+						:key='submission'
+						v-if='user.privileges.includes("admin")'
+					>
 						<span>{{ submission }}</span>
 						<span>→</span>
 						<span>{{ vote.submitted_by[submission] }}</span>
