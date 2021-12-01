@@ -22,10 +22,6 @@ const schema = new mongoose.Schema({
 	image: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'fs.files',
-		set: function(this: GalleryImageInput, v: any) {
-			console.log(this)
-			console.log(v)
-		},
 		validate: [ validate_file, 'image not valid' ],
 		required: [ true, 'image not specified' ]
 	},
@@ -33,15 +29,18 @@ const schema = new mongoose.Schema({
 	thumbnail300: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'fs.files',
-		immutable: true,
 		required: false
 	},
 
 	thumbnail600: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'fs.files',
-		immutable: true,
 		required: false
+	},
+
+	resolution: {
+		type: [ Number ],
+		required: [ true, 'resolution not specified' ]
 	},
 
 	submitted_by: {
@@ -50,6 +49,6 @@ const schema = new mongoose.Schema({
 		validate: [ validate_user, 'submitted_by not valid' ],
 		required: [ true, 'user not specified' ]
 	}
-}, { versionKey: false })
+}, { versionKey: false, timestamps: true })
 
 export default mongoose.model<GalleryImage>('gallery_images', schema)

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import users, { privileges } from '@/models/users'
-import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
+import { assert_privilege } from '@/lib/middleware'
 
 const route = Router()
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-='
@@ -69,8 +69,7 @@ route.post('/',
 		})
 
 		res.sendStatus(200)
-	},
-	mongoose_error_handler
+	}
 )
 
 route.post('/:code/add_privilege',
@@ -84,8 +83,7 @@ route.post('/:code/add_privilege',
 		}})
 
 		res.sendStatus(200)
-	},
-	mongoose_error_handler
+	}
 )
 
 export default route

@@ -3,6 +3,8 @@ import gallery from '@/models/gallery_images'
 import files from '@/models/fs.files'
 import { mongo, connection, Types } from 'mongoose'
 import { assert_privilege } from '@/lib/middleware'
+import Busboy from 'busboy'
+import ffmpeg from 'fluent-ffmpeg'
 
 const route = Router()
 
@@ -69,6 +71,98 @@ route.get('/', assert_privilege(), async (req, res, _next) => {
 	return res
 		.status(200)
 		.json(query)
+})
+
+route.post('/', assert_privilege(), (req, res, _next) => {
+	const busboy = new Busboy({
+		preservePath: true,
+		headers: req.headers as Busboy.BusboyHeaders,
+		limits: {
+			fileSize: 32 * 1024 ** 2 // 32MB
+		}
+	})
+
+
+	busboy.on('file', async (_fieldname, file, filename, _encoding, mimetype) => {
+		const bucket = new mongo.GridFSBucket(connection.db)
+		const upload_stream = bucket.openUploadStream(filename, { metadata: { from: 'gallery' } })
+
+		let format: 'webp' | 'webm'
+		if (mimetype.startsWith('image'))
+			format = 'webp'
+		else if (mimetype.startsWith('video'))
+			format = 'webm'
+		else
+			throw('invalid format')
+
+		await new Promise((res, rej) =>
+			ffmpeg(file)
+				.on('error', rej)
+				.on('end', res)
+				.toFormat(format)
+				.pipe(upload_stream)
+		)
+
+		const resolution: number[] = await new Promise((res, rej) =>
+			ffmpeg(bucket.openDownloadStream(upload_stream.id)).ffprobe((err, data) => {
+				if (err)
+					return rej()
+
+				if(
+					data.streams[0].width === undefined ||
+					data.streams[0].height === undefined
+				)
+					return
+
+				res([
+					data.streams[0].width,
+					data.streams[0].height
+				])
+			}
+		))
+
+		const thumbnail600 = resolution[0] <= 600 ?
+			upload_stream.id :
+			await new Promise((res, rej) => {
+			const thumbnail_upload_stream = bucket.openUploadStream(filename, { metadata: { from: 'gallery' } })
+
+				ffmpeg(bucket.openDownloadStream(upload_stream.id))
+					.on('error', rej)
+					.on('end', () => res(thumbnail_upload_stream.id))
+					.withSize('600x?')
+					.toFormat(format)
+					.pipe(thumbnail_upload_stream)
+			})
+
+		const thumbnail300 = resolution[0] <= 300 ?
+			upload_stream.id :
+			await new Promise((res, rej) => {
+			const thumbnail_upload_stream = bucket.openUploadStream(filename, { metadata: { from: 'gallery' } })
+
+				ffmpeg(bucket.openDownloadStream(upload_stream.id))
+					.on('error', rej)
+					.on('end', () => res(thumbnail_upload_stream.id))
+					.withSize('300x?')
+					.toFormat(format)
+					.pipe(thumbnail_upload_stream)
+			})
+
+		gallery.create({
+			image: upload_stream.id,
+			thumbnail300: thumbnail300,
+			thumbnail600: thumbnail600,
+			resolution: resolution,
+			submitted_by: new Types.ObjectId(res.locals.user._id)
+		})
+	})
+
+	busboy.on('finish', () => {
+		res
+			.status(200)
+			.end()
+	})
+
+	req.pipe(busboy)
 })
 
 export default route

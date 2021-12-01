@@ -2,7 +2,6 @@ import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import { couples, couple_questions, couple_votes } from '@/models/couples'
 import { Types } from 'mongoose'
-import { mongoose_error_handler } from '@/lib/middleware'
 import { assert_privilege } from '@/lib/middleware'
 
 const route = Router()
@@ -103,8 +102,7 @@ route.post('/submit',
 		})
 
 		return res.sendStatus(200)
-	},
-	mongoose_error_handler
+	}
 )
 
 route.post('/',
@@ -119,8 +117,7 @@ route.post('/',
 		}, { upsert: true })
 
 		return res.sendStatus(200)
-	},
-	mongoose_error_handler
+	}
 )
 
 export default route

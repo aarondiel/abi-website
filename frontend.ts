@@ -23,7 +23,12 @@ const router = createRouter({
 		{
 			path: '/gallery',
 			name: 'gallery',
-			component: () => import('@/pages/gallery.vue')
+			component: () => import('@/pages/gallery/index.vue')
+		},
+		{
+			path: '/gallery/submit',
+			name: 'gallery/submit',
+			component: () => import('@/pages/gallery/submit.vue')
 		},
 		{
 			path: '/rankings',

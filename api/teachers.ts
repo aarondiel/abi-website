@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import teachers from '@/models/teachers'
-import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
+import { assert_privilege } from '@/lib/middleware'
 
 const route = Router()
 
@@ -46,8 +46,7 @@ route.post('/',
 		})
 
 		res.sendStatus(200)
-	},
-	mongoose_error_handler
+	}
 )
 
 export default route

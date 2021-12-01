@@ -4,7 +4,7 @@ import users from '@/models/users'
 import teachers from '@/models/teachers'
 import rankings from '@/models/rankings'
 import mongoose from 'mongoose'
-import { assert_privilege, mongoose_error_handler } from '@/lib/middleware'
+import { assert_privilege } from '@/lib/middleware'
 const route = Router()
 
 route.get('/', assert_privilege(), async (_req, res, _next) => {
@@ -79,7 +79,7 @@ route.post('/', assert_privilege(), async (req: Request, res: Response, _next: N
 	}))
 
 	return res.sendStatus(200)
-}, mongoose_error_handler)
+})
 
 route.post('/submit', assert_privilege('admin'), async (req: Request, res: Response, _next: NextFunction) => {
 	const suggestions = await Promise.all(req.body?.suggestions?.map(async (val: string) => {
@@ -108,6 +108,6 @@ route.post('/submit', assert_privilege('admin'), async (req: Request, res: Respo
 	})
 
 	res.sendStatus(200)
-}, mongoose_error_handler)
+})
 
 export default route

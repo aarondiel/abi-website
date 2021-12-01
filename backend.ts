@@ -1,7 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import { setup as init_mongodb } from '@/lib/mongodb'
-import { authenticate } from '@/lib/middleware'
+import { authenticate, mongoose_error_handler } from '@/lib/middleware'
 
 const app = express()
 init_mongodb()
@@ -42,5 +42,7 @@ app.all('/api', (_req, res, _next) => {
 		.status(404)
 		.send('page not found')
 })
+
+app.use(mongoose_error_handler)
 
 export const handler = app
