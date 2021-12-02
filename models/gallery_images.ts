@@ -43,6 +43,12 @@ const schema = new mongoose.Schema({
 		required: [ true, 'resolution not specified' ]
 	},
 
+	format: {
+		type: String,
+		enum: [ 'image/webp', 'video/webm' ],
+		required: [ true, 'format not specified' ]
+	},
+
 	submitted_by: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'users',

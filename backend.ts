@@ -37,12 +37,12 @@ app.use('/api/couples', couples)
 import gallery from '@/api/gallery'
 app.use('/api/gallery', gallery)
 
+app.use(mongoose_error_handler)
+
 app.all('/api', (_req, res, _next) => {
 	res
 		.status(404)
 		.send('page not found')
 })
-
-app.use(mongoose_error_handler)
 
 export const handler = app

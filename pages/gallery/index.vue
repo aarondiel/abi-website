@@ -5,12 +5,15 @@ import Loading from '@/components/loading.vue'
 import Modal from '@/components/modal.vue'
 
 interface Image {
+	_id: string,
 	image: string,
 	thumbnail300: string,
 	thumbnail600: string,
+	format: 'image/webp' | 'video/webm',
+	submitted_by: string
 }
 
-const images = ref(new Set<any>())
+const files = ref(new Set<any>())
 const loading = ref(false)
 const limit = ref(3 * 10)
 const page = ref(-1)
@@ -23,7 +26,7 @@ function url(id: string) {
 	return `${ config.url }/api/gallery/${ id }`
 }
 
-async function get_images() {
+async function get_files() {
 	loading.value = true
 
 	const response = await fetch(`${ config.url }/api/gallery?limit=${ limit.value }&offset=${ limit.value * page.value }`, {
@@ -35,7 +38,7 @@ async function get_images() {
 
 	const data: any[] = await response.json()
 
-	data.forEach(v => images.value.add(v))
+	data.forEach(v => files.value.add(v))
 	loading.value = false
 }
 
@@ -44,7 +47,7 @@ function handle_intersection(entry: IntersectionObserverEntry) {
 		return
 	
 	page.value += 1
-	get_images()
+	get_files()
 }
 
 onMounted(() => {
@@ -71,21 +74,28 @@ onUnmounted(() => {
 
 <template>
 	<article class='gallery'>
-		<div class='image' v-for='image in images' :key='image._id'>
+		<div class='image' v-for='file in files' :key='file._id'>
 			<span>
 				<img
+					v-if='file.format === "image/webp"'
+					type='image/webp'
 					:srcset='`
-						${ url(image.thumbnail300) } 300w,
-						${ url(image.thumbnail600) } 600w,
-						${ url(image.image) }
+						${ url(file.thumbnail300) } 300w,
+						${ url(file.thumbnail600) } 600w,
+						${ url(file.image) }
 					`'
 					alt='gallery_image'
-					@click='popup_image = { active: true, image: image }'
+					@click='popup_image = { active: true, image: file }'
 				/>
+				<video v-else-if='file.format === "video/webm"' controls>
+					<source :src='url(file.thumbnail300)' type='video/webm' media='all and (max-width: 300px)'/>
+					<source :src='url(file.thumbnail600)' type='video/webm' media='all and (max-width: 600px)'/>
+					<source :src='url(file.image)' type='video/webm'/>
+				</video>
 			</span>
 
 			<p v-if='user.privileges.includes("admin")'>
-				- {{ image.submitted_by }}
+				- {{ file.submitted_by }}
 			</p>
 		</div>
 
@@ -94,6 +104,7 @@ onUnmounted(() => {
 			type='popup'
 		>
 			<img
+				v-if='popup_image.image.format === "image/webp"'
 				:srcset='`
 					${ url(popup_image.image.thumbnail300) } 300w,
 					${ url(popup_image.image.thumbnail600) } 600w,
@@ -101,6 +112,11 @@ onUnmounted(() => {
 				`'
 				alt='gallery_image'
 				/>
+				<video v-else-if='popup_image.image.format === "video/webm"'>
+					<source :src='url(popup_image.image.thumbnail300)' type='video/webm' media='all and (max-width: 300px)'/>
+					<source :src='url(popup_image.image.thumbnail600)' type='video/webm' media='all and (max-width: 600px)'/>
+					<source :src='url(popup_image.image.image)' type='video/webm'/>
+				</video>
 		</Modal>
 
 		<Loading :loading='loading'/>
@@ -132,7 +148,7 @@ onUnmounted(() => {
 			max-width: 100%;
 			box-shadow: 0 0.25rem 0.5rem colors.$black;
 
-			> img {
+			> img, video {
 				display: block;
 				max-width: calc(100% - 4px);
 				border-radius: inherit;

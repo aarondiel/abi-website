@@ -6,7 +6,7 @@ interface FileInput {
 	uploadDate: Date,
 	filename: string,
 	md5: string,
-	metadata?: object
+	metadata?: Record<string, any>
 }
 
 export type File = FileInput & mongoose.Document

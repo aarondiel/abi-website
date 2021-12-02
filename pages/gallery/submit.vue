@@ -57,13 +57,17 @@ const url = (file: File) => URL.createObjectURL(file)
 		</div>
 
 		<form enctype='multipart/form-data' @submit.prevent='submit'>
-			<input
-				name='files'
-				type='file'
-				accept='image/*,video/*'
-				multiple
-				@input='update_files'
-			/>
+			<label>
+				Dateien auswählen
+
+				<input
+					name='files'
+					type='file'
+					accept='image/*,video/*'
+					multiple
+					@input='update_files'
+				/>
+			</label>
 
 			<Submitbutton value='Einsenden'/>
 		</form>
@@ -88,6 +92,7 @@ const url = (file: File) => URL.createObjectURL(file)
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
+		margin-bottom: 1rem;
 
 		> span {
 			@include mixins.gold_border;
@@ -96,7 +101,7 @@ const url = (file: File) => URL.createObjectURL(file)
 			max-width: 100%;
 			box-shadow: 0 0.25rem 0.5rem colors.$black;
 
-			> img {
+			> img, video {
 				display: block;
 				max-width: calc(100% - 4px);
 				border-radius: inherit;
@@ -105,9 +110,21 @@ const url = (file: File) => URL.createObjectURL(file)
 		}
 	}
 
-	> form > .submitbutton {
-		max-width: 20rem;
-		margin: 1rem auto 0 auto;
+	> form {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+
+		> label {
+			@include mixins.gold_border;
+			padding: 1rem;
+			font-size: 0.8rem;
+			cursor: pointer;
+
+			> input {
+				display: none;
+			}
+		}
 	}
 }
 </style>
