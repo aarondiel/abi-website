@@ -74,6 +74,8 @@ onUnmounted(() => {
 
 <template>
 	<article class='gallery'>
+		<router-link to='/gallery/submit'>→ Bilder einreichen</router-link>
+
 		<div class='image' v-for='file in files' :key='file._id'>
 			<span>
 				<img
@@ -133,11 +135,21 @@ onUnmounted(() => {
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
+	grid-template-rows: min-content;
 	gap: 1rem;
 	justify-items: center;
 
 	@include media.phone() {
 		grid-template-columns: repeat(3, 1fr);
+	}
+
+	> a {
+		color: inherit;
+		text-align: right;
+		display: block;
+		grid-column: span 3;
+		width: 100%;
+		height: 1rem;
 	}
 
 	> .image {
