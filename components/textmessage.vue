@@ -7,11 +7,6 @@ const props = defineProps<{
 	editable?: boolean
 }>()
 
-// these variables exist to medigate cursor hoppen when
-// data changes get emitted
-const name = props.name
-const text = props.text
-
 const emit = defineEmits([
 	'update:name',
 	'update:text'
@@ -20,8 +15,10 @@ const emit = defineEmits([
 function update(type: 'name' | 'text', target: EventTarget | null) {
 	if (!(target instanceof HTMLElement))
 		return
-	
+
+	// emitting an event loses focus on the elemnt
 	emit(`update:${ type }`, target.textContent)
+	target.focus()
 }
 </script>
 
@@ -36,19 +33,18 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 			:class='{ editable: props.editable }'
 			@input='update("name", $event.target)'
 		>
-			{{ name }}
+			{{ props.name }}
 		</p>
 		<p
 			:contenteditable='props.editable'
 			class='content'
-			@input='update("text", $event.target)'
 		>
-			{{ text }}
+			{{ props.text }}
 		</p>
 		<svg
 			viewBox='0 0 100 100'
 			xmlns='http://www.w3.org/2000/svg'
-			v-if="type === 'message'"
+			v-if='type === "message"'
 		>
 			<path d='
 				M 0, 0
