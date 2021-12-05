@@ -51,10 +51,11 @@ function convert_file(
 			passtrough.on('error', rej)
 			passtrough.on('end', () => {
 				const image = Buffer.concat(chunks)
-					.copyWithin(4, -4)
-					.slice(0, -4)
 
-				const image_stream =  buffer_to_stream(image)
+				const image_stream = image.slice(4, 8).readUInt32BE(0) !== 0 ?
+					buffer_to_stream(image) :
+					buffer_to_stream(image.copyWithin(4, -4).slice(0, 4))
+
 				image_stream.pipe(upload_stream)
 			})
 
