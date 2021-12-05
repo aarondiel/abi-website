@@ -5,14 +5,14 @@ import hash from 'object-hash'
 import Submitbutton from '@/components/submitbutton.vue'
 import Loading from '@/components/loading.vue'
 
-const files = ref([])
+const files = ref<any[]>([])
 const server_response = ref('')
 
 function update_files(ev: Event) {
-	if (!(ev.target instanceof HTMLInputElement))
+	if (!(ev.target instanceof HTMLInputElement) || ev.target.files === null)
 		return
 
-	files.value = [ ...ev.target.files]
+	files.value = Array.from(ev.target.files)
 }
 
 async function submit(form: Event) {
@@ -29,9 +29,9 @@ async function submit(form: Event) {
 		body: data
 	})
 
-	if (response.ok) {
+	if (response.ok)
 		server_response.value = 'Danke fürs Einsenden シ'
-	} else {
+	else {
 		const error_data: string[] = await response.json()
 		server_response.value = `error: ${ error_data.join(', ') }`
 	}
@@ -90,8 +90,10 @@ const url = (file: File) => URL.createObjectURL(file)
 .gallery-submit {
 	> .images {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		justify-content: center;
+		align-items: center;
+		gap: 1rem;
 		margin-bottom: 1rem;
 
 		> span {
