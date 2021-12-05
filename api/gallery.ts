@@ -50,13 +50,14 @@ function convert_file(
 			passtrough.on('data', (data: any) => chunks.push(data))
 			passtrough.on('error', rej)
 			passtrough.on('end', () => {
-				const image = Buffer.concat(chunks)
+				let image = Buffer.concat(chunks)
 
-				if(image.slice(4, 8).readUInt32BE(0) !== 0)
-					image.copyWithin(4, -4).slice(0, -4)
+				if(image.readUInt32BE(4) === 0)
+					image
+						.copyWithin(4, -4)
+						.slice(0, -4)
 
 				const image_stream = buffer_to_stream(image)
-
 				image_stream.pipe(upload_stream)
 			})
 
