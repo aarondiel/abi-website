@@ -134,12 +134,12 @@ onUnmounted(() => {
 .gallery {
 	width: 100%;
 	display: grid;
-	grid-template-columns: repeat(1, 1fr);
+	grid-template-columns: 1fr;
 	grid-template-rows: min-content;
 	gap: 1rem;
 	justify-items: center;
 
-	@include media.phone() {
+	@include media.tablet() {
 		grid-template-columns: repeat(3, 1fr);
 	}
 
@@ -147,9 +147,12 @@ onUnmounted(() => {
 		color: inherit;
 		text-align: right;
 		display: block;
-		grid-column: span 3;
 		width: 100%;
 		height: 1rem;
+
+		@include media.tablet() {
+			grid-column: span 3;
+		}
 	}
 
 	> .image {
