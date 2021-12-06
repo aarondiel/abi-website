@@ -7,6 +7,9 @@ const props = defineProps<{
 	editable?: boolean
 }>()
 
+const name_value = props.name
+const text_value = props.text
+
 const emit = defineEmits([
 	'update:name',
 	'update:text'
@@ -16,9 +19,7 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 	if (!(target instanceof HTMLElement))
 		return
 
-	// emitting an event loses focus on the elemnt
 	emit(`update:${ type }`, target.textContent)
-	target.focus()
 }
 </script>
 
@@ -28,18 +29,19 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 		:class='{ right: props.side === "right", center: props.type === "info" }'
 	>
 		<p
-			:contenteditable='props.editable'
+			:contenteditable='editable'
 			class='name'
-			:class='{ editable: props.editable }'
+			:class='{ editable: editable }'
 			@input='update("name", $event.target)'
 		>
-			{{ props.name }}
+			{{ name_value }}
 		</p>
 		<p
 			:contenteditable='props.editable'
 			class='content'
+			@input='update("text", $event.target)'
 		>
-			{{ props.text }}
+			{{ text_value }}
 		</p>
 		<svg
 			viewBox='0 0 100 100'

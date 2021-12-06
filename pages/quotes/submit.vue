@@ -1,10 +1,9 @@
 <script setup lang='ts'>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { frontend_config as config } from '@/config'
 import Textmessage from '@/components/textmessage.vue'
 import Submitbutton from '@/components/submitbutton.vue'
 import Loading from '@/components/loading.vue'
-import hash from 'object-hash'
 
 const messages = ref<Record<string, any>[]>([])
 const server_response = ref('')
@@ -14,14 +13,16 @@ function add_message(type: 'left' | 'right' | 'info') {
 		messages.value.push({
 			type: 'info',
 			name: '',
-			text: ''
+			text: '',
+			id: Math.random() * 10 * 16
 		})
 	else
 		messages.value.push({
 			type: 'message',
 			side: type,
 			name: '',
-			text: ''
+			text: '',
+			id: Math.random() * 10 * 16
 		})
 }
 
@@ -61,7 +62,7 @@ async function submit() {
 		<section>
 			<Textmessage
 				v-for='message in messages'
-				:key='hash(message)'
+				:key='message.id'
 				:type='message.type'
 				:side='message.side'
 				v-model:name='message.name'
