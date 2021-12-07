@@ -50,7 +50,7 @@ const url = (file: File) => URL.createObjectURL(file)
 					:src='url(file)'
 					alt='gallery-image'
 				/>
-				<video v-else-if='file.type.startsWith("video")'>
+				<video v-else-if='file.type.startsWith("video")' controls>
 					<source :src='url(file)' :type='file.type'/>
 				</video>
 			</span>
