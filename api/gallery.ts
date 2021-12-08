@@ -38,11 +38,17 @@ function convert_file(
 		upload_stream.on('finish', () => res(upload_stream.id as Types.ObjectId))
 
 		if (format === 'video/webm') {
-			ffmpeg(download_stream)
-				.on('error', rej)
-				.on('finish', () => res(upload_stream.id as Types.ObjectId))
-				.toFormat('webm')
-				.pipe(upload_stream)
+			if (size === undefined)
+				ffmpeg(download_stream)
+					.on('error', rej)
+					.withSize(`${ size }x?`)
+					.toFormat('webm')
+					.pipe(upload_stream)
+			else
+				ffmpeg(download_stream)
+					.on('error', rej)
+					.toFormat('webm')
+					.pipe(upload_stream)
 		} else if (format === 'image/webp') {
 			const chunks: Buffer[] = []
 			const passtrough = new PassThrough()
