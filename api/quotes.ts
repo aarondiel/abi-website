@@ -8,7 +8,7 @@ const route = Router()
 
 route.use(assert_privilege())
 
-route.param('qoute', async (_req, res, next, value) => {
+route.param('quote', async (_req, res, next, value) => {
 	let quote
 
 	if (res.locals.user.privileges.includes('admin'))
@@ -36,6 +36,21 @@ route.get('/:quote', (_req, res, _next) => {
 	return res
 		.status(200)
 		.json(res.locals.quote)
+})
+
+route.put('/:quote', assert_privilege('admin'), async (req, res, _next) => {
+	await quotes.findByIdAndUpdate(
+		res.locals.quote.id,
+		req.body
+	)
+
+	return res.sendStatus(200)
+})
+
+route.delete('/:quote', assert_privilege('admin'), async (_req, res, _next) => {
+	await quotes.findByIdAndDelete(res.locals.quote.id)
+
+	return res.sendStatus(200)
 })
 
 route.get('/', async (req, res, _next) => {

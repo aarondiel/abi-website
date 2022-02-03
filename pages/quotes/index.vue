@@ -24,6 +24,11 @@ const limit = ref<number>(
 	parseInt(query.limit?.toString() ?? '')
 )
 
+const editable = ref<boolean>(
+	query.edit?.toString() === 'true' &&
+	user.value.privileges.includes('admin')
+)
+
 async function getQuotes() {
 	loading.value = true
 
@@ -46,6 +51,34 @@ async function getQuotes() {
 	count.value = isNaN(count_data) ? 0 : count_data
 	
 	loading.value = false
+}
+
+function delete_message(quote, message_id: string) {
+	const index = quotes.value.indexOf(quote)
+	quotes.value[index].messages = quotes.value[index].messages.filter(message => message._id !== message_id)
+}
+
+async function delete_quote(quote) {
+	quotes.value = quotes.value.filter(q => q !== quote)
+
+	const response = fetch(`${ config.url }/api/quotes/${ quote._id }`, {
+		method: 'DELETE',
+		credentials: 'include'
+	})
+}
+
+async function update_quote(quote) {
+	const index = quotes.value.indexOf(quote)
+
+	const body = { ...quotes.value[index] }
+	delete body.submitted_by
+
+	const response = await fetch(`${ config.url }/api/quotes/${ quote._id }`, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(body)
+	})
 }
 
 async function navigate(direction: 1 | -1) {
@@ -80,10 +113,31 @@ getQuotes()
 					:key='message._id'
 					:type='message.type'
 					:side='message.side'
-					:name='message.name'
-					:text='message.text'
+					v-model:name='message.name'
+					v-model:text='message.text'
+					:editable='editable'
+					@close='delete_message(quote, message._id)'
 				/>
-				<p v-if='user.privileges.includes("admin")'>- {{ quote.submitted_by }}</p>
+
+				<div v-if='user.privileges.includes("admin")' class='admin'>
+					<button
+						v-if='editable'
+						@click='delete_quote(quote)'
+					>
+						delete quote
+					</button>
+
+					<button
+						v-if='editable'
+						@click='update_quote(quote)'
+					>
+						update quote
+					</button>
+
+					<div v-else class='spacer'></div>
+
+					<p>- {{ quote.submitted_by }}</p>
+				</div>
 			</section>
 			
 			<div>
@@ -100,6 +154,7 @@ getQuotes()
 
 <style lang='scss'>
 @use '@/assets/scss/colors.scss';
+@use '@/assets/scss/mixins.scss';
 @use 'sass:color';
 
 .quotes {
@@ -118,9 +173,20 @@ getQuotes()
 		margin: 1rem 0;
 		box-sizing: border-box;
 
-		> p {
-			text-align: right;
-			margin: 0;
+		> .admin {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			> button {
+				@include mixins.gold_border;
+
+				padding: 0.5rem;
+				border: none;
+				color: inherit;
+				cursor: pointer;
+				display: block;
+			}
 		}
 	}
 

@@ -26,6 +26,10 @@ function add_message(type: 'left' | 'right' | 'info') {
 		})
 }
 
+function delete_message(id: number) {
+	messages.value = messages.value.filter(message => message.id !== id)
+}
+
 async function submit() {
 	server_response.value = 'loading'
 
@@ -68,6 +72,7 @@ async function submit() {
 				v-model:name='message.name'
 				v-model:text='message.text'
 				:editable='true'
+				@close='delete_message(message.id)'
 			/>
 		</section>
 

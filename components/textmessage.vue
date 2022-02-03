@@ -12,7 +12,8 @@ const text_value = props.text
 
 const emit = defineEmits([
 	'update:name',
-	'update:text'
+	'update:text',
+	'close'
 ])
 
 function update(type: 'name' | 'text', target: EventTarget | null) {
@@ -55,6 +56,14 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 				z
 			'/>
 		</svg>
+
+		<button
+			v-if='props.editable'
+			class='close'
+			@click='emit("close")'
+		>
+			x
+		</button>
 	</div>
 </template>
 
@@ -82,6 +91,12 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 			fill: colors.$primary;
 			transform: rotate(180deg) translateX(calc(-100% + 0.45em));
 			bottom: 0;
+		}
+
+		> .close {
+			right: auto;
+			left: 0;
+			transform: translateX(50%) translateY(-50%);
 		}
 	}
 
@@ -129,6 +144,21 @@ function update(type: 'name' | 'text', target: EventTarget | null) {
 		position: absolute;
 		width: 1.5em;
 		transform: translateX(calc(-100% + 0.45em));
+	}
+
+	> .close {
+		position: relative;
+		font-size: 1.25rem;
+		top: 0;
+		height: 1.75em;
+		right: 0;
+		transform: translateX(-50%) translateY(-50%);
+		aspect-ratio: 1/1;
+		background: none;
+		color: inherit;
+		border: none;
+		text-shadow: 0 0.25rem 0.5rem colors.$black;
+		cursor: pointer;
 	}
 }
 </style>
