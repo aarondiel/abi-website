@@ -5,9 +5,23 @@ import { frontend_config as config } from '@/config'
 import Loading from '@/components/loading.vue'
 import Textmessage from '@/components/textmessage.vue'
 
+type Message = {
+	_id: string,
+	name: string,
+	text: string,
+	type: 'info' | 'message',
+	side?: 'left' | 'right'
+}
+
+type Quote = {
+	_id: string,
+	submitted_by?: string,
+	messages: Message[]
+}
+
 const router = useRouter()
 const query = useRoute().query
-const quotes = ref<Record<string, any>>({})
+const quotes = ref<Quote[]>([])
 const count = ref(0)
 const loading = ref(true)
 const user: any = inject('user')
@@ -53,12 +67,12 @@ async function getQuotes() {
 	loading.value = false
 }
 
-function delete_message(quote, message_id: string) {
+function delete_message(quote: Quote, message_id: string) {
 	const index = quotes.value.indexOf(quote)
 	quotes.value[index].messages = quotes.value[index].messages.filter(message => message._id !== message_id)
 }
 
-async function delete_quote(quote) {
+async function delete_quote(quote: Quote) {
 	quotes.value = quotes.value.filter(q => q !== quote)
 
 	const response = fetch(`${ config.url }/api/quotes/${ quote._id }`, {
@@ -67,7 +81,8 @@ async function delete_quote(quote) {
 	})
 }
 
-async function update_quote(quote) {
+async function update_quote(quote: Quote) {
+	console.log(quotes)
 	const index = quotes.value.indexOf(quote)
 
 	const body = { ...quotes.value[index] }
