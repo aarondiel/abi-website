@@ -82,7 +82,6 @@ async function delete_quote(quote: Quote) {
 }
 
 async function update_quote(quote: Quote) {
-	console.log(quotes)
 	const index = quotes.value.indexOf(quote)
 
 	const body = { ...quotes.value[index] }
