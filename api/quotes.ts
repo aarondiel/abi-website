@@ -57,7 +57,11 @@ route.get('/', async (req, res, _next) => {
 	const limit = parseInt(req.query?.limit?.toString() ?? '3')
 	const offset = parseInt(req.query?.offset?.toString() ?? '0')
 
-	if (limit < 1 || limit > 20 || isNaN(limit))
+	if (
+		isNaN(limit) ||
+		!res.locals.user.privileges.includes('admin') &&
+		(limit < 1 || limit > 20)
+	)
 		return res
 			.status(400)
 			.send('limit not valid')
