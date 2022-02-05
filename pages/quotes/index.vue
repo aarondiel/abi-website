@@ -43,6 +43,10 @@ const editable = ref<boolean>(
 	user.value.privileges.includes('admin')
 )
 
+const submitted_by_hidden = ref<boolean>(
+	query.hide_name?.toString() === 'true'
+)
+
 async function getQuotes() {
 	loading.value = true
 
@@ -150,7 +154,7 @@ getQuotes()
 
 					<div v-else class='spacer'></div>
 
-					<p>- {{ quote.submitted_by }}</p>
+					<p v-if='!submitted_by_hidden'>- {{ quote.submitted_by }}</p>
 				</div>
 			</section>
 			
