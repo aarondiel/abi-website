@@ -1,0 +1,54 @@
+@use './colors.scss';
+@use './fonts.scss';
+
+@mixin link {
+	color: colors.$light-grey;
+	font-family: fonts.$heading;
+	text-decoration: none;
+	text-shadow: 0 0 1em colors.$black;
+
+	&:hover {
+		color: colors.$white;
+		text-shadow: 0 0 1em colors.$grey;
+	}
+}
+
+@mixin server_response {
+	margin: 1rem 0 0 0;
+	color: colors.$red;
+	text-align: center;
+
+	&.accepted {
+		color: colors.$green;
+	}
+}
+
+@mixin gold_border {
+	position: relative;
+	z-index: 0;
+	border-radius: 0.5em;
+
+	&:before {
+		content: '';
+		background-color: colors.$black;
+		position: absolute;
+		inset: 2px;
+		border-radius: inherit;
+		z-index: -1;
+	}
+
+	&:after {
+		content: '';
+		background: linear-gradient(
+			90deg,
+			colors.$secondary 0%,
+			colors.$primary 25%,
+			colors.$primary 75%,
+			colors.$secondary 100%
+		);
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		z-index: -2;
+	}
+}

@@ -3,9 +3,11 @@ Description=abi website
 After=network.target syslog.target mongodb.service nginx.service
 
 [Service]
+Environment="PORT=1234"
 Restart=on-failure
 WorkingDirectory=/home/aaron/abi-website
-ExecStart=/usr/bin/npm run production
+ExecStart=/usr/bin/npm serve
+RemainAfterExit=yes
 
 [Install]
 WantedBy=default.target

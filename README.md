@@ -1,101 +1,54 @@
-# abi-website
+<h1 align="center">abi-website</h1>
 
-## project setup
+a website for collecting images, quotes and hosting polls for my 2022
+graduation
 
-### 1. first install all necessary packages using
+<p align="center">
+	<img alt="gallery" align="center" width=200 src="media/gallery.webp"/>
+	<img alt="quotes" align="center" width=200 src="media/quotes.webp"/>
+</p>
 
-```sh
-npm run install
-```
-
-### 2. create a config.js file in backend for configurating the project
-
-it should have the following structure:
-
-```js
-export default {
-  port: 1337,
-  mongodb: {
-    url: 'mongodb://127.0.0.1',
-    port: '69429'
-  },
-
-  mail: {
-    host: 'mail.mailserver.net',
-    username: 'elon.musk@teslamotors.com',
-    password: 'password123'
-  }
-}
-```
-
-### 4. run the server
+## installation and setup
 
 ```sh
-npm run production
+# install dependencies
+npm install
 ```
 
-## systemd service
-
-to run the server as a systemd service,
-copy the abi-website.service file into ~/.config/systemd/user/
-
-change the WorkingDirectory according to the installtion directory
-of the repository
-
-you can run the service with
+### for production
 
 ```sh
+# compile scripts
+npm run build
+
+# start the server on port 1234
+PORT=1234 npm run serve
+```
+
+additionally, a **abi-website.service** file is included for hosting the server
+on a linux machine with *systemd*
+
+**the port that will be used is specified in the service file, you need to
+change it unless you want the server to run on port 1234**
+
+simply copy the file to *~/.config/systemd/user* and run:
+
+```sh
+# start the server
 systemctl --user start abi-website.service
-```
 
-to enable on startup
-
-```sh
+# enable the server for automatic start on system boot
 systemctl --user enable abi-website.service
 ```
 
-and to look at the output of the service
-
+note that you might have to run this command so that the process continues
+when you log out.
 ```sh
-journalctl --user -f -u abi-website.service
+loginctl enable-linger "$USER"
 ```
 
-note that in order for the process to keep running even if the user logs out
-you neet to run
-
-```sh
-sudo loginctl enable-linger
-```
-
-## for development
-
-### hot-reloading the frontend
-
-```sh
-npm run serve
-```
-
-### rebuilding the frontend
-
-```sh
-npm run build
-```
-
-### hot-reloading the backend
+### for development
 
 ```sh
 npm run dev
-```
-
-## scripts
-
-### sending mails using the mail bot
-
-```sh
-npm run mail
-```
-
-### running queries on the database
-```sh
-npm run query
 ```
