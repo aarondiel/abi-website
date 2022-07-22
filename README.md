@@ -1,12 +1,12 @@
-# abi 2022 website
+<h1 align="center">abi-website</h1>
 
 a website for collecting images, quotes and hosting polls for my 2022
 graduation
 
-<section>
-	<img src="media/gallery.webp"/>
-	<img src="media/quotes.webp"/>
-</section>
+<p align="center">
+	<img alt="gallery" align="center" width=200 src="media/gallery.webp"/>
+	<img alt="quotes" align="center" width=200 src="media/quotes.webp"/>
+</p>
 
 ## installation and setup
 
