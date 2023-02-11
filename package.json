@@ -1,9 +1,10 @@
 {
   "name": "abi-website",
-  "version": "0.0.0",
+	"private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
+		"check": "vue-tsc --noEmit",
     "preview": "vite preview",
     "serve": "node build/server.js"
   },
